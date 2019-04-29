@@ -13,7 +13,7 @@
             "homepage": "dashboard"
         }
     ],
-    "homepage": "https://github.com/dhaval48/laravel-autoengine.git",
+    "homepage": "https://github.com/dhaval48/laravel-autoengine",
     "keywords": ["Laravel", "crudpack"],    
     "require-dev": {
         "phpunit/phpunit": "~7.0",
