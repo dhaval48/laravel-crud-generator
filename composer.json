@@ -1,5 +1,5 @@
 {
-    "name": "autoengine/crudpack",
+    "name": "autoengine/laravel",
     "description": ":description",
     "license": "MIT",
     "require": {
