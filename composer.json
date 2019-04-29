@@ -1,7 +1,7 @@
 {
     "name": "autoengine/crudpack",
     "description": ":description",
-    "license": "license",
+    "license": "MIT",
     "require": {
         "php": ">=7.1.0",
         "illuminate/support": "~5"
