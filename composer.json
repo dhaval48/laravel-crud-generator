@@ -1,5 +1,5 @@
 {
-    "name": "autoengine/laravel",
+    "name": "crud/laravel",
     "description": ":description",
     "license": "MIT",
     "require": {
