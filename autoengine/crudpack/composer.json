@@ -1,7 +1,11 @@
 {
-    "name": "autoengine",
+    "name": "autoengine/crudpack",
     "description": ":description",
     "license": "license",
+    "require": {
+        "php": ">=7.1.0",
+        "illuminate/support": "~5"
+    },
     "authors": [
         {
             "name": "Auto Engine",
@@ -10,10 +14,7 @@
         }
     ],
     "homepage": "git@github.com:dhaval48/laravel-autoengine.git",
-    "keywords": ["Laravel", "crudpack"],
-    "require": {
-        "illuminate/support": "~5"
-    },
+    "keywords": ["Laravel", "crudpack"],    
     "require-dev": {
         "phpunit/phpunit": "~7.0",
         "mockery/mockery": "^1.1",
