@@ -14,7 +14,7 @@ class CrudpackServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadRoutesFrom(__DIR__.'/routes/Routes.php');
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadViewsFrom(__DIR__.'/resources/views', 'crudpack');
 
         // Publishing is only necessary when using the CLI.
@@ -76,9 +76,10 @@ class CrudpackServiceProvider extends ServiceProvider
             __DIR__.'/resources/lang' => resource_path('lang/vendor/autoengine'),
         ]);
 
-        // $this->publishes([
-        //     __DIR__.'/migrations' => database_path('migrations'),
-        // ]);
+        // Publishing Migrations.
+        $this->publishes([
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+        ]);
         // // Registering package commands.
         // $this->commands([]);
     }
