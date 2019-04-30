@@ -1,10 +1,10 @@
 <?php
 
-namespace autoengine\crudpack\Facades;
+namespace ongoingcloud\laravelcrud\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class crudpack extends Facade
+class laravelcrud extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -13,6 +13,6 @@ class crudpack extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'crudpack';
+        return 'laravelcrud';
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'autoengine\\crudpack\\Http\\Controllers', 'prefix' => 'autolaravel'], function () {
+Route::group(['namespace' => 'ongoingcloud\\laravelcrud\\Http\\Controllers', 'prefix' => 'autolaravel'], function () {
 	// Route::group(['middleware' => ['web', 'auth', 'locale:en']], function () {
 		Route::get('permissionmodules', 'PermissionmoduleController@index')->name('permissionmodule.index');
 		Route::get('permissionmodules-paginate','PermissionmoduleController@Paginate')->name('permissionmodule.paginate');

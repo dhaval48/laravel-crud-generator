@@ -1,11 +1,11 @@
 <?php
 
-namespace autoengine\crudpack\Http\Controllers;
+namespace ongoingcloud\laravelcrud\Http\Controllers;
 
 use App\General\ModuleConfig;
 use App\General\HandlePermission;
 use App\Http\Controllers\Controller;
-use autoengine\crudpack\Models\Permissionmodule as Module;
+use ongoingcloud\laravelcrud\Models\Permissionmodule as Module;
 use App\Models\Formmodule;
 use Auth;
 use Illuminate\Http\Request;
@@ -19,8 +19,9 @@ class PermissionmoduleController extends Controller {
 
     public $data = [];        
     
-    public $form_view = 'vendor.autoengine.backend.modules.permissionmodule';
-    public $form_export = 'vendor.autoengine.backend.modules.permissionmodule-table';
+    // public $form_view = 'vendor.ongoingcloud.backend.modules.permissionmodule';
+    public $form_view = 'backend.modules.permissionmodule';
+    public $form_export = 'backend.modules.permissionmodule-table';
 
     /**
      * Create a new controller instance.

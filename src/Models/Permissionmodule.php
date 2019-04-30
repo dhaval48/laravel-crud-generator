@@ -1,6 +1,6 @@
 <?php
 
-namespace autoengine\crudpack\Models;
+namespace ongoingcloud\laravelcrud\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

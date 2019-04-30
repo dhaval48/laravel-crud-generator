@@ -2,58 +2,54 @@
     <div>
         <list_header :lists='this.module'></list_header>
         
-        <div class="clearfix"></div>
+        <div class="clearfix">&nbsp;</div>
         
-        <div class="card-body">
-            <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                        <th v-for="(value,key) in lists.list_data">{{ key }}</th>
-                        <th width="100">Action</th>
-                    </tr>
-                </thead>
-                <tbody v-if="lists.lists.data.length > 0">
-                    <tr v-for="list in lists.lists.data">
-                        
-                        <td v-for="(value,key) in lists.list_data">
-                            <template v-if="value =='date'">
-                                {{ list[value] | dmy }}
-                            </template>
-                            <template v-else-if = "value.indexOf('.') > 0">
-                                {{ list | relation(value) }}
-                            </template>
-                            <template v-else>
-                                {{list[value] != null ? list[value] : '-'}}                                           
-                            </template>
-                        </td>
-                        <td class="action_button" width="100px">
-                            <div class="dropdown">
-                                <button class="btn btn-default custom-default dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
-                                <ul class="dropdown-menu drop">
-                                    <li>
-                                        <a :href='module.edit_route+"/"+list.id'><i class="fa fa-edit" style="color: green;" data-toggle="tooltip" data-placement="top" data-original-title="Edit"></i>{{lists.common.edit}}</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);" @click="deleteRecord(list.id)"><i class="fa fa-trash" style="color: red;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"></i>{{lists.common.delete}}</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+        <table class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead class="thead-dark">
+                <tr>
+                    <th v-for="(value,key) in lists.list_data">{{ key }}</th>
+                    <th width="100">Action</th>
+                </tr>
+            </thead>
+            <tbody v-if="lists.lists.data.length > 0">
+                <tr v-for="list in lists.lists.data">
                     
-                </tbody>
-                <tbody v-else>
-                    <tr>
-                        <td class="text-center" colspan="20">
-                            {{lists.common.no_data}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <paginate-links :lists='this.lists'></paginate-links>
+                    <td v-for="(value,key) in lists.list_data">
+                        <template v-if="value =='date'">
+                            {{ list[value] | dmy }}
+                        </template>
+                        <template v-else-if = "value.indexOf('.') > 0">
+                            {{ list | relation(value) }}
+                        </template>
+                        <template v-else>
+                            {{list[value] != null ? list[value] : '-'}}                                           
+                        </template>
+                    </td>
+                    <td>
 
-        </div><!--end .col -->
-        
+                        <div class="btn-group">
+                            <button  type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle pull-right" data-toggle="dropdown" tabindex="-1" aria-haspopup="true" aria-expanded="false">
+                                Action
+                            </button>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" :href='module.edit_route+"/"+list.id'><i class="fa fa-edit" style="color: green;" data-toggle="tooltip" data-placement="top" data-original-title="Edit"></i>{{lists.common.edit}}</a>
+                                <a class="dropdown-item" href="javascript:void(0);" @click="deleteRecord(list.id)"><i class="fa fa-trash" style="color: red;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"></i>{{lists.common.delete}}</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+            </tbody>
+            <tbody v-else>
+                <tr>
+                    <td class="text-center" colspan="20">
+                        {{lists.common.no_data}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <paginate-links :lists='this.lists'></paginate-links>
     </div>
 </template>
 

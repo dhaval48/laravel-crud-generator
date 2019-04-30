@@ -1,10 +1,10 @@
 <?php
 
-namespace autoengine\crudpack;
+namespace ongoingcloud\laravelcrud;
 
 use Illuminate\Support\ServiceProvider;
 
-class CrudpackServiceProvider extends ServiceProvider
+class LaravelCrudServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
@@ -15,7 +15,7 @@ class CrudpackServiceProvider extends ServiceProvider
     {
         $this->loadRoutesFrom(__DIR__.'/routes/Routes.php');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        $this->loadViewsFrom(__DIR__.'/resources/views', 'crudpack');
+        $this->loadViewsFrom(__DIR__.'/resources/views', 'laravelcrud');
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
@@ -30,11 +30,10 @@ class CrudpackServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/crudpack.php', 'crudpack');
 
         // Register the service the package provides.
-        $this->app->singleton('crudpack', function ($app) {
-            return new crudpack;
+        $this->app->singleton('laravelcrud', function ($app) {
+            return new laravelcrud;
         });
     }
 
@@ -45,7 +44,7 @@ class CrudpackServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['crudpack'];
+        return ['laravelcrud'];
     }
     
     /**
@@ -55,32 +54,29 @@ class CrudpackServiceProvider extends ServiceProvider
      */
     protected function bootForConsole()
     {
-        // Publishing the configuration file.
-        $this->publishes([
-            __DIR__.'/../config/crudpack.php' => config_path('crudpack.php'),
-        ]);
-       // dd(config_path('crudpack.php'));
-
         // Publishing the views.
-        $this->publishes([
-            __DIR__.'/resources/views' => base_path('resources/views/vendor/autoengine'),
-        ]);
+        // $this->publishes([
+        //     __DIR__.'/resources/views' => base_path('resources/views/vendor/crud'),
+        // ]);
 
         // Publishing Components.
         $this->publishes([
-            __DIR__.'/resources/js/components' => base_path('resources/js/components/autoengine'),
+            __DIR__.'/resources' => base_path('resources'),
         ]);
 
         // Publishing the translation files.
-        $this->publishes([
-            __DIR__.'/resources/lang' => resource_path('lang/vendor/autoengine'),
-        ]);
+        // $this->publishes([
+        //     __DIR__.'/resources/lang' => resource_path('lang/vendor/crud'),
+        // ]);
 
         // Publishing Migrations.
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
         ]);
-        // // Registering package commands.
-        // $this->commands([]);
+
+        // Registering package commands.
+        $this->commands([
+            // Console\InstallCommand::class,
+        ]);
     }
 }

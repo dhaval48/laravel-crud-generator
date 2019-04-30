@@ -2,13 +2,13 @@
 
 return [
 
-	'name' => 'Permission Module',
+	'name' => 'Permission Group',
 
-    'create_title' => 'Create Permission Module',
-    'edit_title' => 'Edit Permission Module',
-    'edit_message' => 'Permission Module Updated!',
-    'create_message' => 'Permission Module Created!',
-    'delete_message' => 'Permission Module Deleted!',
-    'list' => 'Permission Modules',
+    'create_title' => 'Create Permission Group',
+    'edit_title' => 'Edit Permission Group',
+    'edit_message' => 'Permission Group Updated!',
+    'create_message' => 'Permission Group Created!',
+    'delete_message' => 'Permission Group Deleted!',
+    'list' => 'Permission Groups',
 
 ];
