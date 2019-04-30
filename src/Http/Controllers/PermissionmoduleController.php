@@ -2,24 +2,28 @@
 
 namespace ongoingcloud\laravelcrud\Http\Controllers;
 
-use App\General\ModuleConfig;
-use App\General\HandlePermission;
+use ongoingcloud\laravelcrud\General\ModuleConfig;
+use ongoingcloud\laravelcrud\General\HandlePermission;
 use App\Http\Controllers\Controller;
 use ongoingcloud\laravelcrud\Models\Permissionmodule as Module;
-use App\Models\Formmodule;
+use ongoingcloud\laravelcrud\Models\Formmodule;
 use Auth;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
+use ongoingcloud\laravelcrud\Http\Requests\Permissionmodule\StorePermissionmoduleRequest;
+use ongoingcloud\laravelcrud\Http\Requests\Permissionmodule\UpdatePermissionmoduleRequest;
+use ongoingcloud\laravelcrud\Http\Requests\Permissionmodule\DeletePermissionmoduleRequest;
+use ongoingcloud\laravelcrud\Http\Requests\Permissionmodule\ListPermissionmoduleRequest;
+use ongoingcloud\laravelcrud\Http\Requests\Permissionmodule\OnlyPermissionmoduleRequest;
 use Lang;
 
 class PermissionmoduleController extends Controller {
 
     public $data = [];        
     
-    // public $form_view = 'vendor.ongoingcloud.backend.modules.permissionmodule';
     public $form_view = 'backend.modules.permissionmodule';
     public $form_export = 'backend.modules.permissionmodule-table';
 
@@ -34,16 +38,16 @@ class PermissionmoduleController extends Controller {
          // [Module_Data]
     }
 
-    public function index(Request $request) { 
+    public function index(ListPermissionmoduleRequest $request) { 
         $this->default(); 
         $model = new Module;
-        // $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
+        $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
 
         $this->data['lists'] = Module::latest()->paginate(25);
-        // $only = new OnlyPermissionmoduleRequest();
-        // if($only->authorize()){
-        //     $this->data['lists'] = Module::latest()->where('created_by', user()->id)->paginate(25);
-        // }
+        $only = new OnlyPermissionmoduleRequest();
+        if($only->authorize()){
+            $this->data['lists'] = Module::latest()->where('created_by', user()->id)->paginate(25);
+        }
         $this->data['list_data'] = $model->list_data();
         $this->data['fillable'] = formatDeleteFillable();
         return view($this->form_view, ['data'=>$this->data]);
@@ -52,7 +56,7 @@ class PermissionmoduleController extends Controller {
     public function Paginate($from_delete = false ,Request $request) {
         $this->default(); 
 
-        // $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
+        $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
         
         $model = new Module;
         $searchelements = $model->searchelements;
@@ -70,10 +74,10 @@ class PermissionmoduleController extends Controller {
             $lists = Module::latest();
         }
 
-        // $only = new OnlyPermissionmoduleRequest();
-        // if($only->authorize()){
-        //     $lists = $lists->where('created_by', user()->id);
-        // }
+        $only = new OnlyPermissionmoduleRequest();
+        if($only->authorize()){
+            $lists = $lists->where('created_by', user()->id);
+        }
 
         $this->data['list_data'] = $model->list_data();
 
@@ -130,13 +134,13 @@ class PermissionmoduleController extends Controller {
         return successResponse(Lang::get('label.notification.success_message'),$this->data);
     }
 
-    public function create(Request $request) {
+    public function create(StorePermissionmoduleRequest $request) {
         $this->default(); 
         
         return view($this->form_view, ['data'=>$this->data]);
     }
 
-    public function store(Request $request) {
+    public function store(StorePermissionmoduleRequest $request) {
         $this->default(); 
         $this->validate($request, [
                 "name" => "required",
@@ -165,7 +169,7 @@ class PermissionmoduleController extends Controller {
                  // [GridDelete]
                 $model->update($input);
             } else {
-                // $input["created_by"] = user()->id;
+                $input["created_by"] = user()->id;
                 $model = Module::Create($input);
             }
              // [GridSave]
@@ -181,7 +185,7 @@ class PermissionmoduleController extends Controller {
         return successResponse($message,$model);
     }
 
-    public function edit($id, Request $request) {
+    public function edit($id, UpdatePermissionmoduleRequest $request) {
         $this->default(); 
         $this->data['id'] = $id;
         $model = Module::findorfail($id);
@@ -194,17 +198,17 @@ class PermissionmoduleController extends Controller {
          // [GridEdit]
         $this->data['fillable'] = $formelement;
 
-        // $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
+        $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
 
-        // $only = new OnlyPermissionmoduleRequest();
-        // if(!$only->authorize() || $model->created_by == user()->id) {
+        $only = new OnlyPermissionmoduleRequest();
+        if(!$only->authorize() || $model->created_by == user()->id) {
             return view($this->form_view, ['data'=>$this->data]);
-        // } else {
-        //     return "Unauthorized!";
-        // }
+        } else {
+            return "Unauthorized!";
+        }
     }
 
-    public function destroy(Request $request){
+    public function destroy(DeletePermissionmoduleRequest $request){
         $this->default(); 
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
 

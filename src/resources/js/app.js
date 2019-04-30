@@ -30,35 +30,35 @@ Vue.component('activity',require('./components/common/activity.vue').default);
  */
 
 
-// import Toasted from 'vue-toasted';
-// Vue.use(Toasted)
+import Toasted from 'vue-toasted';
+Vue.use(Toasted)
 
-// import VueSweetalert2 from 'vue-sweetalert2';
-// Vue.use(VueSweetalert2);
+import VueSweetalert2 from 'vue-sweetalert2';
+Vue.use(VueSweetalert2);
 
-// import filter from './components/core/filter';
-// Vue.use(filter);
+import filter from './components/core/filter';
+Vue.use(filter);
 
-// import vSelect from 'vue-select';
-// Vue.component('v-select', vSelect)
+import vSelect from 'vue-select';
+Vue.component('v-select', vSelect)
 
-// import Datepicker from 'vuejs-datepicker';
-// Vue.component('Datepicker', Datepicker)
+import Datepicker from 'vuejs-datepicker';
+Vue.component('Datepicker', Datepicker)
 
-// import activity from './components/common/activity.vue';
-// Vue.component('activity', activity)
+import activity from './components/common/activity.vue';
+Vue.component('activity', activity)
 
-// import grid from './components/common/grid.vue';
-// Vue.component('grid', grid)
+import grid from './components/common/grid.vue';
+Vue.component('grid', grid)
 
-// import auto_grid from './components/common/auto_grid.vue';
-// Vue.component('auto_grid', auto_grid)
+import auto_grid from './components/common/auto_grid.vue';
+Vue.component('auto_grid', auto_grid)
 
-// import file_upload from './components/common/file_upload.vue';
-// Vue.component('file_upload', file_upload)
+import file_upload from './components/common/file_upload.vue';
+Vue.component('file_upload', file_upload)
 
-// import PrettyCheckbox from 'pretty-checkbox-vue'; 
-// Vue.use(PrettyCheckbox);
+import PrettyCheckbox from 'pretty-checkbox-vue'; 
+Vue.use(PrettyCheckbox);
 
 const app = new Vue({
     el: '#app'

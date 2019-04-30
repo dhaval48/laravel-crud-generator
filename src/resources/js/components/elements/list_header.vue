@@ -8,8 +8,8 @@
 
         <div class="col-sm-6 py-1">            
 
-            <div class="btn-group"  style="float:right">
-                <button  type="button" class="btn btn-primary btn-sm btn-flat dropdown-toggle pull-right" data-toggle="dropdown" tabindex="-1" aria-haspopup="true" aria-expanded="false">
+            <div v-if="this.lists.is_visible" class="btn-group"  style="float:right">
+                <button type="button" class="btn btn-primary btn-sm btn-flat dropdown-toggle pull-right" data-toggle="dropdown" tabindex="-1" aria-haspopup="true" aria-expanded="false">
                     {{this.lists.common.export}}
                 </button>
 
@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <a :href="this.lists.create_route" class="btn btn-primary btn-flat btn-sm pull-right" style="float:right; margin-right:5px">{{this.lists.lang.create_title}}</a>
+            <a v-if="this.lists.permissions['store_'+this.lists.dir]" :href="this.lists.create_route" class="btn btn-primary btn-flat btn-sm pull-right" style="float:right; margin-right:5px">{{this.lists.lang.create_title}}</a>
         </div>
     </div>
 </template>

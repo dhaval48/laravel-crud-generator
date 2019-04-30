@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Permissionmodule;
+namespace ongoingcloud\laravelcrud\Http\Requests\Permissionmodule;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\General\HandlePermission;
+use ongoingcloud\laravelcrud\General\HandlePermission;
 
 class DeletePermissionmoduleRequest extends FormRequest
 {
@@ -18,7 +18,7 @@ class DeletePermissionmoduleRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Get the validation rules that ongoingcloud\laravelcrudly to the request.
      *
      * @return array
      */

@@ -1,0 +1,167 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use App;
+use Auth;
+
+class SetLocale
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+
+    private $locales = ['en', 
+                        'aa',
+                        'ab',
+                        'af',
+                        'am',
+                        'ar',
+                        'as',
+                        'ay',
+                        'az',
+                        'ba',
+                        'be',
+                        'bg',
+                        'bh',
+                        'bi',
+                        'bn',
+                        'bo',
+                        'br',
+                        'ca',
+                        'co',
+                        'cs',
+                        'cy',
+                        'da',
+                        'de',
+                        'dz',
+                        'el',
+                        'eo',
+                        'es',
+                        'et',
+                        'eu',
+                        'fa',
+                        'fi',
+                        'fj',
+                        'fo',
+                        'fr',
+                        'fy',
+                        'ga',
+                        'gd',
+                        'gl',
+                        'gn',
+                        'gu',
+                        'ha',
+                        'hi',
+                        'hr',
+                        'hu',
+                        'hy',
+                        'ia',
+                        'ie',
+                        'ik',
+                        'in',
+                        'is',
+                        'it',
+                        'iw',
+                        'ja',
+                        'ji',
+                        'jw',
+                        'ka',
+                        'kk',
+                        'kl',
+                        'km',
+                        'kn',
+                        'ko',
+                        'ks',
+                        'ku',
+                        'ky',
+                        'la',
+                        'ln',
+                        'lo',
+                        'lt',
+                        'lv',
+                        'mg',
+                        'mi',
+                        'mk',
+                        'ml',
+                        'mn',
+                        'mo',
+                        'mr',
+                        'ms',
+                        'mt',
+                        'my',
+                        'na',
+                        'ne',
+                        'nl',
+                        'no',
+                        'oc',
+                        'om',
+                        'pa',
+                        'pl',
+                        'ps',
+                        'pt',
+                        'qu',
+                        'rm',
+                        'rn',
+                        'ro',
+                        'ru',
+                        'rw',
+                        'sa',
+                        'sd',
+                        'sg',
+                        'sh',
+                        'si',
+                        'sk',
+                        'sl',
+                        'sm',
+                        'sn',
+                        'so',
+                        'sq',
+                        'sr',
+                        'ss',
+                        'st',
+                        'su',
+                        'sv',
+                        'sw',
+                        'ta',
+                        'te',
+                        'tg',
+                        'th',
+                        'ti',
+                        'tk',
+                        'tl',
+                        'tn',
+                        'to',
+                        'tr',
+                        'ts',
+                        'tt',
+                        'tw',
+                        'uk',
+                        'ur',
+                        'uz',
+                        'vi',
+                        'vo',
+                        'wo',
+                        'xh',
+                        'yo',
+                        'zh-Hans',
+                        'zh-Hant',
+                        'zu'];
+    public function handle($request, Closure $next, $locale)
+    {
+        if (array_search($locale, $this->locales) === false) {
+            return redirect('/');
+        }
+        if(Auth::check()){
+            $locale = Auth::user()->locale;
+        }
+        App::setLocale($locale);
+
+        return $next($request);
+    }
+}
