@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Ongoingcloud\Laravelcrud\Http\Middleware;
 
 use Closure;
 use App;

@@ -59,6 +59,8 @@ class LaravelCrudServiceProvider extends ServiceProvider
         //     __DIR__.'/resources/views' => base_path('resources/views/vendor/crud'),
         // ]);
 
+        $this->app['router']->aliasMiddleware('locale', \Ongoingcloud\Laravelcrud\Http\Middleware\SetLocale::class);
+
         // Publishing Components.
         $this->publishes([
             __DIR__.'/resources' => base_path('resources'),
