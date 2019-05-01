@@ -1,9 +1,9 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Http\Requests\Languagetranslet;
+namespace Ongoingcloud\Laravelcrud\Http\Requests\Languagetranslet;
 
 use Illuminate\Foundation\Http\FormRequest;
-use ongoingcloud\laravelcrud\General\HandlePermission;
+use Ongoingcloud\Laravelcrud\General\HandlePermission;
 
 class ListLanguagetransletRequest extends FormRequest
 {
@@ -18,7 +18,7 @@ class ListLanguagetransletRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that ongoingcloud\laravelcrudly to the request.
+     * Get the validation rules that Ongoingcloud\Laravelcrudly to the request.
      *
      * @return array
      */

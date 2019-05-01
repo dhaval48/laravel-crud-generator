@@ -1,12 +1,37 @@
 <?php
 
-Route::group(['namespace' => 'ongoingcloud\\laravelcrud\\Http\\Controllers'], function () {
+Route::group(['namespace' => 'Ongoingcloud\\Laravelcrud\\Http\\Controllers'], function () {
 	Route::group(['middleware' => ['web', 'auth', 'locale:en']], function () {
 		require (__DIR__ . '/Common.php');
 	});
 });
 
-Route::group(['namespace' => 'ongoingcloud\\laravelcrud\\Http\\Controllers', 'prefix' => 'autolaravel'], function () {
+Route::group(['namespace' => 'Ongoingcloud\\Laravelcrud\\Http\\Controllers', 'prefix' => 'control'], function () {
+	Route::group(['middleware' => ['web', 'auth', 'locale:en']], function () {
+		Route::get('users', 'UserController@index')->name('user.index');
+		Route::get('users-paginate','UserController@Paginate')->name('user.paginate');
+		Route::get('user/create', 'UserController@create')->name('user.create');
+		Route::post('user/store', 'UserController@store')->name('user.store');
+		Route::get('user/edit/{id}', 'UserController@edit')->name('user.edit');
+		Route::post('user/destroy', 'UserController@destroy')->name('user.destroy');
+
+		Route::get('user/changepassword', 'UserController@createChangePassword')->name('changepassword.create');
+		Route::post('user/changepassword', 'UserController@postChangePassword')->name('changepassword.store');
+	});
+});
+
+Route::group(['namespace' => 'Ongoingcloud\\Laravelcrud\\Http\\Controllers', 'prefix' => 'control'], function () {
+	Route::group(['middleware' => ['web', 'auth', 'locale:en']], function () {
+		Route::get('roles', 'RoleController@index')->name('role.index');
+		Route::get('roles-paginate','RoleController@Paginate')->name('role.paginate');
+		Route::get('role/create', 'RoleController@create')->name('role.create');
+		Route::post('role/store', 'RoleController@store')->name('role.store');
+		Route::get('role/edit/{id}', 'RoleController@edit')->name('role.edit');
+		Route::post('role/destroy', 'RoleController@destroy')->name('role.destroy');
+	});
+});
+
+Route::group(['namespace' => 'Ongoingcloud\\Laravelcrud\\Http\\Controllers', 'prefix' => 'autolaravel'], function () {
 	Route::group(['middleware' => ['web', 'auth', 'locale:en']], function () {
 		Route::get('permissionmodules', 'PermissionmoduleController@index')->name('permissionmodule.index');
 		Route::get('permissionmodules-paginate','PermissionmoduleController@Paginate')->name('permissionmodule.paginate');
@@ -17,7 +42,7 @@ Route::group(['namespace' => 'ongoingcloud\\laravelcrud\\Http\\Controllers', 'pr
 	});
 });
 
-Route::group(['namespace' => 'ongoingcloud\\laravelcrud\\Http\\Controllers', 'prefix' => 'autolaravel'], function () {
+Route::group(['namespace' => 'Ongoingcloud\\Laravelcrud\\Http\\Controllers', 'prefix' => 'autolaravel'], function () {
 	Route::group(['middleware' => ['web', 'auth', 'locale:en']], function () {
 		Route::get('formmodules', 'FormmoduleController@index')->name('formmodule.index');
 		Route::get('formmodules-paginate','FormmoduleController@Paginate')->name('formmodule.paginate');
@@ -28,7 +53,7 @@ Route::group(['namespace' => 'ongoingcloud\\laravelcrud\\Http\\Controllers', 'pr
 	});
 });
 
-Route::group(['namespace' => 'ongoingcloud\\laravelcrud\\Http\\Controllers', 'prefix' => 'autolaravel'], function () {
+Route::group(['namespace' => 'Ongoingcloud\\Laravelcrud\\Http\\Controllers', 'prefix' => 'autolaravel'], function () {
 	Route::group(['middleware' => ['web', 'auth', 'locale:en']], function () {
 		Route::get('gridmodules', 'GridmoduleController@index')->name('gridmodule.index');
 		Route::get('gridmodules-paginate','GridmoduleController@Paginate')->name('gridmodule.paginate');
@@ -39,7 +64,7 @@ Route::group(['namespace' => 'ongoingcloud\\laravelcrud\\Http\\Controllers', 'pr
 	});
 });
 
-Route::group(['namespace' => 'ongoingcloud\\laravelcrud\\Http\\Controllers', 'prefix' => 'autolaravel'], function () {
+Route::group(['namespace' => 'Ongoingcloud\\Laravelcrud\\Http\\Controllers', 'prefix' => 'autolaravel'], function () {
 	Route::group(['middleware' => ['web', 'auth', 'locale:en']], function () {
 		Route::get('apimodules', 'ApimoduleController@index')->name('apimodule.index');
 		Route::get('apimodules-paginate','ApimoduleController@Paginate')->name('apimodule.paginate');
@@ -47,5 +72,28 @@ Route::group(['namespace' => 'ongoingcloud\\laravelcrud\\Http\\Controllers', 'pr
 		Route::post('apimodule/store', 'ApimoduleController@store')->name('apimodule.store');
 		Route::get('apimodule/edit/{id}', 'ApimoduleController@edit')->name('apimodule.edit');
 		Route::post('apimodule/destroy', 'ApimoduleController@destroy')->name('apimodule.destroy');
+	});
+});
+
+Route::group(['namespace' => 'Ongoingcloud\\Laravelcrud\\Http\\Controllers'], function () {
+	Route::group(['middleware' => ['web', 'auth', 'locale:en']], function () {
+		Route::get('settings', 'SettingController@edit')->name('setting.index');
+		// Route::get('settings-paginate','SettingController@Paginate')->name('setting.paginate');
+		// Route::get('setting/create', 'SettingController@create')->name('setting.create');
+		Route::post('setting/store', 'SettingController@store')->name('setting.store');
+		// Route::get('setting/edit/{id}', 'SettingController@edit')->name('setting.edit');
+		// Route::post('setting/destroy', 'SettingController@destroy')->name('setting.destroy');
+	});
+});
+
+Route::group(['namespace' => 'Ongoingcloud\\Laravelcrud\\Http\\Controllers', 'prefix' => 'general'], function () {
+	Route::group(['middleware' => ['web', 'auth']], function () {
+		Route::get('languagetranslets', 'LanguagetransletController@index')->name('languagetranslet.index');
+		Route::get('languagetranslets-paginate','LanguagetransletController@Paginate')->name('languagetranslet.paginate');
+		Route::get('langarray-pagination','LanguagetransletController@getLangArrayPagination')->name('get.lang_array_pagination');
+		Route::get('languagetranslet/create', 'LanguagetransletController@create')->name('languagetranslet.create');
+		Route::post('languagetranslet/store', 'LanguagetransletController@store')->name('languagetranslet.store');
+		Route::get('languagetranslet/edit/{id}', 'LanguagetransletController@edit')->name('languagetranslet.edit');
+		Route::post('languagetranslet/destroy', 'LanguagetransletController@destroy')->name('languagetranslet.destroy');
 	});
 });

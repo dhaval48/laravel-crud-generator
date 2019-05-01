@@ -1,6 +1,6 @@
 <?php
 
-namespace App\General;
+namespace Ongoingcloud\Laravelcrud\General;
 
 Class Rollback {
 

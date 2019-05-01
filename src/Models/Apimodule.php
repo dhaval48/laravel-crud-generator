@@ -1,6 +1,6 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Models;
+namespace Ongoingcloud\Laravelcrud\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -67,7 +67,7 @@ class Apimodule extends Model
     }
      
 	public function api_tables() {
-	    return $this->hasMany('ongoingcloud\laravelcrud\Models\Apitable','apimodule_id','id');
+	    return $this->hasMany('Ongoingcloud\Laravelcrud\Models\Apitable','apimodule_id','id');
 	}
 	// [Relation]
 }

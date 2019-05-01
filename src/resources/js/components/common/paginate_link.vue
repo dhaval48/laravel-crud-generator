@@ -12,7 +12,7 @@
                 class="page-item" 
                 v-bind:class="[ page == pagination.current_page ? 'active' : '']"
             >
-                <a href="javascript:void(0);" @click=getPageData(page) class="page-link" >{{ page }}</a>
+                <a href="javascript:void(0);" @click="getPageData(page)" class="page-link" >{{ page }}</a>
             </li>
 
             <li class="page-item" v-if='pagination.current_page < pagination.last_page'>

@@ -1,6 +1,6 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Models;
+namespace Ongoingcloud\Laravelcrud\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +16,6 @@ class FileUpload extends Model
     ];
 
     public function file_upload_details() {
-	    return $this->hasMany('ongoingcloud\laravelcrud\Models\FileUploadDetail','file_upload_id','id');
+	    return $this->hasMany('Ongoingcloud\Laravelcrud\Models\FileUploadDetail','file_upload_id','id');
 	}
 }

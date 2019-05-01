@@ -1,23 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace Ongoingcloud\Laravelcrud\Http\Controllers;
 
-use App\General\Activity;
-use App\General\ModuleConfig;
-use App\General\HandlePermission;
+use Ongoingcloud\Laravelcrud\Helpers;
+use Ongoingcloud\Laravelcrud\General\Activity;
+use Ongoingcloud\Laravelcrud\General\ModuleConfig;
+use Ongoingcloud\Laravelcrud\General\HandlePermission;
 use App\Http\Controllers\Controller;
-use App\Models\Languagetranslet as Module;
+use Ongoingcloud\Laravelcrud\Models\Languagetranslet as Module;
 use Auth;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
-use App\Http\Requests\Languagetranslet\StoreLanguagetransletRequest;
-use App\Http\Requests\Languagetranslet\UpdateLanguagetransletRequest;
-use App\Http\Requests\Languagetranslet\DeleteLanguagetransletRequest;
-use App\Http\Requests\Languagetranslet\ListLanguagetransletRequest;
-use App\Http\Requests\Languagetranslet\OnlyLanguagetransletRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Languagetranslet\StoreLanguagetransletRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Languagetranslet\UpdateLanguagetransletRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Languagetranslet\DeleteLanguagetransletRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Languagetranslet\ListLanguagetransletRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Languagetranslet\OnlyLanguagetransletRequest;
 use Lang;
 
 class LanguagetransletController extends Controller {
@@ -46,11 +47,11 @@ class LanguagetransletController extends Controller {
         $this->data['lists'] = Module::latest()->paginate(25);
         $only = new OnlyLanguagetransletRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->where('created_by', \Auth::user()->id)->paginate(25);
         }
         
         $this->data['list_data'] = $model->list_data();
-        $this->data['fillable'] = formatDeleteFillable();
+        $this->data['fillable'] = Helpers::formatDeleteFillable();
         return view($this->form_view, ['data'=>$this->data]);
     }
 
@@ -77,7 +78,7 @@ class LanguagetransletController extends Controller {
 
         $only = new OnlyLanguagetransletRequest();
         if($only->authorize()){
-            $lists = $lists->where('created_by', user()->id);
+            $lists = $lists->where('created_by', \Auth::user()->id);
         }
 
         $this->data['list_data'] = $model->list_data();
@@ -111,7 +112,7 @@ class LanguagetransletController extends Controller {
             foreach($this->data['lists'] as $value){
 
                 foreach ($this->data['list_data'] as $list_data) {
-                    $list = getRelation($value, $list_data);
+                    $list = Helpers::getRelation($value, $list_data);
                     $sheet->setCellValue(range('A', 'Z')[$j].$rows, $list);
                     $sheet->getColumnDimension(range('A', 'Z')[$j])
                         ->setAutoSize(true);
@@ -132,7 +133,7 @@ class LanguagetransletController extends Controller {
         }
 
         $this->data['lists'] = $lists->paginate(25);
-        return successResponse(Lang::get('label.notification.success_message'),$this->data);
+        return Helpers::successResponse(Lang::get('label.notification.success_message'),$this->data);
     }
 
     public function getLangArrayPagination(Request $request) {
@@ -190,7 +191,7 @@ class LanguagetransletController extends Controller {
                 $model->update($input);
                 
             } else {
-                $input["created_by"] = user()->id;
+                $input["created_by"] = \Auth::user()->id;
                 $model = Module::Create($input);
             }
              
@@ -227,12 +228,12 @@ class LanguagetransletController extends Controller {
         
         } catch (\Exception $e) {
             \DB::rollback();
-            return errorResponse();
+            return Helpers::errorResponse();
         }
         \DB::commit();
 
         $message = isset($request->id) ? Lang::get('language_translets.edit_message') : Lang::get('language_translets.create_message');
-        return successResponse($message,$model);
+        return Helpers::successResponse($message,$model);
     }
 
     public function editData($id) {
@@ -282,7 +283,7 @@ class LanguagetransletController extends Controller {
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
 
         $only = new OnlyLanguagetransletRequest();
-        if(!$only->authorize() || $model->created_by == user()->id) {
+        if(!$only->authorize() || $model->created_by == \Auth::user()->id) {
             return view($this->form_view, ['data'=>$this->data]);
         } else {
             return "Unauthorized!";
@@ -304,7 +305,7 @@ class LanguagetransletController extends Controller {
             $model->delete();
         } catch (\Exception $e) {
             \DB::rollback();                        
-            return errorResponse('Error while deleting languagetranslet. Try again latter');
+            return Helpers::errorResponse('Error while deleting languagetranslet. Try again latter');
         }
         \DB::commit();
 
@@ -312,9 +313,9 @@ class LanguagetransletController extends Controller {
         $this->data['lists'] = Module::latest()->paginate(25);
         $only = new OnlyLanguagetransletRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->where('created_by', \Auth::user()->id)->paginate(25);
         }
         $this->data['list_data'] = $model->list_data();
-        return successResponse(Lang::get('language_translets.delete_message'),$this->data);
+        return Helpers::successResponse(Lang::get('language_translets.delete_message'),$this->data);
     }
 }

@@ -13,7 +13,7 @@
             <tbody>
                 <tr v-for="(n, key) in rows.length">
                     <td>
-                        <a v-on:click.prevent="deleteRow(key,grid)" class="btn btn-flat ink-reaction">
+                        <a v-on:click.prevent="deleteRow(key,grid)" class="btn btn-flat">
                             <i class="fa fa-trash" style="color:red;"></i>
                         </a>
                     </td>
@@ -30,7 +30,7 @@
 
                         <td v-if="list.type == 'dropdown'" width="200px">
 
-                            <select class='form-control select2 select2-grid' :name='[list.name]' :position='key' v-model='form[list.name][key]'>
+                            <select class='form-control select-grid' :name='[list.name]' :position='key' v-model='form[list.name][key]'>
                                 <option value=''>Select {{index}}</option>
                                 <option v-for='value in $data[list.name]' :value='value' v-if="list.empty">{{value}}</option>
                                 <option v-for='(value, k) in $data[list.name]' :value='k' v-else>{{value}}</option>
@@ -76,9 +76,6 @@ export default {
                     }
                 })
             });
-            $(document).ready( () => {
-                $(".select2").select2({width:'100%'});
-            });
         },
 
         deleteRow: function (key, elementarray) {
@@ -93,25 +90,10 @@ export default {
                     }
                 }
                 this.index--;
-                $(document).ready( () => {
-                    
-                    $(".select2").select2({width:'100%'});
-                });
             }
         }  
     },
     mounted() {
-        $(document).ready( () => { 
-            
-            $(".select2").select2({width:'100%'});
-
-            $(document).on('change', '.select2-grid', event => {
-                var input_db_name = $(event.target).attr('name');
-                var position = $(event.target).attr('position');
-                this.form[input_db_name][position] = event.target.value;
-            });
-
-        });
 
         if(this.module.id == 0){
             $.each(this.grid, (i, list) => {

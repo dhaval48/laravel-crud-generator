@@ -1,6 +1,8 @@
 <?php
 
-namespace App\General;
+namespace Ongoingcloud\Laravelcrud\General;
+
+use Ongoingcloud\Laravelcrud\Helpers;
 
 Class Helper {
 
@@ -650,7 +652,7 @@ Class Helper {
                             <option v-for='(value, key) in ".$db_name."' :value='key'>{{value}}</option>
                         </select>
 
-                        <span class='help-block' 
+                        <span class='help-block text-danger' 
                         v-if='".$error_if."'
                         v-text='".$error_end."'></span>
                     </div>
@@ -670,7 +672,7 @@ Class Helper {
                             <option value=''>".$placeholder."</option>
                             <option v-for='(value, key) in ".$db_name."' :value='value'>{{value}}</option>
                         </select>
-                        <span class='help-block' 
+                        <span class='help-block text-danger' 
                         v-if='".$error_if."'
                         v-text='".$error_end."'></span>
                     </div>
@@ -691,7 +693,7 @@ Class Helper {
                             <i slot='extra' class='icon mdi mdi-check'></i>
                             {{this.module.lang.".$db_name."}}
                         </p-input>
-                        <span class='help-block' 
+                        <span class='help-block text-danger' 
                         v-if='".$error_if."'
                         v-text='".$error_end."'></span>
                     </div>
@@ -727,7 +729,7 @@ Class Helper {
                         <label for='".$input_name."'> {{this.module.lang.".$db_name."}} </label>
 
                         <input type='text' name='".$db_name."' class='form-control' v-model='".$v_model."'>
-                        <span class='help-block' 
+                        <span class='help-block text-danger' 
                         v-if='".$error_if."'
                         v-text='".$error_end."'></span>
                     </div>
@@ -760,7 +762,7 @@ Class Helper {
                     <div :class='".$first."'>
                         <label> {{this.module.lang.".$db_name."}} </label>
                         <datepicker v-model='".$v_model."' :input-class='".$class."' :calendar-button-icon='".$cal."' :format='".$fromat."' id='".$db_name."' name='".$db_name."'></datepicker>
-                        <span class='help-block' 
+                        <span class='help-block text-danger' 
                         v-if='".$error_if."'
                         v-text='".$error_end."'></span>
                     </div>
@@ -1034,14 +1036,14 @@ Class Helper {
     private function addParseDBDate($db_name){
 
         $variable = "['".$db_name."']";
-        return '$input'.$variable ." = ". 'parseDBdate($input'.$variable.");"."\n"."\t"."\t";
+        return '$input'.$variable ." = ". 'Helpers::parseDBdate($input'.$variable.");"."\n"."\t"."\t";
     }
 
     // [DropdownSelectedValue] use for append form date format
     private function addParseDate($db_name){
 
         $selected_variable = "['".$db_name."']";
-        $model = 'parseDate($model->'.$db_name.')';
+        $model = 'Helpers::parseDate($model->'.$db_name.')';
         return '$formelement'.$selected_variable ." = ". "$model;"."\n"."\t"."\t";
     }
 

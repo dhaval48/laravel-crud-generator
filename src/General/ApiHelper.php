@@ -1,6 +1,8 @@
 <?php
 
-namespace App\General;
+namespace Ongoingcloud\Laravelcrud\General;
+
+use Ongoingcloud\Laravelcrud\Helpers;
 
 Class ApiHelper {
 
@@ -436,7 +438,7 @@ Class ApiHelper {
         } else if($type == 'double') {
             return "'".strtolower($value)."'"." => 10.04,"."\n"."\t"."\t"."\t"."\t"."\t"."\t";
         } else if($type == 'date') {
-            return "'".strtolower($value)."'"." => "."'".parseDBdate(date('m/d/Y'))."',"."\n"."\t"."\t"."\t"."\t"."\t"."\t";
+            return "'".strtolower($value)."'"." => "."'".Helpers::parseDBdate(date('m/d/Y'))."',"."\n"."\t"."\t"."\t"."\t"."\t"."\t";
         }
     }
 }

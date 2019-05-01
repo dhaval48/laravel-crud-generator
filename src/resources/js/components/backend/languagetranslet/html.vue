@@ -6,11 +6,11 @@
             <input type="hidden" name="id" :value="this.module.id" v-if="this.module.id != 0">
             
 			<div class="row">
-                <div class='col-sm-12'>
+                <div class='col-sm-6'>
                     <div :class='form.errors.has("locale")?"form-group has-error":"form-group"'>
                         <label for='locale'>{{this.module.lang.locale}}</label>
 
-                        <select class="form-control select2 select2-form" ref='locale' name="locale" v-model="form.locale">
+                        <select class="form-control select-form" ref='locale' name="locale" v-model="form.locale">
                             <option value="">Select Language</option>
                             <option v-for="(value, key) in locale" :value='key'>{{key}}-{{value}}</option>
                         </select>
@@ -69,15 +69,12 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- <span v-html="this.module.pagerContainer"></span> -->
                 </div>          
             </div>
-
-            
             
             <div class="card-actionbar">
                 <div class="card-actionbar-row">
-                    <button type="submit" class="btn btn-flat btn-primary ink-reaction pull-right" :disabled="form.errors.any()">{{this.module.common.save}}</button>
+                    <button type="submit" class="btn btn-flat btn-primary" :disabled="form.errors.any()">{{this.module.common.save}}</button>
                 </div>
             </div>
         </form>
@@ -119,9 +116,6 @@ export default {
             this.form.post(this.module.store_route).then(response => {
 
                 // [GRID_RESET]
-                $(document).ready( () => {
-                    $(".select2").select2({width:'100%'});
-                });
 
                 this.$root.$emit('language_transletsCreated', response);
                 this.$parent.activity_init();
@@ -134,13 +128,11 @@ export default {
         this.getPageData(1);
 
         $(document).ready( () => { 
-            
-            $(".select2").select2({width:'100%'});
 
-            $(document).on('change', '.select2-form', event => {
-                var input_db_name = $(event.target).attr('name');
-                this.form[input_db_name] = event.target.value
-            });
+            // $(document).on('change', '.select-form', event => {
+            //     var input_db_name = $(event.target).attr('name');
+            //     this.form[input_db_name] = event.target.value
+            // });
         });
         // [DropdownSearch]
     }

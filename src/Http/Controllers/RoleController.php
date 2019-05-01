@@ -1,25 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace Ongoingcloud\Laravelcrud\Http\Controllers;
 
-use App\General\Activity;
-use App\General\ModuleConfig;
-use App\General\HandlePermission;
+use Ongoingcloud\Laravelcrud\Helpers;
+use Ongoingcloud\Laravelcrud\General\Activity;
+use Ongoingcloud\Laravelcrud\General\ModuleConfig;
+use Ongoingcloud\Laravelcrud\General\HandlePermission;
 use App\Http\Controllers\Controller;
-use App\Exceptions\GeneralException;
-use App\Models\Role as Module;
-use App\Models\Module as Group;
+use Ongoingcloud\Laravelcrud\Exceptions\GeneralException;
+use Ongoingcloud\Laravelcrud\Models\Role as Module;
+use Ongoingcloud\Laravelcrud\Models\Module as Group;
 use Auth;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-use App\Http\Requests\Role\StoreRoleRequest;
-use App\Http\Requests\Role\UpdateRoleRequest;
-use App\Http\Requests\Role\DeleteRoleRequest;
-use App\Http\Requests\Role\ListRoleRequest;
-use App\Http\Requests\Role\OnlyRoleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Role\StoreRoleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Role\UpdateRoleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Role\DeleteRoleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Role\ListRoleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Role\OnlyRoleRequest;
 use Lang;
 
 class RoleController extends Controller {
@@ -39,7 +40,7 @@ class RoleController extends Controller {
         $this->data = ModuleConfig::roles();
     }
 
-    public function index(ListRoleRequest $request) { 
+    public function index(ListRoleRequest $request) {
         $this->default(); 
         $model = new Module;
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
@@ -47,11 +48,11 @@ class RoleController extends Controller {
         $this->data['lists'] = Module::latest()->paginate(25);
         $only = new OnlyRoleRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->where('created_by', \Auth::user()->id)->paginate(25);
         }
         
         $this->data['list_data'] = $model->list_data();
-        $this->data['fillable'] = formatDeleteFillable();
+        $this->data['fillable'] = Helpers::formatDeleteFillable();
         return view($this->form_view, ['data'=>$this->data]);
     }
 
@@ -77,7 +78,7 @@ class RoleController extends Controller {
 
         $only = new OnlyRoleRequest();
         if($only->authorize()){
-            $lists = $lists->where('created_by', user()->id);
+            $lists = $lists->where('created_by', \Auth::user()->id);
         }
 
         $this->data['list_data'] = $model->list_data();
@@ -111,7 +112,7 @@ class RoleController extends Controller {
             foreach($this->data['lists'] as $value){
 
                 foreach ($this->data['list_data'] as $list_data) {
-                    $list = getRelation($value, $list_data);
+                    $list = Helpers::getRelation($value, $list_data);
                     $sheet->setCellValue(range('A', 'Z')[$j].$rows, $list);
                     $sheet->getColumnDimension(range('A', 'Z')[$j])
                         ->setAutoSize(true);
@@ -133,7 +134,7 @@ class RoleController extends Controller {
         }
 
         $this->data['lists'] = $lists->paginate(25);
-        return successResponse(Lang::get('label.notification.success_message'),$this->data);
+        return Helpers::successResponse(Lang::get('label.notification.success_message'),$this->data);
     }
 
     public function create(StoreRoleRequest $request) {   
@@ -160,10 +161,10 @@ class RoleController extends Controller {
             if(isset($request->id)) {
                 $model = Module::find($request->id);
                 $model->permissions()->detach($model->permissions);
-                $msg = activity($input, $this->data['lang'], $model->toArray());
+                $msg = Helpers::activity($input, $this->data['lang'], $model->toArray());
                 Module::find($request->id)->update($input);
             } else {
-                $input["created_by"] = user()->id;
+                $input["created_by"] = \Auth::user()->id;
                 $model = Module::Create($input);
                 $msg = "<b>".Auth::user()->name."</b> created ".$this->data['dir'].".";
             }
@@ -183,12 +184,12 @@ class RoleController extends Controller {
         } catch (\Exception $e) {
             dd($e);
             \DB::rollback();
-            return errorResponse();
+            return Helpers::errorResponse();
         }
         \DB::commit();
 
         $message = isset($request->id) ? Lang::get('roles.edit_message') : Lang::get('roles.create_message');
-        return successResponse($message,$model);
+        return Helpers::successResponse($message,$model);
     }
 
     public function edit($id, UpdateRoleRequest $request) {
@@ -209,7 +210,7 @@ class RoleController extends Controller {
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
 
         $only = new OnlyRoleRequest();
-        if(!$only->authorize() || $model->created_by == user()->id) {
+        if(!$only->authorize() || $model->created_by == \Auth::user()->id) {
             return view($this->form_view, ['data'=>$this->data]);
         } else {
             return "Unauthorized!";
@@ -228,7 +229,7 @@ class RoleController extends Controller {
             $model->delete();
         } catch (\Exception $e) {
             \DB::rollback();                        
-            return errorResponse('Error while deleting role. Try again latter');
+            return Helpers::errorResponse('Error while deleting role. Try again latter');
         }
         \DB::commit();
 
@@ -236,9 +237,9 @@ class RoleController extends Controller {
         $this->data['lists'] = Module::latest()->paginate(25);
         $only = new OnlyRoleRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->where('created_by', \Auth::user()->id)->paginate(25);
         }
         $this->data['list_data'] = $model->list_data();
-        return successResponse(Lang::get('roles.delete_message'),$this->data);
+        return Helpers::successResponse(Lang::get('roles.delete_message'),$this->data);
     }
 }

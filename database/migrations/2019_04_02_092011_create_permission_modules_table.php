@@ -4,8 +4,8 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\Permission;
-use App\Models\Role;
+use Ongoingcloud\Laravelcrud\Models\Permission;
+use Ongoingcloud\Laravelcrud\Models\Role;
 
 class CreatePermissionModulesTable extends Migration
 {

@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace Ongoingcloud\Laravelcrud\Http\Controllers;
 
-use App\General\ModuleConfig;
-use App\General\HandlePermission;
-use App\General\Helper;
-use App\General\Rollback;
+use Ongoingcloud\Laravelcrud\Helpers;
+use Ongoingcloud\Laravelcrud\General\ModuleConfig;
+use Ongoingcloud\Laravelcrud\General\HandlePermission;
+use Ongoingcloud\Laravelcrud\General\Helper;
+use Ongoingcloud\Laravelcrud\General\Rollback;
 use App\Http\Controllers\Controller;
-use App\Models\Formmodule as Module;
+use Ongoingcloud\Laravelcrud\Models\Formmodule as Module;
 use Auth;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
-use App\Http\Requests\Formmodule\StoreFormmoduleRequest;
-use App\Http\Requests\Formmodule\UpdateFormmoduleRequest;
-use App\Http\Requests\Formmodule\DeleteFormmoduleRequest;
-use App\Http\Requests\Formmodule\ListFormmoduleRequest;
-use App\Http\Requests\Formmodule\OnlyFormmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Formmodule\StoreFormmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Formmodule\UpdateFormmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Formmodule\DeleteFormmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Formmodule\ListFormmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Formmodule\OnlyFormmoduleRequest;
 use Lang;
 
 class FormmoduleController extends Controller {
@@ -49,11 +50,11 @@ class FormmoduleController extends Controller {
         $this->data['lists'] = Module::latest()->wherenull('deleted_at')->wherenull('parent_form')->paginate(25);
         $only = new OnlyFormmoduleRequest();
         if($only->authorize()){
-            $this->data['lists'] =  Module::latest()->wherenull('deleted_at')->wherenull('parent_form')->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] =  Module::latest()->wherenull('deleted_at')->wherenull('parent_form')->where('created_by', \Auth::user()->id)->paginate(25);
         }
 
         $this->data['list_data'] = $model->list_data();
-        $this->data['fillable'] = formatDeleteFillable();
+        $this->data['fillable'] = Helpers::formatDeleteFillable();
         return view($this->form_view, ['data'=>$this->data]);
     }
 
@@ -80,7 +81,7 @@ class FormmoduleController extends Controller {
 
         $only = new OnlyFormmoduleRequest();
         if($only->authorize()){
-            $lists = $lists->where('created_by', user()->id);
+            $lists = $lists->where('created_by', \Auth::user()->id);
         }
 
         $this->data['list_data'] = $model->list_data();
@@ -114,7 +115,7 @@ class FormmoduleController extends Controller {
             foreach($this->data['lists'] as $value){
 
                 foreach ($this->data['list_data'] as $list_data) {
-                    $list = getRelation($value, $list_data);
+                    $list = Helpers::getRelation($value, $list_data);
                     $sheet->setCellValue(range('A', 'Z')[$j].$rows, $list);
                     $sheet->getColumnDimension(range('A', 'Z')[$j])
                         ->setAutoSize(true);
@@ -135,7 +136,7 @@ class FormmoduleController extends Controller {
         }
 
         $this->data['lists'] = $lists->paginate(25);
-        return successResponse(Lang::get('label.notification.success_message'),$this->data);
+        return Helpers::successResponse(Lang::get('label.notification.success_message'),$this->data);
     }
 
     public function create(StoreFormmoduleRequest $request) {
@@ -160,7 +161,7 @@ class FormmoduleController extends Controller {
 		$rows = count($request->type);
 		for ($i = 0; $i < $rows; $i++) {
             if($request->name[$i] == 'id') {
-                return errorResponse("id is default field in table. please, remove id from table fields");
+                return Helpers::errorResponse("id is default field in table. please, remove id from table fields");
             }
 			$array["name"] = $request->name[$i];
 			$array["type"] = $request->type[$i];
@@ -174,7 +175,7 @@ class FormmoduleController extends Controller {
                         $name = $module_table_data->name;
                         foreach ($table_data as $key => $value) {
                             if(!is_numeric($value->$name) || !is_int($value->$name)) {
-                                return errorResponse("Please delete the existing data from the ".$request->table_name." table");
+                                return Helpers::errorResponse("Please delete the existing data from the ".$request->table_name." table");
                             }
                         }
                     }
@@ -183,12 +184,12 @@ class FormmoduleController extends Controller {
 			if(count(array_filter($array)) != 0) {
                 foreach ($array as $key => $value) {
                     if($value == ""){
-                        return errorResponse(ucfirst($key)." Field is required");
+                        return Helpers::errorResponse(ucfirst($key)." Field is required");
                     }
                 }
             } else {
                 if($rows == 1) {
-                    return errorResponse("Add table field. Atleast one row is required");
+                    return Helpers::errorResponse("Add table field. Atleast one row is required");
                 }
             }
         }
@@ -216,12 +217,12 @@ class FormmoduleController extends Controller {
     			if(count(array_filter($array)) != 0) {
                     foreach ($array as $key => $value) {
                         if($value == ""){
-                            return errorResponse(ucfirst($key)." Field is required");
+                            return Helpers::errorResponse(ucfirst($key)." Field is required");
                         }
                     }
                 } else {
                     if($rows == 1) {
-                        return errorResponse("Add input fields. Atleast one row is required");
+                        return Helpers::errorResponse("Add input fields. Atleast one row is required");
                     }
                 }
             }
@@ -249,7 +250,7 @@ class FormmoduleController extends Controller {
 				// [GridDelete]
                 $model->update($input);
             } else {
-                $input["created_by"] = user()->id;
+                $input["created_by"] = \Auth::user()->id;
                 $model = Module::Create($input);
 
                 $helper = new Helper;
@@ -297,14 +298,14 @@ class FormmoduleController extends Controller {
         } catch (\Exception $e) {
             return $e;
             \DB::rollback();
-            return errorResponse();
+            return Helpers::errorResponse();
         }
         \DB::commit();
 
         \Artisan::call('migrate');
 
         $message = isset($request->id) ? Lang::get('form_modules.edit_message') : Lang::get('form_modules.create_message');
-        return successResponse($message,$model);
+        return Helpers::successResponse($message,$model);
     }
 
     public function edit($id, UpdateFormmoduleRequest $request) {
@@ -369,7 +370,7 @@ class FormmoduleController extends Controller {
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
 
         $only = new OnlyFormmoduleRequest();
-        if(!$only->authorize() || $model->created_by == user()->id) {
+        if(!$only->authorize() || $model->created_by == \Auth::user()->id) {
             return view($this->form_view, ['data'=>$this->data]);
         } else {
             return "Unauthorized!";
@@ -383,12 +384,12 @@ class FormmoduleController extends Controller {
         $model = Module::findorfail($request->id);
         $grid_model = Module::where('parent_form', $model->main_module)->first();
         if($grid_model) {
-            return errorResponse('You can not delete because it is used in grid form!');
+            return Helpers::errorResponse('You can not delete because it is used in grid form!');
         }
         $exist_module = \DB::table('module_inputs')->where('table',$model->table_name)->first();
                 
         if($exist_module) {
-            return errorResponse('You can not delete because it is used in another form!');
+            return Helpers::errorResponse('You can not delete because it is used in another form!');
         }
 
         \DB::beginTransaction();
@@ -406,7 +407,7 @@ class FormmoduleController extends Controller {
             $model->delete();
         } catch (\Exception $e) {
             \DB::rollback();                        
-            return errorResponse('Error while deleting formmodule. Try again latter');
+            return Helpers::errorResponse('Error while deleting formmodule. Try again latter');
         }
         \DB::commit();
 
@@ -414,11 +415,11 @@ class FormmoduleController extends Controller {
         $this->data['lists'] = Module::latest()->wherenull('deleted_at')->wherenull('parent_form')->paginate(25);
         $only = new OnlyFormmoduleRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->wherenull('deleted_at')->wherenull('parent_form')->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->wherenull('deleted_at')->wherenull('parent_form')->where('created_by', \Auth::user()->id)->paginate(25);
         }
         
         $this->data['list_data'] = $model->list_data();
-        return successResponse(Lang::get('form_modules.delete_message'),$this->data);
+        return Helpers::successResponse(Lang::get('form_modules.delete_message'),$this->data);
     }
 
     public function makeModuleField($request) {

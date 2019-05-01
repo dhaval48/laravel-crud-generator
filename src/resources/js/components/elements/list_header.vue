@@ -9,7 +9,7 @@
         <div class="col-sm-6 py-1">            
 
             <div v-if="this.lists.is_visible" class="btn-group"  style="float:right">
-                <button type="button" class="btn btn-primary btn-sm btn-flat dropdown-toggle pull-right" data-toggle="dropdown" tabindex="-1" aria-haspopup="true" aria-expanded="false">
+                <button  type="button" class="btn btn-primary btn-sm btn-flat dropdown-toggle pull-right" data-toggle="dropdown" tabindex="-1" aria-haspopup="true" aria-expanded="false">
                     {{this.lists.common.export}}
                 </button>
 

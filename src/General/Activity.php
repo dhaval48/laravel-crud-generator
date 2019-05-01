@@ -1,8 +1,8 @@
 <?php 
 
-namespace App\General;
+namespace Ongoingcloud\Laravelcrud\General;
 use Auth;
-use App\Models\Activity as Module;
+use Ongoingcloud\Laravelcrud\Models\Activity as Module;
 
 class Activity {
 	public static function add($msg, $form, $type_id) {

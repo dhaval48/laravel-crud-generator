@@ -1,6 +1,6 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Models;
+namespace Ongoingcloud\Laravelcrud\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Lang;

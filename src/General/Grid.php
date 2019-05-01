@@ -1,6 +1,8 @@
 <?php
 
-namespace App\General;
+namespace Ongoingcloud\Laravelcrud\General;
+
+use Ongoingcloud\Laravelcrud\Helpers;
 
 Class Grid {
 
@@ -611,7 +613,7 @@ Class Grid {
     public function gridActivity($request, $i, $db_name) {
         
         if($request->input_type[$i] == 'date'){
-            return '$input_grid["'.$db_name.'"][] = parseDBdate($request->'.$db_name.'[$i]);'."\n"."\t"."\t"."\t"."\t"."\t";
+            return '$input_grid["'.$db_name.'"][] = Helpers::parseDBdate($request->'.$db_name.'[$i]);'."\n"."\t"."\t"."\t"."\t"."\t";
         }
         if($request->input_type[$i] == 'dropdown') {
             return '$input_grid["'.$db_name.'"][] = $request->'.$db_name.'[$i];'."\n"."\t"."\t"."\t"."\t"."\t";
@@ -633,7 +635,7 @@ Class Grid {
 
         $grid_activity .= "\n"."\t"."\t"."\t"."\t".'}'."\n"."\t"."\t"."\t"."\t";
 
-        $grid_activity .= '$msg_row = activityRow($input_grid, count(array_filter($request->'.$element.')), $model->'.$request->table_name.'->toArray());
+        $grid_activity .= '$msg_row = Helpers::activityRow($input_grid, count(array_filter($request->'.$element.')), $model->'.$request->table_name.'->toArray());
                 foreach ($msg_row as $key => $value) {
                     Activity::add($value, $this->data["dir"], $model->id);
                 }';
@@ -658,7 +660,7 @@ Class Grid {
 
                 $array = '$array["'.$value.'"]';
                 if($request->input_type[$i] == 'date'){
-                    $grid_validation .= "$array = ".'parseDBdate($request->'.$request->db_name[$i].'[$i]'.");"."\n"."\t"."\t"."\t";
+                    $grid_validation .= "$array = ".'Helpers::parseDBdate($request->'.$request->db_name[$i].'[$i]'.");"."\n"."\t"."\t"."\t";
                 }
                 if($request->input_type[$i] == 'dropdown') {
                     $grid_validation .= "$array = ".'$request->'.$request->db_name[$i].'[$i];'."\n"."\t"."\t"."\t";
@@ -672,12 +674,12 @@ Class Grid {
         $grid_validation .= 'if(count(array_filter($array)) != 0) {
                 foreach ($array as $key => $value) {
                     if($value == ""){
-                        return errorResponse(ucfirst($key)." Field is required");
+                        return Helpers::errorResponse(ucfirst($key)." Field is required");
                     }
                 }
             } else {
                 if($rows == 1) {
-                    return errorResponse("Add '.strtolower($request->main_module).'. Atleast one row is required");
+                    return Helpers::errorResponse("Add '.strtolower($request->main_module).'. Atleast one row is required");
                 }
             }
         }'."\n"."\t"."\t".'// [GridValidation]';
@@ -700,7 +702,7 @@ Class Grid {
                 $element = $request->db_name[$i];
                 
                 if($request->input_type[$i] == 'date'){
-                    $grid_save .= "'$element' => ".'parseDBdate($request->'.$element.'[$i]'."),"."\n"."\t"."\t"."\t"."\t"."\t"."\t"."\t"."\t";
+                    $grid_save .= "'$element' => ".'Helpers::parseDBdate($request->'.$element.'[$i]'."),"."\n"."\t"."\t"."\t"."\t"."\t"."\t"."\t"."\t";
                 }
                 if($request->input_type[$i] == 'dropdown') {
                     $grid_save .= "'$element' => ".'$request->'.$element.'[$i],'."\n"."\t"."\t"."\t"."\t"."\t"."\t"."\t"."\t";    
@@ -728,7 +730,7 @@ Class Grid {
         $model = '$value->'.$db_name;
 
         if($request->input_type[$i] == 'date'){
-            return '$formelement'.$selected_variable .' = '. 'parseDate('.$model.');'."\n"."\t"."\t"."\t"."\t";
+            return '$formelement'.$selected_variable .' = '. 'Helpers::parseDate('.$model.');'."\n"."\t"."\t"."\t"."\t";
         }
         if($request->input_type[$i] == 'dropdown') {
             return '$formelement'.$selected_variable .' = '.$model.';'."\n"."\t"."\t"."\t"."\t";

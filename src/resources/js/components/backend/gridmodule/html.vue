@@ -6,80 +6,64 @@
             <input type="hidden" name="id" :value="this.module.id" v-if="this.module.id != 0">
             
             <div class="row">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">General</div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">General</div>
 
-                    <div class="panel-body">
-                        <div class="col-sm-2">{{this.module.lang.parent_form}}</div>
-                        <div class='col-sm-10'>
-                            <div :class='form.errors.has("parent_form")?"form-group has-error":"form-group"'>
-                                <select class="form-control select2 select2-form" ref='parent_form' name="parent_form" v-model="form.parent_form">
-                                    <option value="">Select Parent Form</option>
-                                    <option v-for="(value, key) in parent_form" :value='key'>{{value}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="col-sm-2">{{this.module.lang.parent_module}}</div>
-                        <div class='col-sm-10'>
-                            <div :class='form.errors.has("parent_module")?"form-group has-error":"form-group"'>
-                                <select class="form-control select2 select2-form" ref='parent_module' name="parent_module" v-model="form.parent_module">
-                                    <option value="">Select Permission Module</option>
-                                    <option v-for="(value, key) in parent_module" :value='key'>{{value}}</option>
-                                </select>
-                            </div>
-                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-2">{{this.module.lang.parent_form}}</div>
+                                <div class='col-sm-10'>
+                                    <div :class='form.errors.has("parent_form")?"form-group has-error":"form-group"'>
+                                        <select class="form-control select-form" ref='parent_form' name="parent_form" v-model="form.parent_form">
+                                            <option value="">Select Parent Form</option>
+                                            <option v-for="(value, key) in parent_form" :value='key'>{{value}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-2">{{this.module.lang.parent_module}}</div>
+                                <div class='col-sm-10'>
+                                    <div :class='form.errors.has("parent_module")?"form-group has-error":"form-group"'>
+                                        <select class="form-control select-form" ref='parent_module' name="parent_module" v-model="form.parent_module">
+                                            <option value="">Select Permission Module</option>
+                                            <option v-for="(value, key) in parent_module" :value='key'>{{value}}</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-                        <div class="col-sm-2">{{this.module.lang.main_module}}</div>
-                        <div class='col-sm-10'>
-                            <div :class='form.errors.has("main_module")?"form-group has-error":"form-group"'>
+                                <div class="col-sm-2">{{this.module.lang.main_module}}</div>
+                                <div class='col-sm-10'>
+                                    <div :class='form.errors.has("main_module")?"form-group has-error":"form-group"'>
 
-                                <input type='text' name='main_module' class='form-control' v-model='form.main_module'>
-                                <span class='help-block' 
-                                v-if='form.errors.has("main_module")'
-                                v-text='form.errors.get("main_module")'></span>
-                            </div>
-                        </div>
-
-                        <!-- <div class="col-sm-2">{{this.module.lang.module_label}}</div>
-                        <div class='col-sm-10'>
-                            <div :class='form.errors.has("module_label")?"form-group has-error":"form-group"'>
-
-                                <input type='text' name='module_label' class='form-control' v-model='form.module_label'>
-                                <span class='help-block' 
-                                v-if='form.errors.has("module_label")'
-                                v-text='form.errors.get("module_label")'></span>
-                            </div>
-                        </div> -->
-
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-
-                <div class="panel panel-primary">
-                    <div class="panel-heading">Database table settings</div>
-                    <div class="panel-body">
-
-                        <div class="row">
-
-                            <div class="col-sm-2">{{this.module.lang.table_name}}</div>
-                            <div class='col-sm-10'>
-                                <div :class='form.errors.has("table_name")?"form-group has-error":"form-group"'>
-
-                                    <input type='text' name='table_name' class='form-control' v-model='form.table_name'>
-                                    <span class='help-block' 
-                                    v-if='form.errors.has("table_name")'
-                                    v-text='form.errors.get("table_name")'></span>
+                                        <input type='text' name='main_module' class='form-control' v-model='form.main_module'>
+                                        <span class='help-block text-danger' 
+                                        v-if='form.errors.has("main_module")'
+                                        v-text='form.errors.get("main_module")'></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="row">
+                    <div class="clearfix">&nbsp;</div>
 
-                            <fieldset>
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">Database table settings</div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-sm-2">{{this.module.lang.table_name}}</div>
+                                <div class='col-sm-10'>
+                                    <div :class='form.errors.has("table_name")?"form-group has-error":"form-group"'>
+
+                                        <input type='text' name='table_name' class='form-control' v-model='form.table_name'>
+                                        <span class='help-block text-danger' 
+                                        v-if='form.errors.has("table_name")'
+                                        v-text='form.errors.get("table_name")'></span>
+                                    </div>
+                                </div>
+
                                 <div class="col-sm-12">
                                     <legend>
                                         Table Fields
@@ -87,21 +71,17 @@
                                 </div>
 
                                 <auto_grid :module="this.module" :elementdata="this.module.module_tables" :elementrow="this.module.module_tables_row" :rowcount="this.module.module_tablesrow_count" ref="module_tables"></auto_grid>
-                            </fieldset>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                    
+                    <div class="clearfix">&nbsp;</div>
 
-            <div class="row">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">Input field settings</div>
+                        <div class="card-body">
 
-                <div class="panel panel-primary">
-                    <div class="panel-heading">Input field settings</div>
-                    <div class="panel-body">
-
-                        <div class="row">
-
-                            <fieldset>
+                            <div class="row">
                                 <div class="col-sm-12">
 
                                     <legend>
@@ -136,28 +116,28 @@
                                                 </td>
 
                                                 <td width="150px">
-                                                    <select class="form-control select2 select2-auto-grid" ref='input_type' name="input_type" :position="k" v-model="form.input_type[k]">
+                                                    <select class="form-control select-auto-grid" ref='input_type' name="input_type" :position="k" v-model="form.input_type[k]">
                                                         <option value="">Select Input Type</option>
                                                         <option v-for="(value, key) in input_type_array" :value='value'>{{value}}</option>
                                                     </select>
                                                 </td>
 
                                                 <td width="150px">
-                                                    <select class="form-control select2 select2-auto-grid db-table" ref='table' name="table" :position="k" disabled="disabled" v-model="form.table[k]">
+                                                    <select class="form-control  select-auto-grid db-table" ref='table' name="table" :position="k" disabled="disabled" v-model="form.table[k]">
                                                         <option value="">Select Table</option>
                                                         <option v-for="(value, key) in table" :value='value'>{{value}}</option>
                                                     </select>
                                                 </td>
 
                                                 <td width="150px">
-                                                    <select class="form-control select2 select2-auto db-value" ref='value' name="value" :position="k" disabled="disabled" v-model="form.value[k]">
+                                                    <select class="form-control select-auto db-value" ref='value' name="value" :position="k" disabled="disabled" v-model="form.value[k]">
                                                         <option value="">Select Value</option>
                                                         <option v-for="v in value" :value='v'>{{v}}</option>
                                                     </select>
                                                 </td>
 
                                                 <td width="150px">
-                                                    <select class="form-control select2 select2-auto db-key" ref='key' name="key" :position="k" disabled="disabled" v-model="form.key[k]">
+                                                    <select class="form-control select-auto db-key" ref='key' name="key" :position="k" disabled="disabled" v-model="form.key[k]">
                                                         <option value="">Select Label</option>
                                                         <option v-for="v in key" :value='v'>{{v}}</option>
                                                     </select>
@@ -167,17 +147,17 @@
                                     </table>
                                     
                                 </div>
-                                
-                            </fieldset>
+                                    
+                            </div>
                         </div>
                     </div>
                 </div>
-        <!-- [GridVueElement-1] -->
             </div>
+            <div class="clearfix">&nbsp;</div>
             
             <div class="card-actionbar">
                 <div class="card-actionbar-row">
-                    <button type="submit" class="btn btn-flat btn-primary ink-reaction pull-right" :disabled="form.errors.any()">{{this.module.common.save}}</button>
+                    <button type="submit" class="btn btn-flat btn-primary" :disabled="form.errors.any()">{{this.module.common.save}}</button>
                 </div>
             </div>
         </form>
@@ -339,10 +319,6 @@ export default {
 
                 // [GRID_RESET]
 
-                $(document).ready( () => { 
-                    $(".select2").select2({width:'100%'});
-                });
-
                 this.$root.$emit('grid_modulesCreated', response);
                 this.$parent.activity_init();
 
@@ -359,14 +335,12 @@ export default {
 
         $(document).ready( () => { 
             
-            $(".select2").select2({width:'100%'});
+            // $(document).on('change', '.select-form', event => {
+            //     var input_db_name = $(event.target).attr('name');
+            //     this.form[input_db_name] = event.target.value
+            // });
 
-            $(document).on('change', '.select2-form', event => {
-                var input_db_name = $(event.target).attr('name');
-                this.form[input_db_name] = event.target.value
-            });
-
-            $(document).on('change', '.select2-auto-grid', event => {
+            $(document).on('change', '.select-auto-grid', event => {
                 var input_db_name = $(event.target).attr('name');
                 var position = $(event.target).attr('position');
 
@@ -393,15 +367,15 @@ export default {
             });
 
             if(this.module.id != 0){
-                $('.select2-auto-grid').trigger('change');
+                $('.select-auto-grid').trigger('change');
             }
 
-            $(document).on('change', '.select2-auto', event => {
-                var input_db_name = $(event.target).attr('name');
-                var position = $(event.target).attr('position');
+            // $(document).on('change', '.select-auto', event => {
+            //     var input_db_name = $(event.target).attr('name');
+            //     var position = $(event.target).attr('position');
 
-                this.form[input_db_name][position] = event.target.value;
-            });
+            //     this.form[input_db_name][position] = event.target.value;
+            // });
         });
 
         if(this.module.parent_module_search) {

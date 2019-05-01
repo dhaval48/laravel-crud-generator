@@ -11,7 +11,7 @@
                         <label for='name'>{{this.module.lang.name}}</label>
                         <input type='text' name='name' class='form-control' v-model='form.name'>
                         
-                        <span id='name-error' class='help-block' 
+                        <span id='name-error' class='help-block text-danger' 
                         v-if='form.errors.has("name")'
                         v-text='form.errors.get("name")'></span>
                     </div>
@@ -22,7 +22,7 @@
                         <label for='email'>{{this.module.lang.email}}</label>
 
                         <input type='text' name='email' class='form-control' v-model='form.email'>
-                        <span id='email-error' class='help-block' 
+                        <span id='email-error' class='help-block text-danger' 
                         v-if='form.errors.has("email")'
                         v-text='form.errors.get("email")'></span>
                     </div>
@@ -35,7 +35,7 @@
                             <label for='password'>{{this.module.lang.password}}</label>
 
                             <input type='password' name='password' class='form-control' v-model='form.password'>
-                            <span id='password-error' class='help-block' 
+                            <span id='password-error' class='help-block text-danger' 
                             v-if='form.errors.has("password")'
                             v-text='form.errors.get("password")'></span>
                         </div>
@@ -46,7 +46,7 @@
                             <label for="Confirmpassword">{{this.module.lang.confirm_password}}</label>
 
                             <input type="password" name="password_confirmation" class="form-control" v-model="form.password_confirmation">
-                            <span id="Firstname1-error" class="help-block" v-if="form.errors.has('password_confirmation')" v-text="form.errors.get('password_confirmation')"></span>
+                            <span id="Firstname1-error" class="help-block text-danger" v-if="form.errors.has('password_confirmation')" v-text="form.errors.get('password_confirmation')"></span>
                         </div>
                     </div>
         		</div>
@@ -58,7 +58,7 @@
                     <div class="form-group">
                         <label for="assign_role">{{this.module.lang.assign_role}}</label>
                         
-                        <select class="form-control select2 select2-form" ref='role_id' name="role_id" v-model="form.role_id">
+                        <select class="form-control select-form" ref='role_id' name="role_id" v-model="form.role_id">
                             <option value="">Select Role</option>
                             <option v-for="(value, key) in data" :value='key'>{{value}}</option>
                         </select> 
@@ -71,7 +71,7 @@
                 <div class="card-actionbar-row">
                     <button 
                         type="submit"
-                        class="btn btn-flat btn-primary ink-reaction btn-loading-state pull-right" 
+                        class="btn btn-flat btn-primary btn-loading-state" 
                         data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..."
                         :disabled="form.errors.any()">{{this.module.common.save}}</button>
                 </div>
@@ -100,10 +100,7 @@ export default {
     methods: {
         onSubmit() {     
             this.form.post(this.module.store_route).then(response => {
-                $(document).ready( () => { 
-            
-                    $(".select2").select2({width:'100%'});
-                });
+                
                 this.$root.$emit('usersCreated', response);
                 this.$parent.activity_init();
             }).catch(function(){});
@@ -113,13 +110,11 @@ export default {
         this.form.date = moment().format("MM/DD/YYYY");
         
         $(document).ready( () => { 
-            
-            $(".select2").select2({width:'100%'});
 
-            $(document).on('change', '.select2-form', event => {
-                var input_db_name = $(event.target).attr('name');
-                this.form[input_db_name] = event.target.value
-            });
+            // $(document).on('change', '.select-form', event => {
+            //     var input_db_name = $(event.target).attr('name');
+            //     this.form[input_db_name] = event.target.value
+            // });
 
         });
         

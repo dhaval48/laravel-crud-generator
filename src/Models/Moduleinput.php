@@ -1,6 +1,6 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Models;
+namespace Ongoingcloud\Laravelcrud\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Lang;
@@ -25,6 +25,6 @@ class Moduleinput extends Model
         ];
 
     public function form_module() {
-	    return $this->belongsTo('ongoingcloud\laravelcrud\Models\Formmodule','formmodule_id','id');
+	    return $this->belongsTo('Ongoingcloud\Laravelcrud\Models\Formmodule','formmodule_id','id');
 	}
 }

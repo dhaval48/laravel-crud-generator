@@ -1,6 +1,6 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Models;
+namespace Ongoingcloud\Laravelcrud\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +13,6 @@ class Module extends Model
     ];
 
     public function module_groups() {
-    	return $this->hasMany('ongoingcloud\laravelcrud\Models\ModuleGroup');
+    	return $this->hasMany('Ongoingcloud\Laravelcrud\Models\ModuleGroup');
     }
 }

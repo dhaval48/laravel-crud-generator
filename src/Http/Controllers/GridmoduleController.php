@@ -1,26 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace Ongoingcloud\Laravelcrud\Http\Controllers;
 
-use App\General\ModuleConfig;
-use App\General\HandlePermission;
-use App\General\Grid;
-use App\General\RollbackGrid;
-use App\General\Helper;
-use App\General\Rollback;
+use Ongoingcloud\Laravelcrud\Helpers;
+use Ongoingcloud\Laravelcrud\General\ModuleConfig;
+use Ongoingcloud\Laravelcrud\General\HandlePermission;
+use Ongoingcloud\Laravelcrud\General\Grid;
+use Ongoingcloud\Laravelcrud\General\RollbackGrid;
+use Ongoingcloud\Laravelcrud\General\Helper;
+use Ongoingcloud\Laravelcrud\General\Rollback;
 use App\Http\Controllers\Controller;
-use App\Models\Formmodule as Module;
+use Ongoingcloud\Laravelcrud\Models\Formmodule as Module;
 use Auth;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
-use App\Http\Requests\Formmodule\StoreFormmoduleRequest;
-use App\Http\Requests\Formmodule\UpdateFormmoduleRequest;
-use App\Http\Requests\Formmodule\DeleteFormmoduleRequest;
-use App\Http\Requests\Formmodule\ListFormmoduleRequest;
-use App\Http\Requests\Formmodule\OnlyFormmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Formmodule\StoreFormmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Formmodule\UpdateFormmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Formmodule\DeleteFormmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Formmodule\ListFormmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Formmodule\OnlyFormmoduleRequest;
 use Lang;
 
 class GridmoduleController extends Controller {
@@ -51,11 +52,11 @@ class GridmoduleController extends Controller {
         $this->data['lists'] = Module::latest()->wherenull('deleted_at')->whereNotNull('parent_form')->paginate(25);
         $only = new OnlyFormmoduleRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->wherenull('deleted_at')->whereNotNull('parent_form')->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->wherenull('deleted_at')->whereNotNull('parent_form')->where('created_by', \Auth::user()->id)->paginate(25);
         }
 
         $this->data['list_data'] = $model->grid_data();
-        $this->data['fillable'] = formatDeleteFillable();
+        $this->data['fillable'] = Helpers::formatDeleteFillable();
         return view($this->form_view, ['data'=>$this->data]);
     }
 
@@ -82,7 +83,7 @@ class GridmoduleController extends Controller {
 
         $only = new OnlyFormmoduleRequest();
         if($only->authorize()){
-            $lists = $lists->where('created_by', user()->id);
+            $lists = $lists->where('created_by', \Auth::user()->id);
         }
 
         $this->data['list_data'] = $model->grid_data();
@@ -116,7 +117,7 @@ class GridmoduleController extends Controller {
             foreach($this->data['lists'] as $value){
 
                 foreach ($this->data['list_data'] as $list_data) {
-                    $list = getRelation($value, $list_data);
+                    $list = Helpers::getRelation($value, $list_data);
                     $sheet->setCellValue(range('A', 'Z')[$j].$rows, $list);
                     $sheet->getColumnDimension(range('A', 'Z')[$j])
                         ->setAutoSize(true);
@@ -137,7 +138,7 @@ class GridmoduleController extends Controller {
         }
 
         $this->data['lists'] = $lists->paginate(25);
-        return successResponse(Lang::get('label.notification.success_message'),$this->data);
+        return Helpers::successResponse(Lang::get('label.notification.success_message'),$this->data);
     }
 
     public function create(StoreFormmoduleRequest $request) {
@@ -162,7 +163,7 @@ class GridmoduleController extends Controller {
 		$rows = count($request->type);
 		for ($i = 0; $i < $rows; $i++) {
             if($request->name[$i] == 'id') {
-                return errorResponse("id is default field in table. please, remove id from table fields");
+                return Helpers::errorResponse("id is default field in table. please, remove id from table fields");
             }
 			$array["name"] = $request->name[$i];
 			$array["type"] = $request->type[$i];
@@ -176,7 +177,7 @@ class GridmoduleController extends Controller {
                         $name = $module_table_data->name;
                         foreach ($table_data as $key => $value) {
                             if(!is_numeric($value->$name) || !is_int($value->$name)) {
-                                return errorResponse("Please delete the existing data from the ".$request->table_name." table");
+                                return Helpers::errorResponse("Please delete the existing data from the ".$request->table_name." table");
                             }
                         }
                     }
@@ -185,12 +186,12 @@ class GridmoduleController extends Controller {
 			if(count(array_filter($array)) != 0) {
                 foreach ($array as $key => $value) {
                     if($value == ""){
-                        return errorResponse(ucfirst($key)." Field is required");
+                        return Helpers::errorResponse(ucfirst($key)." Field is required");
                     }
                 }
             } else {
                 if($rows == 1) {
-                    return errorResponse("Add table field. Atleast one row is required");
+                    return Helpers::errorResponse("Add table field. Atleast one row is required");
                 }
             }
         }
@@ -219,12 +220,12 @@ class GridmoduleController extends Controller {
                 if(count(array_filter($array)) != 0) {
                     foreach ($array as $key => $value) {
                         if($value == ""){
-                            return errorResponse(ucfirst($key)." Field is required");
+                            return Helpers::errorResponse(ucfirst($key)." Field is required");
                         }
                     }
                 } else {
                     if($rows == 1) {
-                        return errorResponse("Add input fields. Atleast one row is required");
+                        return Helpers::errorResponse("Add input fields. Atleast one row is required");
                     }
                 }
             }
@@ -283,7 +284,7 @@ class GridmoduleController extends Controller {
 				// [GridDelete]
                 $model->update($input);
             } else {
-                $input["created_by"] = user()->id;
+                $input["created_by"] = \Auth::user()->id;
                 $model = Module::Create($input);
 
                 $grid = new Grid;
@@ -330,14 +331,14 @@ class GridmoduleController extends Controller {
         } catch (\Exception $e) {
             return $e;
             \DB::rollback();
-            return errorResponse();
+            return Helpers::errorResponse();
         }
         \DB::commit();
 
         \Artisan::call('migrate');
 
         $message = isset($request->id) ? Lang::get('form_modules.edit_message') : Lang::get('form_modules.create_message');
-        return successResponse($message,$model);
+        return Helpers::successResponse($message,$model);
     }
 
     public function edit($id, UpdateFormmoduleRequest $request) {
@@ -401,7 +402,7 @@ class GridmoduleController extends Controller {
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
 
         $only = new OnlyFormmoduleRequest();
-        if(!$only->authorize() || $model->created_by == user()->id) {
+        if(!$only->authorize() || $model->created_by == \Auth::user()->id) {
             return view($this->form_view, ['data'=>$this->data]);
         } else {
             return "Unauthorized!";
@@ -456,7 +457,7 @@ class GridmoduleController extends Controller {
             $model->delete();
         } catch (\Exception $e) {
             \DB::rollback();                        
-            return errorResponse('Error while deleting formmodule. Try again latter');
+            return Helpers::errorResponse('Error while deleting formmodule. Try again latter');
         }
         \DB::commit();
 
@@ -464,11 +465,11 @@ class GridmoduleController extends Controller {
         $this->data['lists'] = Module::latest()->wherenull('deleted_at')->whereNotNull('parent_form')->paginate(25);
         $only = new OnlyFormmoduleRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->wherenull('deleted_at')->whereNotNull('parent_form')->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->wherenull('deleted_at')->whereNotNull('parent_form')->where('created_by', \Auth::user()->id)->paginate(25);
         }
         
         $this->data['list_data'] = $model->grid_data();
-        return successResponse(Lang::get('form_modules.delete_message'),$this->data);
+        return Helpers::successResponse(Lang::get('form_modules.delete_message'),$this->data);
     }
 
     public function makeModuleField($request) {

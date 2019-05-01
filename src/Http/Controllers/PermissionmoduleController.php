@@ -1,23 +1,24 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Http\Controllers;
+namespace Ongoingcloud\Laravelcrud\Http\Controllers;
 
-use ongoingcloud\laravelcrud\General\ModuleConfig;
-use ongoingcloud\laravelcrud\General\HandlePermission;
+use Ongoingcloud\Laravelcrud\Helpers;
+use Ongoingcloud\Laravelcrud\General\ModuleConfig;
+use Ongoingcloud\Laravelcrud\General\HandlePermission;
 use App\Http\Controllers\Controller;
-use ongoingcloud\laravelcrud\Models\Permissionmodule as Module;
-use ongoingcloud\laravelcrud\Models\Formmodule;
+use Ongoingcloud\Laravelcrud\Models\Permissionmodule as Module;
+use Ongoingcloud\Laravelcrud\Models\Formmodule;
 use Auth;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
-use ongoingcloud\laravelcrud\Http\Requests\Permissionmodule\StorePermissionmoduleRequest;
-use ongoingcloud\laravelcrud\Http\Requests\Permissionmodule\UpdatePermissionmoduleRequest;
-use ongoingcloud\laravelcrud\Http\Requests\Permissionmodule\DeletePermissionmoduleRequest;
-use ongoingcloud\laravelcrud\Http\Requests\Permissionmodule\ListPermissionmoduleRequest;
-use ongoingcloud\laravelcrud\Http\Requests\Permissionmodule\OnlyPermissionmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Permissionmodule\StorePermissionmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Permissionmodule\UpdatePermissionmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Permissionmodule\DeletePermissionmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Permissionmodule\ListPermissionmoduleRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Permissionmodule\OnlyPermissionmoduleRequest;
 use Lang;
 
 class PermissionmoduleController extends Controller {
@@ -46,10 +47,10 @@ class PermissionmoduleController extends Controller {
         $this->data['lists'] = Module::latest()->paginate(25);
         $only = new OnlyPermissionmoduleRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->where('created_by', \Auth::user()->id)->paginate(25);
         }
         $this->data['list_data'] = $model->list_data();
-        $this->data['fillable'] = formatDeleteFillable();
+        $this->data['fillable'] = Helpers::formatDeleteFillable();
         return view($this->form_view, ['data'=>$this->data]);
     }
 
@@ -76,7 +77,7 @@ class PermissionmoduleController extends Controller {
 
         $only = new OnlyPermissionmoduleRequest();
         if($only->authorize()){
-            $lists = $lists->where('created_by', user()->id);
+            $lists = $lists->where('created_by', \Auth::user()->id);
         }
 
         $this->data['list_data'] = $model->list_data();
@@ -110,7 +111,7 @@ class PermissionmoduleController extends Controller {
             foreach($this->data['lists'] as $value){
 
                 foreach ($this->data['list_data'] as $list_data) {
-                    $list = getRelation($value, $list_data);
+                    $list = Helpers::getRelation($value, $list_data);
                     $sheet->setCellValue(range('A', 'Z')[$j].$rows, $list);
                     $sheet->getColumnDimension(range('A', 'Z')[$j])
                         ->setAutoSize(true);
@@ -131,7 +132,7 @@ class PermissionmoduleController extends Controller {
         }
 
         $this->data['lists'] = $lists->paginate(25);
-        return successResponse(Lang::get('label.notification.success_message'),$this->data);
+        return Helpers::successResponse(Lang::get('label.notification.success_message'),$this->data);
     }
 
     public function create(StorePermissionmoduleRequest $request) {
@@ -149,12 +150,12 @@ class PermissionmoduleController extends Controller {
         );  
 
         if(isset($request->id)) {
-            if(isDuplicate('permission_modules','name',$request->name, $request->id)) {
-                return errorResponse('That name already exists. Please choose a different name');
+            if(Helpers::isDuplicate('permission_modules','name',$request->name, $request->id)) {
+                return Helpers::errorResponse('That name already exists. Please choose a different name');
             }
         } else {
-            if(isUnique('permission_modules','name',$request->name)) {
-                return errorResponse('That name already exists. Please choose a different name');
+            if(Helpers::isUnique('permission_modules','name',$request->name)) {
+                return Helpers::errorResponse('That name already exists. Please choose a different name');
             }
         }
          // [GridValidation]
@@ -169,7 +170,7 @@ class PermissionmoduleController extends Controller {
                  // [GridDelete]
                 $model->update($input);
             } else {
-                $input["created_by"] = user()->id;
+                $input["created_by"] = \Auth::user()->id;
                 $model = Module::Create($input);
             }
              // [GridSave]
@@ -177,12 +178,12 @@ class PermissionmoduleController extends Controller {
         } catch (\Exception $e) {
             dd($e);
             \DB::rollback();
-            return errorResponse();
+            return Helpers::errorResponse();
         }
         \DB::commit();
 
         $message = isset($request->id) ? Lang::get('permission_modules.edit_message') : Lang::get('permission_modules.create_message');
-        return successResponse($message,$model);
+        return Helpers::successResponse($message,$model);
     }
 
     public function edit($id, UpdatePermissionmoduleRequest $request) {
@@ -201,7 +202,7 @@ class PermissionmoduleController extends Controller {
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
 
         $only = new OnlyPermissionmoduleRequest();
-        if(!$only->authorize() || $model->created_by == user()->id) {
+        if(!$only->authorize() || $model->created_by == \Auth::user()->id) {
             return view($this->form_view, ['data'=>$this->data]);
         } else {
             return "Unauthorized!";
@@ -213,7 +214,7 @@ class PermissionmoduleController extends Controller {
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
 
         if($request->id == 1 || $request->id == 2) {
-            return errorResponse('You can not delete because it is default module!');
+            return Helpers::errorResponse('You can not delete because it is default module!');
         }
 
         $model = Module::findorfail($request->id);
@@ -221,7 +222,7 @@ class PermissionmoduleController extends Controller {
         $module = Formmodule::where('parent_module',$model->name)->first();
 
         if($module) {
-            return errorResponse('You can not delete because it is used in form!');
+            return Helpers::errorResponse('You can not delete because it is used in form!');
         }
 
         \DB::beginTransaction();
@@ -230,7 +231,7 @@ class PermissionmoduleController extends Controller {
             $model->delete();
         } catch (\Exception $e) {
             \DB::rollback();                        
-            return errorResponse('Error while deleting permissionmodule. Try again latter');
+            return Helpers::errorResponse('Error while deleting permissionmodule. Try again latter');
         }
         \DB::commit();
 
@@ -238,10 +239,10 @@ class PermissionmoduleController extends Controller {
         $this->data['lists'] = Module::latest()->paginate(25);
         $only = new OnlyPermissionmoduleRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->where('created_by', \Auth::user()->id)->paginate(25);
         }
 
         $this->data['list_data'] = $model->list_data();
-        return successResponse(Lang::get('permission_modules.delete_message'),$this->data);
+        return Helpers::successResponse(Lang::get('permission_modules.delete_message'),$this->data);
     }
 }

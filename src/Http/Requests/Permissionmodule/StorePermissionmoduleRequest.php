@@ -1,9 +1,9 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Http\Requests\Permissionmodule;
+namespace Ongoingcloud\Laravelcrud\Http\Requests\Permissionmodule;
 
 use Illuminate\Foundation\Http\FormRequest;
-use ongoingcloud\laravelcrud\General\HandlePermission;
+use Ongoingcloud\Laravelcrud\General\HandlePermission;
 
 class StorePermissionmoduleRequest extends FormRequest
 {
@@ -18,7 +18,7 @@ class StorePermissionmoduleRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that ongoingcloud\laravelcrudly to the request.
+     * Get the validation rules that Ongoingcloud\Laravelcrudly to the request.
      *
      * @return array
      */

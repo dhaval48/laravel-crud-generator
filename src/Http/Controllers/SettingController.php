@@ -1,23 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace Ongoingcloud\Laravelcrud\Http\Controllers;
 
-use App\General\Activity;
-use App\General\ModuleConfig;
-use App\General\HandlePermission;
+use Ongoingcloud\Laravelcrud\Helpers;
+use Ongoingcloud\Laravelcrud\General\Activity;
+use Ongoingcloud\Laravelcrud\General\ModuleConfig;
+use Ongoingcloud\Laravelcrud\General\HandlePermission;
 use App\Http\Controllers\Controller;
-use App\Models\Setting as Module;
+use Ongoingcloud\Laravelcrud\Models\Setting as Module;
 use Auth;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
-use App\Http\Requests\Setting\StoreSettingRequest;
-use App\Http\Requests\Setting\UpdateSettingRequest;
-use App\Http\Requests\Setting\DeleteSettingRequest;
-use App\Http\Requests\Setting\ListSettingRequest;
-use App\Http\Requests\Setting\OnlySettingRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Setting\StoreSettingRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Setting\UpdateSettingRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Setting\DeleteSettingRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Setting\ListSettingRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\Setting\OnlySettingRequest;
 use Lang;
 
 class SettingController extends Controller {
@@ -46,11 +47,11 @@ class SettingController extends Controller {
         $this->data['lists'] = Module::latest()->paginate(25);
         $only = new OnlySettingRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->where('created_by', \Auth::user()->id)->paginate(25);
         }
         
         $this->data['list_data'] = $model->list_data();
-        $this->data['fillable'] = formatDeleteFillable();
+        $this->data['fillable'] = Helpers::formatDeleteFillable();
         return view($this->form_view, ['data'=>$this->data]);
     }
 
@@ -77,7 +78,7 @@ class SettingController extends Controller {
 
         $only = new OnlySettingRequest();
         if($only->authorize()){
-            $lists = $lists->where('created_by', user()->id);
+            $lists = $lists->where('created_by', \Auth::user()->id);
         }
 
         $this->data['list_data'] = $model->list_data();
@@ -111,7 +112,7 @@ class SettingController extends Controller {
             foreach($this->data['lists'] as $value){
 
                 foreach ($this->data['list_data'] as $list_data) {
-                    $list = getRelation($value, $list_data);
+                    $list = Helpers::getRelation($value, $list_data);
                     $sheet->setCellValue(range('A', 'Z')[$j].$rows, $list);
                     $sheet->getColumnDimension(range('A', 'Z')[$j])
                         ->setAutoSize(true);
@@ -132,7 +133,7 @@ class SettingController extends Controller {
         }
 
         $this->data['lists'] = $lists->paginate(25);
-        return successResponse(Lang::get('label.notification.success_message'),$this->data);
+        return Helpers::successResponse(Lang::get('label.notification.success_message'),$this->data);
     }
 
     public function create(StoreSettingRequest $request) {
@@ -156,12 +157,12 @@ class SettingController extends Controller {
         try {
             if(isset($request->id)) {
                 $model = Module::find($request->id);
-                $msg = activity($input, $this->data['lang'], $model->toArray());
+                $msg = Helpers::activity($input, $this->data['lang'], $model->toArray());
                  // [GridActivity]
                  // [GridDelete]
                 $model->update($input);
             } else {
-                $input["created_by"] = user()->id;
+                $input["created_by"] = \Auth::user()->id;
                 $model = Module::Create($input);
                 $msg = "<b>".Auth::user()->name."</b> created ".$this->data['dir'].".";
             }
@@ -172,12 +173,12 @@ class SettingController extends Controller {
             
         } catch (\Exception $e) {
             \DB::rollback();
-            return errorResponse();
+            return Helpers::errorResponse();
         }
         \DB::commit();
 
         $message = isset($request->id) ? Lang::get('settings.edit_message') : Lang::get('settings.create_message');
-        return successResponse($message,$model);
+        return Helpers::successResponse($message,$model);
     }
 
     public function edit(UpdateSettingRequest $request) {
@@ -195,7 +196,7 @@ class SettingController extends Controller {
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
 
         $only = new OnlySettingRequest();
-        if(!$only->authorize() || $model->created_by == user()->id) {
+        if(!$only->authorize() || $model->created_by == \Auth::user()->id) {
             return view($this->form_view, ['data'=>$this->data]);
         } else {
             return "Unauthorized!";
@@ -215,7 +216,7 @@ class SettingController extends Controller {
             $model->delete();
         } catch (\Exception $e) {
             \DB::rollback();                        
-            return errorResponse('Error while deleting setting. Try again latter');
+            return Helpers::errorResponse('Error while deleting setting. Try again latter');
         }
         \DB::commit();
 
@@ -223,9 +224,9 @@ class SettingController extends Controller {
         $this->data['lists'] = Module::latest()->paginate(25);
         $only = new OnlySettingRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->where('created_by', \Auth::user()->id)->paginate(25);
         }
         $this->data['list_data'] = $model->list_data();
-        return successResponse(Lang::get('settings.delete_message'),$this->data);
+        return Helpers::successResponse(Lang::get('settings.delete_message'),$this->data);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\General;
+namespace Ongoingcloud\Laravelcrud\General;
 
 Class RollbackGrid {
 
@@ -134,7 +134,7 @@ Class RollbackGrid {
                 if($request->input_type[$i] == 'dropdown'){
                     if($request->key[$i] != "") {
 
-                    $exist_function = \App\Models\Moduleinput::where('db_name', $db_name)
+                    $exist_function = \Ongoingcloud\Laravelcrud\Moduleinput::where('db_name', $db_name)
                                             ->whereHas('form_module', function($query) {
                                                 $query->whereNotNull('parent_form');
                                             })->get();

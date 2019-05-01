@@ -1,6 +1,6 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Models;
+namespace Ongoingcloud\Laravelcrud\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Lang;
@@ -32,14 +32,14 @@ class Role extends Model
     }
 
     public function users() {
-        return $this->belongsToMany('ongoingcloud\laravelcrud\User', 'user_roles', 'role_id', 'user_id');
+        return $this->belongsToMany('Ongoingcloud\Laravelcrud\User', 'user_roles', 'role_id', 'user_id');
     }
     
     public function permissions() {
-        return $this->belongsToMany('ongoingcloud\laravelcrud\Models\Permission', 'role_permissions', 'role_id', 'permission_id');
+        return $this->belongsToMany('Ongoingcloud\Laravelcrud\Models\Permission', 'role_permissions', 'role_id', 'permission_id');
     }
 
     public function role_permission() {
-        return $this->hasMany('ongoingcloud\laravelcrud\Models\RoleHasPermission','role_id','id');
+        return $this->hasMany('Ongoingcloud\Laravelcrud\Models\RoleHasPermission','role_id','id');
     }
 }

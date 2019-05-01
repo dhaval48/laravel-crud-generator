@@ -21,11 +21,11 @@
                       <input type='text' class='form-control' v-model="name[key]">
                     </td>
                     <td>
-                        <a v-on:click.prevent="removeFile(key)" class="btn btn-flat ink-reaction">
+                        <a v-on:click.prevent="removeFile(key)" class="btn btn-flat">
                             <i class="fa fa-trash" style="color:red;"></i>
                         </a>
 
-                        <a :href="'/file/download?file_detail_id='+file.id" class="btn btn-flat ink-reaction" download="download" target="_blank" v-if="file.id">
+                        <a :href="'/file/download?file_detail_id='+file.id" class="btn btn-flat" download="download" target="_blank" v-if="file.id">
                           Download
                         </a>
                     </td>

@@ -31,7 +31,7 @@
 				
 				// [LanguagetransletModule]
             ];
-		$data["locale"] = LangCode();
+		$data["locale"] = Heleprs::LangCode();
 		
 		$file = [];
 		$filesInFolder = \File::allFiles(base_path('resources/lang/en'));

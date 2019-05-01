@@ -1,6 +1,6 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Models;
+namespace Ongoingcloud\Laravelcrud\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +13,6 @@ class ModuleGroup extends Model
     ];
     
     public function permissions() {
-    	return $this->hasMany('ongoingcloud\laravelcrud\Models\Permission');
+    	return $this->hasMany('Ongoingcloud\Laravelcrud\Models\Permission');
     }
 }

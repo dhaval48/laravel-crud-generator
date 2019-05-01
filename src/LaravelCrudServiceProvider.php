@@ -1,6 +1,6 @@
 <?php
 
-namespace ongoingcloud\laravelcrud;
+namespace Ongoingcloud\Laravelcrud;
 
 use Illuminate\Support\ServiceProvider;
 

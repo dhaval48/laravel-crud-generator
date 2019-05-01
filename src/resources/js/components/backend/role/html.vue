@@ -11,7 +11,7 @@
                         <label for='name'> {{this.module.lang.name}} </label>
                         
                         <input type='text' name='name' class='form-control' id='name' v-model='form.name'>
-                        <span id='name-error' class='help-block' 
+                        <span id='name-error' class='help-block text-danger' 
                         v-if='form.errors.has("name")'
                         v-text='form.errors.get("name")'></span>
                     </div>
@@ -22,77 +22,81 @@
                         <label for='description'> {{this.module.lang.description}} </label>
 
                         <input type='text' name='description' class='form-control' id='description' v-model='form.description'>
-                        <span id='description-error' class='help-block' 
+                        <span id='description-error' class='help-block text-danger' 
                         v-if='form.errors.has("description")'
                         v-text='form.errors.get("description")'></span>
                     </div>
                 </div>
     		</div>
 
-            <div class="box box-primary box-solid" v-for="(group,k) in groups">
-                <div class="box-header with-border parentChkDiv">
-                    <h3 class="box-title"> 
-                        <p-check class="p-icon p-jelly p-bigger" color="danger-o"
-                        name="module_id" 
-                        :value="group.id"
-                        @click.native="check(k, $event)"
-                        v-model="form.module_id">
-                            <i slot="extra" class="icon mdi mdi-check-all"></i>
+            <div class="row">
+                <div class="col-md-12" v-for="(group, k) in groups">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title"> 
+                                <p-check class="p-icon p-jelly p-bigger" color="danger-o"
+                                name="module_id" 
+                                :value="group.id"
+                                @click.native="check(k, $event)"
+                                v-model="form.module_id">
+                                    <i slot="extra" class="icon mdi mdi-check-all"></i>
+                                    
+                                    {{group.name}} 
+                                    
+                                </p-check>           
+                            </h4>
+                            <!-- <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div> -->
+                        </div>
+                        <div class="card-body">
+                            <template v-if="module_group.name != 'gridmodule'" v-for="(module_group,key) in group.module_groups">
                             
-                            {{group.name}} 
-                            
-                        </p-check>           
-                    </h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="box-body moduleChkSection">
-                    <template v-if="module_group.name != 'gridmodule'" v-for="(module_group,key) in group.module_groups">
-                    
-                        <div class="permission_group_div">
+                                <div class="permission_group_div">
 
-                            <div class="module">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        
-                                        <p-check class="p-icon p-rotate p-bigger" color="primary"
-                                        :value="module_group.id"
-                                        @click.native="checkGroup(k, key, $event)" 
-                                        v-model="form.module_group_id">
-                                            <i slot="extra" class="icon mdi mdi-check"></i>
-                                            <b>{{module_group.display_name}} Module</b>
-                                        </p-check>
+                                    <div class="module">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                
+                                                <p-check class="p-icon p-rotate p-bigger" color="primary"
+                                                :value="module_group.id"
+                                                @click.native="checkGroup(k, key, $event)" 
+                                                v-model="form.module_group_id">
+                                                    <i slot="extra" class="icon mdi mdi-check"></i>
+                                                    <b>{{module_group.display_name}} Module</b>
+                                                </p-check>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4" v-for="(permission,index) in module_group.permissions">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<p-check class="p-icon p-rotate" color="default"
+                                            :value="permission.id"
+                                            v-model='form.permission_id'
+                                            @click.native="checkPermission(k, key, index, $event)">
+                                                <i slot="extra" class="icon mdi mdi-check"></i>
+                                                {{permission.display_name}}
+                                            </p-check>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                <div class="col-md-4" v-for="(permission,index) in module_group.permissions">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;<p-check class="p-icon p-rotate" color="default"
-                                    :value="permission.id"
-                                    v-model='form.permission_id'
-                                    @click.native="checkPermission(k, key, index, $event)">
-                                        <i slot="extra" class="icon mdi mdi-check"></i>
-                                        {{permission.display_name}}
-                                    </p-check>
-                                </div>
-                                </div>
-                            </div>
+                            </template>
                         </div>
-                    </template>
+                    </div>
+                <div class="clearfix">&nbsp;</div>
                 </div>
             </div>
 
-            <div class="box-actionbar">
-                <div class="box-actionbar-row">
-                    <!-- <button type="submit" class="btn btn-flat btn-primary ink-reaction" :disabled="form.errors.any()">{{this.module.common.save}}</button> -->
+            <div class="card-actionbar">
+                <div class="card-actionbar-row">
+                    <!-- <button type="submit" class="btn btn-flat btn-primary" :disabled="form.errors.any()">{{this.module.common.save}}</button> -->
                     <button 
                         type="submit"
-                        class="btn btn-flat btn-primary ink-reaction btn-loading-state pull-right" 
+                        class="btn btn-flat btn-primary btn-loading-state" 
                         data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..."
-                        :disabled="form.errors.any()">{{this.module.common.save}}</button>
+                        :disabled="form.errors.any()">{{this.module.common.save}}
+                    </button>
                 </div>
             </div>
         </form>

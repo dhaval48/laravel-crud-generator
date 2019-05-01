@@ -9,6 +9,8 @@
                 :formObj='form'
                 :module='this.module' 
             ></form_html>
+
+            <div class="clearfix">&nbsp;</div>
             
             <template v-if="this.module.id > 0 && this.module.permissions['activity_'+this.module.dir]">
                 <activity :module="this.module" ref="child"></activity>

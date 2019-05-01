@@ -6,7 +6,7 @@
             <div class="col-sm-8">
                 <div :class='form.errors.has("current_password")?"form-group has-error":"form-group"'>
                     <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Password" v-model="form.current_password">
-                    <span id='current_password-error' class='help-block' 
+                    <span id='current_password-error' class='help-block' text-danger 
                         v-if='form.errors.has("current_password")'
                         v-text='form.errors.get("current_password")'></span>
                 </div>
@@ -15,7 +15,7 @@
             <div class="col-sm-8">
                 <div :class='form.errors.has("password")?"form-group has-error":"form-group"'>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password" v-model="form.password">
-                    <span id='password-error' class='help-block' 
+                    <span id='password-error' class='help-block text-danger' 
                         v-if='form.errors.has("password")'
                         v-text='form.errors.get("password")'></span>
                 </div>
@@ -24,17 +24,19 @@
             <div class="col-sm-8">
                 <div :class='form.errors.has("password_confirmation")?"form-group has-error":"form-group"'>
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Re-enter Password"  v-model="form.password_confirmation">
-                    <span id='password_confirmation-error' class='help-block' 
+                    <span id='password_confirmation-error' class='help-block text-danger' 
                         v-if='form.errors.has("password_confirmation")'
                         v-text='form.errors.get("password_confirmation")'></span>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-6">
-                <button type="submit" class="btn btn-danger">Submit</button>
+            
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-6">
+                    <button type="submit" class="btn btn-danger">Submit</button>
+                </div>
             </div>
         </div>
+
     </form>
 </div>
 </template>

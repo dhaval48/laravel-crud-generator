@@ -1,6 +1,6 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Models;
+namespace Ongoingcloud\Laravelcrud\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -45,7 +45,7 @@ class Languagetranslet extends Model
     }
 
 	public function language_translet_details() {
-	    return $this->hasMany('ongoingcloud\laravelcrud\Models\Languagetransletdetails','languagetranslet_id','id');
+	    return $this->hasMany('Ongoingcloud\Laravelcrud\Models\Languagetransletdetails','languagetranslet_id','id');
 	}
 	// [Relation]
 }

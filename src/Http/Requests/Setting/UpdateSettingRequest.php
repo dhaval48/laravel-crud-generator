@@ -1,9 +1,9 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Http\Requests\Setting;
+namespace Ongoingcloud\Laravelcrud\Http\Requests\Setting;
 
 use Illuminate\Foundation\Http\FormRequest;
-use ongoingcloud\laravelcrud\General\HandlePermission;
+use Ongoingcloud\Laravelcrud\General\HandlePermission;
 
 class UpdateSettingRequest extends FormRequest
 {
@@ -18,7 +18,7 @@ class UpdateSettingRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that ongoingcloud\laravelcrudly to the request.
+     * Get the validation rules that Ongoingcloud\Laravelcrudly to the request.
      *
      * @return array
      */

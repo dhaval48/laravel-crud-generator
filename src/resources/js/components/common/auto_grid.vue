@@ -13,7 +13,7 @@
             <tbody>
                 <tr v-for="(n, k) in rows.length">
                     <td>
-                        <a v-on:click.prevent="deleteRow(k,grid)" class="btn btn-flat ink-reaction">
+                        <a v-on:click.prevent="deleteRow(k,grid)" class="btn btn-flat">
                             <i class="fa fa-trash" style="color:red;"></i>
                         </a>
                     </td>
@@ -32,7 +32,7 @@
                         </td>
 
                         <td v-if="list.type == 'dropdown'" width="200px">
-                            <select class='form-control select2 select2-grid' :name='[list.name]' :position='k' v-model='form[list.name][k]'>
+                            <select class='form-control select-grid' :name='[list.name]' :position='k' v-model='form[list.name][k]'>
                                 <option value=''>Select {{index}}</option>
                                 <option v-for='value in $data[list.name]' :value='value' v-if="list.empty">{{value}}</option>
                                 <option v-for='(value, key) in $data[list.name]' :value='key' v-else>{{value}}</option>
@@ -92,9 +92,6 @@ export default {
                     }
                 })
             });
-            $(document).ready( () => {
-                $(".select2").select2({width:'100%'});
-            });
             this.$parent.addRow();
         },
 
@@ -107,9 +104,6 @@ export default {
                 this.index--;
                 this.$parent.deleteRow(k);
             }
-            $(document).ready( () => {
-                $(".select2").select2({width:'100%'});
-            });
         }  
     },
     mounted() {
@@ -121,13 +115,11 @@ export default {
 
         $(document).ready( () => {
 
-            $(".select2").select2({width:'100%'});
-
-            $(document).on('change', '.select2-grid', event => {
-                var input_db_name = $(event.target).attr('name');
-                var position = $(event.target).attr('position');
-                this.form[input_db_name][position] = event.target.value;
-            });
+            // $(document).on('change', '.select-grid', event => {
+            //     var input_db_name = $(event.target).attr('name');
+            //     var position = $(event.target).attr('position');
+            //     this.form[input_db_name][position] = event.target.value;
+            // });
 
         });
 

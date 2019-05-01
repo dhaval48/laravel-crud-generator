@@ -23,21 +23,21 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "ongoingcloud\\laravelcrud\\": "src/"
+            "Ongoingcloud\\Laravelcrud\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ongoingcloud\\laravelcrud\\Tests\\": "tests/"
+            "Ongoingcloud\\Laravelcrud\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "ongoingcloud\\laravelcrud\\LaravelCrudServiceProvider"
+                "Ongoingcloud\\Laravelcrud\\LaravelCrudServiceProvider"
             ],
             "aliases": {
-                "laravelcrud": "ongoingcloud\\laravelcrud\\Facades\\laravel"
+                "Laravelcrud": "Ongoingcloud\\Laravelcrud\\Facades\\laravel"
             }
         }
     }

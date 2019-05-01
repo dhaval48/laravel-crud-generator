@@ -1,6 +1,6 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\Models;
+namespace Ongoingcloud\Laravelcrud\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -78,11 +78,11 @@ class Formmodule extends Model
 
      
 	public function module_tables() {
-	    return $this->hasMany('ongoingcloud\laravelcrud\Models\Moduletable','formmodule_id','id');
+	    return $this->hasMany('Ongoingcloud\Laravelcrud\Models\Moduletable','formmodule_id','id');
 	}
 	
 	public function module_inputs() {
-	    return $this->hasMany('ongoingcloud\laravelcrud\Models\Moduleinput','formmodule_id','id');
+	    return $this->hasMany('Ongoingcloud\Laravelcrud\Models\Moduleinput','formmodule_id','id');
 	}
 	// [Relation]
 }

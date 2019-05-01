@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace Ongoingcloud\Laravelcrud\Http\Controllers;
 
+use Ongoingcloud\Laravelcrud\Helpers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\FileUpload;
-use App\Models\FileUploadDetail;
+use Ongoingcloud\Laravelcrud\Models\FileUpload;
+use Ongoingcloud\Laravelcrud\Models\FileUploadDetail;
 
 class CommonController extends Controller
 {	
@@ -36,8 +37,8 @@ class CommonController extends Controller
 		       		}
 		        }
 	        }
-	        if(user()) {
-				$file_upload = user()->file_upload()->where('type', $request->type)->where('type_id', $request->type_id)->first();
+	        if(\Auth::user()) {
+				$file_upload = \Auth::user()->file_upload()->where('type', $request->type)->where('type_id', $request->type_id)->first();
 
 	        } else {
 				$file_upload = FileUpload::where('type', $request->type)->where('type_id', $request->type_id)->first();        	
@@ -45,8 +46,8 @@ class CommonController extends Controller
 	        if($files) {
 
 	        	if(!$file_upload) {
-	        		if(user()) { 
-				        $model_id = user()->file_upload()->create($request->all())->id;
+	        		if(\Auth::user()) { 
+				        $model_id = \Auth::user()->file_upload()->create($request->all())->id;
 				    } else {
 				        $model_id = FileUpload::create($request->all())->id;
 				    }
@@ -77,16 +78,16 @@ class CommonController extends Controller
 	    } catch (\Exception $e) {
 	    	echo $e;
             \DB::rollback();
-            return errorResponse();
+            return Helpers::errorResponse();
         }
         \DB::commit();
 
-        return successResponse("Successfully File Uploaded");
+        return Helpers::successResponse("Successfully File Uploaded");
     }
 
     public static function getFile(Request $request) {
-		if(user()) {
-			$file = FileUpload::latest()->where('user_id', user()->id)->where('type', $request->type)->where('type_id', $request->id)->first();
+		if(\Auth::user()) {
+			$file = FileUpload::latest()->where('user_id', \Auth::user()->id)->where('type', $request->type)->where('type_id', $request->id)->first();
 		} else {
 			$file = FileUpload::latest()->where('type', $request->type)->where('type_id', $request->id)->first();
 		}
@@ -108,15 +109,15 @@ class CommonController extends Controller
             $file->delete();
 		 } catch (\Exception $e) {
             \DB::rollback();
-            return errorResponse();
+            return Helpers::errorResponse();
         }
         \DB::commit();
-		return successResponse("Successfully File Deleted");
+		return Helpers::successResponse("Successfully File Deleted");
 	}
 
 	public static function fileDownload(Request $request) {
         $attachment = FileUploadDetail::find($request->file_detail_id);        
-        $path = getFilePath($attachment->path_name);
+        $path = Helpers::getFilePath($attachment->path_name);
         if(file_exists($path)) {        	
             return response()->download($path);
         }        
@@ -171,7 +172,7 @@ class CommonController extends Controller
 
 	public function userLangUpdate(Request $request) {
 		\App::setLocale($request->locale);
-		user()->update(['locale' => $request->locale]);
+		\Auth::user()->update(['locale' => $request->locale]);
 		return back();
 	}
 	// [Function]

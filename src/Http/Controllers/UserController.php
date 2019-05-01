@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace Ongoingcloud\Laravelcrud\Http\Controllers;
 
-use App\General\Activity;
-use App\General\ModuleConfig;
-use App\General\HandlePermission;
+use Ongoingcloud\Laravelcrud\Helpers;
+use Ongoingcloud\Laravelcrud\General\Activity;
+use Ongoingcloud\Laravelcrud\General\ModuleConfig;
+use Ongoingcloud\Laravelcrud\General\HandlePermission;
 use App\Http\Controllers\Controller;
-use App\Exceptions\GeneralException;
-use App\Models\User as Module;
+use Ongoingcloud\Laravelcrud\Exceptions\GeneralException;
+use Ongoingcloud\Laravelcrud\Models\User as Module;
 use Auth;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
-use App\Http\Requests\User\StoreUserRequest;
-use App\Http\Requests\User\UpdateUserRequest;
-use App\Http\Requests\User\DeleteUserRequest;
-use App\Http\Requests\User\ListUserRequest;
-use App\Http\Requests\User\OnlyUserRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\User\StoreUserRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\User\UpdateUserRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\User\DeleteUserRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\User\ListUserRequest;
+use Ongoingcloud\Laravelcrud\Http\Requests\User\OnlyUserRequest;
 use Lang;
 
 class UserController extends Controller {
@@ -47,11 +48,11 @@ class UserController extends Controller {
         $this->data['lists'] = Module::latest()->paginate(25);
         $only = new OnlyUserRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->where('created_by', \Auth::user()->id)->paginate(25);
         }
 
         $this->data['list_data'] = $model->list_data();
-        $this->data['fillable'] = formatDeleteFillable();
+        $this->data['fillable'] = Helpers::formatDeleteFillable();
         return view($this->form_view, ['data'=>$this->data]);
     }
 
@@ -77,7 +78,7 @@ class UserController extends Controller {
 
         $only = new OnlyUserRequest();
         if($only->authorize()){
-            $lists = $lists->where('created_by', user()->id);
+            $lists = $lists->where('created_by', \Auth::user()->id);
         }
 
         $this->data['list_data'] = $model->list_data();
@@ -111,7 +112,7 @@ class UserController extends Controller {
             foreach($this->data['lists'] as $value){
 
                 foreach ($this->data['list_data'] as $list_data) {
-                    $list = getRelation($value, $list_data);
+                    $list = Helpers::getRelation($value, $list_data);
                     $sheet->setCellValue(range('A', 'Z')[$j].$rows, $list);
                     $sheet->getColumnDimension(range('A', 'Z')[$j])
                         ->setAutoSize(true);
@@ -139,7 +140,7 @@ class UserController extends Controller {
         }
 
         $this->data['lists'] = $lists->paginate(25);
-        return successResponse(Lang::get('label.notification.success_message'),$this->data);
+        return Helpers::successResponse(Lang::get('label.notification.success_message'),$this->data);
     }
 
     public function create(StoreUserRequest $request) {   
@@ -157,16 +158,16 @@ class UserController extends Controller {
         );   
 
         if(isset($request->id)) {
-            if(isDuplicate('users','email',$request->email, $request->id)) {
-                return errorResponse('That email already exists. Please choose a different email');
+            if(Helpers::isDuplicate('users','email',$request->email, $request->id)) {
+                return Helpers::errorResponse('That email already exists. Please choose a different email');
             }
         } else {
             $this->validate($request, [
                     'password' => ['required', 'string', 'min:6', 'confirmed'],
                 ]
             ); 
-            if(isUnique('users','email',$request->email)) {
-                return errorResponse('That email already exists. Please choose a different email');
+            if(Helpers::isUnique('users','email',$request->email)) {
+                return Helpers::errorResponse('That email already exists. Please choose a different email');
             }
         }
 
@@ -178,11 +179,11 @@ class UserController extends Controller {
             if(isset($request->id)) {
                 $model = Module::find($request->id);
                 $model->roles()->detach($model->roles);
-                $msg = activity($input, $this->data['lang'], $model->toArray());
+                $msg = Helpers::activity($input, $this->data['lang'], $model->toArray());
                 Module::find($request->id)->update($input);
             } else {
                 $input['password'] = \Hash::make($input['password']);
-                $input["created_by"] = user()->id;
+                $input["created_by"] = \Auth::user()->id;
 
                 $model = Module::create($input);
                 $msg = "<b>".Auth::user()->name."</b> created ".$this->data['dir'].".";
@@ -199,12 +200,12 @@ class UserController extends Controller {
         } catch (\Exception $e) {
             dd($e);
             \DB::rollback();
-            return errorResponse();
+            return Helpers::errorResponse();
         }
         \DB::commit();
 
         $message = isset($request->id) ? Lang::get('users.edit_message') : Lang::get('users.create_message');
-        return successResponse($message, $model);
+        return Helpers::successResponse($message, $model);
     }
 
     public function edit($id, UpdateUserRequest $request) {
@@ -225,7 +226,7 @@ class UserController extends Controller {
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
 
         $only = new OnlyUserRequest();
-        if(!$only->authorize() || $model->created_by == user()->id) {
+        if(!$only->authorize() || $model->created_by == \Auth::user()->id) {
             return view($this->form_view, ['data'=>$this->data]);
         } else {
             return "Unauthorized!";
@@ -243,7 +244,7 @@ class UserController extends Controller {
             $model->delete();
         } catch (\Exception $e) {
             \DB::rollback();                        
-            return errorResponse();
+            return Helpers::errorResponse();
         }
         \DB::commit();
 
@@ -251,11 +252,11 @@ class UserController extends Controller {
         $this->data['lists'] = Module::latest()->paginate(25);
         $only = new OnlyUserRequest();
         if($only->authorize()){
-            $this->data['lists'] = Module::latest()->where('created_by', user()->id)->paginate(25);
+            $this->data['lists'] = Module::latest()->where('created_by', \Auth::user()->id)->paginate(25);
         }
 
         $this->data['list_data'] = $model->list_data();
-        return successResponse(Lang::get('users.delete_message'),$this->data);
+        return Helpers::successResponse(Lang::get('users.delete_message'),$this->data);
     }
 
     public function createChangePassword(Request $request) {
@@ -281,18 +282,18 @@ class UserController extends Controller {
             ); 
             $input = $request->All();
 
-            $current_password = user()->password;           
+            $current_password = \Auth::user()->password;           
             if(\Hash::check($input['current_password'], $current_password)) {
 
-                user()->update(['password' => \Hash::make($input['password'])]); 
-                return successResponse(Lang::get('users.change_password_success'));
+                \Auth::user()->update(['password' => \Hash::make($input['password'])]); 
+                return Helpers::successResponse(Lang::get('users.change_password_success'));
             } else {             
 
-                return errorResponse('Please enter correct current password');
+                return Helpers::errorResponse('Please enter correct current password');
             }
                     
         } else {
-            return errorResponse();
+            return Helpers::errorResponse();
         }    
     }
 }

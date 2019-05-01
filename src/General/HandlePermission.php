@@ -1,9 +1,9 @@
 <?php
 
-namespace ongoingcloud\laravelcrud\General;
-use ongoingcloud\laravelcrud\Models\ModuleGroup;
-use ongoingcloud\laravelcrud\Models\Permission;
-use ongoingcloud\laravelcrud\Models\Role;
+namespace Ongoingcloud\Laravelcrud\General;
+use Ongoingcloud\Laravelcrud\Models\ModuleGroup;
+use Ongoingcloud\Laravelcrud\Models\Permission;
+use Ongoingcloud\Laravelcrud\Models\Role;
 use DB;
 
 class HandlePermission {
@@ -24,7 +24,7 @@ class HandlePermission {
 
 				$mgroup_ids = DB::table('module_groups')->where('module_id',$module->id)->where('status',1)->pluck('id');
 				
-		    	foreach(user()->with('roles')->where('id', user()->id)->get()[0]->roles as $role) {
+		    	foreach(\Auth::user()->with('roles')->where('id', \Auth::user()->id)->get()[0]->roles as $role) {
 
 						$permission_roles = Role::with('permissions')->find($role->id);
 					
@@ -50,7 +50,7 @@ class HandlePermission {
 
 	public static function authorize($permission, $more_permissions = false) {
 		
-		foreach(user()->with('roles')->where('id', user()->id)->get()[0]->roles as $role) {
+		foreach(\Auth::user()->with('roles')->where('id', \Auth::user()->id)->get()[0]->roles as $role) {
 
 			$permission_roles = Role::with('permissions')->find($role->id);
 
@@ -74,7 +74,7 @@ class HandlePermission {
 
 		$module_id = ModuleGroup::where('name',$module)->value('id');
 
-		foreach(user()->with('roles')->where('id', user()->id)->get()[0]->roles as $role) {
+		foreach(\Auth::user()->with('roles')->where('id', \Auth::user()->id)->get()[0]->roles as $role) {
 
 			$permission_roles = Role::with('permissions')->find($role->id);
 			

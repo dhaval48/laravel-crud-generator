@@ -1,6 +1,6 @@
 <?php 
 
-namespace ongoingcloud\laravelcrud\General;
+namespace Ongoingcloud\Laravelcrud\General;
 use Lang;
 
 class ModuleConfig {
