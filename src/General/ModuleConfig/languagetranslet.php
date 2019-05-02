@@ -17,7 +17,7 @@
                 
                 'dir'  => 'languagetranslet',
                 'id' => 0,
-                'is_visible' => false,
+                'is_visible' => true,
                 
                 'list_route'  =>  route('languagetranslet.index'),
                 'store_route'  => route('languagetranslet.store'),

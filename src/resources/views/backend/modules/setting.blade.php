@@ -6,7 +6,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12 mtop-10">
                 <div class="card">
-                    <div class="card-header h4">Registration Setting</div>                   
+                    <h5><div class="card-header">Registration Setting</div></h5>                  
                     <div class="card-body">
 		    			<settings-view :module="{{json_encode($data)}}"></settings-view>
 		        	</div> 

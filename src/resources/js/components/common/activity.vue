@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="col-md-12">
-	    <h3>Activity</h3>
+	    <h5>Activity</h5>
 	    <hr>
 	    <ul class="timeline" @changed = "init">
 		    <li v-for="(activity,index) in activities">

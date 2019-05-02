@@ -3,7 +3,7 @@
 namespace App\Http\Requests\[CFOLDER];
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\General\HandlePermission;
+use Ongoingcloud\Laravelcrud\General\HandlePermission;
 
 class [URACTION][UNAME]Request extends FormRequest
 {

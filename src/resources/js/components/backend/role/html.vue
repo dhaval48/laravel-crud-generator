@@ -33,7 +33,7 @@
                 <div class="col-md-12" v-for="(group, k) in groups">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title"> 
+                            <h5 class="card-title"> 
                                 <p-check class="p-icon p-jelly p-bigger" color="danger-o"
                                 name="module_id" 
                                 :value="group.id"
@@ -44,7 +44,7 @@
                                     {{group.name}} 
                                     
                                 </p-check>           
-                            </h4>
+                            </h5>
                             <!-- <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                 </button>

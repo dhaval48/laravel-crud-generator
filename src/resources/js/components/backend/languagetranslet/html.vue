@@ -22,7 +22,7 @@
             
     			<div class="col-sm-12">
     				
-                    <h4>Language Translet Details</h4>
+                    <h5>Language Translet Details</h5>
     			
                 </div>
 

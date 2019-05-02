@@ -9,14 +9,16 @@
                 
                 @if(!isset($data['lists'])) 
                     <div class="card-header">
-                        <a class="card-title h4" href="{{ $data['list_route'] }}"> 
+                        <h5>
+                            <a class="card-title" href="{{ $data['list_route'] }}"> 
                             {{ $data['id'] != 0 ? $data['lang']['edit_title'] : $data['lang']['create_title'] }}
-                        </a>
+                            </a>
+                        </h5>
                     </div>
 
                 @else
 
-                    <div class="card-header h4">{{ $data['lang']['list'] }}</div>                   
+                    <h5><div class="card-header">{{ $data['lang']['list'] }}</div></h5>                   
                    
                 @endif
                     <div class="card-body">

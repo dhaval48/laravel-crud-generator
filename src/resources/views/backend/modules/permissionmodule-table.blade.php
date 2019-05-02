@@ -10,7 +10,7 @@
     @foreach($data['lists'] as $field => $value)
       <tr> 
         @foreach($data['list_data'] as $list_data)
-          <td>{{getRelation($value, $list_data)}}</td>
+          <td>{{Ongoingcloud\Laravelcrud\Helpers::getRelation($value, $list_data)}}</td>
         @endforeach
       </tr>
     @endforeach   

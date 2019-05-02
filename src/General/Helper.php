@@ -530,7 +530,7 @@ Class Helper {
                 
                 'dir'  => '".strtolower($controller_name)."',
                 'id' => 0,
-                'is_visible' => false,
+                'is_visible' => true,
                 
                 'list_route'  =>  route('".strtolower($controller_name).".index'),
                 'store_route'  => route('".strtolower($controller_name).".store'),

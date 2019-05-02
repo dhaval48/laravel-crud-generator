@@ -17,6 +17,8 @@
                 </div>
             </div>
             
+            <div class="clearfix">&nbsp;</div>
+            
             <div class="card-actionbar">
                 <div class="card-actionbar-row">
                     <button type="submit" class="btn btn-flat btn-primary ink-reaction pull-right" :disabled="form.errors.any()">{{this.module.common.save}}</button>
@@ -55,7 +57,7 @@ export default {
                     this.$refs.file_upload.files = [];
                     this.$refs.file_upload.name = [];
                 } else {
-                    // this.$refs.file_upload.init();
+                    // // this.$refs.file_upload.init();
                 }
                 this.$root.$emit('[TNAME]Created', response);
                 this.$parent.activity_init();

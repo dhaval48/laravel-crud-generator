@@ -587,7 +587,7 @@ Class Grid {
     // grid element array for controller
     public function gridArrayElement($request, $i, $input_name, $db_name) {
         $this->field['grid_html'] = "\n"."\t"."\t"."\t".'<div class="col-sm-12">'."\n"."\t"."\t"."\t"."\t".'
-                <h4>'.ucwords($request->main_module).'</h4>'."\n"."\t"."\t"."\t".'
+                <h5>'.ucwords($request->main_module).'</h5>'."\n"."\t"."\t"."\t".'
             </div>'."\n"."\t"."\t"."\t".
             '<grid :module="this.module" :elementdata="this.module.'.$request->table_name.'" :elementrow="this.module.'.$request->table_name.'_row" :rowcount="this.module.'.$request->table_name.'row_count" ref="'.$request->table_name.'"></grid>'."\n"."\t"."\t".'<!-- [GridVueElement-1] -->';
         

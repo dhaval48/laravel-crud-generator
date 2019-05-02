@@ -16,7 +16,7 @@ $formelements = [
                 
                 'dir'  => 'role',
                 'id' => 0,
-                'is_visible' => false,
+                'is_visible' => true,
                   // 'title' => Lang::get('role.create_title'),
                 'list_route'  => route('role.index'),
                 'store_route'  => route('role.store'),
