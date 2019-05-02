@@ -192,7 +192,7 @@ Class Helper {
                                 "// [Function]" => $this->field['dropdown_common_function']."\n"."\t".'// [Function]',
                                 "// [CommonRoute]" => $this->field['common_route']."\n"."// [CommonRoute]",
                                 "// [VueComponent]" => $this->sample_component."\n"."// [VueComponent]",
-                                "{{-- [dashboard_link] --}}" => $this->sample_side."\n"."\t"."\t"."\t".'{{-- [dashboard_link] --}}',
+                                // "{{-- [dashboard_link] --}}" => $this->sample_side."\n"."\t"."\t"."\t".'{{-- [dashboard_link] --}}',
                                 "// [Moduleconfig]" => $this->field['db_module_config']."\n"."\t".'// [Moduleconfig]',
                             ];
         
@@ -320,9 +320,7 @@ Class Helper {
 
                 $project_path_main."/resources/js/component.js" => file_get_contents($project_path_main."/resources/js/component.js"),
 
-                // $project_path_main."/resources/views/backend/dashboard/".strtolower($request->parent_module).".blade.php" => file_get_contents($project_path_main."/resources/views/backend/dashboard/".strtolower($request->parent_module).".blade.php"),
-
-                $project_path_main."/resources/views/backend/includes/side.blade.php" => file_get_contents($project_path_main."/resources/views/backend/includes/side.blade.php"),
+                // $project_path_main."/resources/views/backend/includes/side.blade.php" => file_get_contents($project_path_main."/resources/views/backend/includes/side.blade.php"),
 
                 $project_path_main."/app/General/ModuleConfig.php" => file_get_contents($project_path_main."/app/General/ModuleConfig.php"),
             ];
