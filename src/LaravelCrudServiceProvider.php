@@ -76,6 +76,10 @@ class LaravelCrudServiceProvider extends ServiceProvider
             \File::makeDirectory(base_path()."/tests/Unit/Api", $mode = 0777, true, true);
         }
 
+        if(!\File::exists(base_path()."/app/Models")) {
+            \File::makeDirectory(base_path()."/app/Models", $mode = 0777, true, true);
+        }
+
         if(!\File::exists(base_path()."/app/General/ModuleConfig")) {
             \File::makeDirectory(base_path()."/app/General/ModuleConfig", $mode = 0777, true, true);
         }
