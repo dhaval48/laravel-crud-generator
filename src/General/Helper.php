@@ -26,22 +26,22 @@ Class Helper {
     public $field = [];
 
     function __construct() {
-        $this->sample_controller = base_path()."/Vuesample/Controller.php";
-        $this->sample_component = base_path()."/Vuesample/component.js";
-        $this->sample_datamigration = base_path()."/Vuesample/datamigration.php";
-        $this->sample_html = base_path()."/Vuesample/html.vue";
-        $this->sample_list = base_path()."/Vuesample/list.php";
-        $this->sample_listvue = base_path()."/Vuesample/list.vue";
-        $this->sample_request = base_path()."/Vuesample/Request.php";
+        $this->sample_controller = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Controller.php";
+        $this->sample_component = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/component.js";
+        $this->sample_datamigration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/datamigration.php";
+        $this->sample_html = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/html.vue";
+        $this->sample_list = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/list.php";
+        $this->sample_listvue = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/list.vue";
+        $this->sample_request = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Request.php";
 
-        $this->sample_modal = base_path()."/Vuesample/modal.php";
-        $this->sample_model = base_path()."/Vuesample/Model.php";
-        $this->sample_route = base_path()."/Vuesample/Route.php";
-        $this->sample_side = base_path()."/Vuesample/side.php";
-        $this->sample_view = base_path()."/Vuesample/view.php";
-        $this->sample_vue = base_path()."/Vuesample/view.vue";
-        $this->belongsTo = base_path()."/Vuesample/belongsTo.php";
-        $this->module_test_case = base_path()."/Vuesample/ModuleTestCase.php";
+        $this->sample_modal = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/modal.php";
+        $this->sample_model = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Model.php";
+        $this->sample_route = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Route.php";
+        $this->sample_side = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/side.php";
+        $this->sample_view = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/view.php";
+        $this->sample_vue = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/view.vue";
+        $this->belongsTo = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/belongsTo.php";
+        $this->module_test_case = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/ModuleTestCase.php";
     }
 
     public function getSampleContent() {
@@ -65,9 +65,9 @@ Class Helper {
         
         $table_fields = $this->getTableFields($request, $old_data);
         if(!empty($this->field['table_fields'])) {
-            $this->sample_migration = base_path()."/Vuesample/UpdateMigration.php";
+            $this->sample_migration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/UpdateMigration.php";
         } else {
-            $this->sample_migration = base_path()."/Vuesample/Migration.php";
+            $this->sample_migration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Migration.php";
         } 
         $this->getSampleContent();
         
@@ -593,7 +593,7 @@ Class Helper {
     // common route [CommonRoute]
     public function commonRoute($request, $i, $db_name) {
         
-        $route =  base_path()."/Vuesample/common.php";
+        $route =  base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/common.php";
             
         $common = file_get_contents($route);
         

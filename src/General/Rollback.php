@@ -11,9 +11,9 @@ Class Rollback {
 	public $field = [];
 
 	function __construct() {
-        $this->sample_component = base_path()."/Vuesample/component.js";
-        $this->sample_route = base_path()."/Vuesample/Route.php";
-        $this->sample_side = base_path()."/Vuesample/side.php";
+        $this->sample_component = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/component.js";
+        $this->sample_route = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Route.php";
+        $this->sample_side = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/side.php";
 	}
 
 	public function getSampleContent() {
@@ -260,7 +260,7 @@ Class Rollback {
     // common route [CommonRoute]
     public function commonRoute($request, $i, $db_name) {
         
-        $route =  base_path()."/Vuesample/common.php";
+        $route =  base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/common.php";
             
         $common = file_get_contents($route);
         

@@ -31,7 +31,7 @@
 				
 				// [LanguagetransletModule]
             ];
-		$data["locale"] = Heleprs::LangCode();
+		$data["locale"] = \Ongoingcloud\Laravelcrud\Helpers::LangCode();
 		
 		$file = [];
 		$filesInFolder = \File::allFiles(base_path('resources/lang/en'));

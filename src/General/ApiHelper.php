@@ -15,10 +15,10 @@ Class ApiHelper {
 	public $field = [];
 
 	function __construct() {
-        $this->api_controller = base_path()."/Apisample/Controller.php";
-		$this->api_test_case = base_path()."/Apisample/apiTestCase.php";
-        $this->api_model = base_path()."/Apisample/Model.php";
-        $this->api_route = base_path()."/Apisample/Route.php";
+        $this->api_controller = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/Controller.php";
+		$this->api_test_case = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/apiTestCase.php";
+        $this->api_model = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/Model.php";
+        $this->api_route = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/Route.php";
 	}
 
 	public function getSampleContent() {
@@ -42,14 +42,14 @@ Class ApiHelper {
         }
 
         if(isset($request->is_public) && $request->is_public){
-            $this->api_route = base_path()."/Apisample/PublicRoute.php";
+            $this->api_route = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/PublicRoute.php";
         }
 
         $table_fields = $this->getTableFields($request, $old_data);
         if(!empty($this->field['table_fields'])) {
-            $this->api_migration = base_path()."/Vuesample/UpdateMigration.php";
+            $this->api_migration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/UpdateMigration.php";
         } else {
-            $this->api_migration = base_path()."/Apisample/Migration.php";
+            $this->api_migration = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/Migration.php";
         }
 
 		$this->getSampleContent();

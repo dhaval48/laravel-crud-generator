@@ -63,10 +63,42 @@ class LaravelCrudServiceProvider extends ServiceProvider
             __DIR__.'/resources' => base_path('resources'),
         ]);
 
-        // Publishing Common.php.
+        // Create directory and file if not exist
         if(!file_exists(base_path().'routes/Common.php')){
             file_put_contents(base_path().'/routes/Common.php', file_get_contents(__DIR__.'/Common.php'));
+        }
+
+        if(!\File::exists(base_path()."/tests/Browser/Backend")) {
+            \File::makeDirectory(base_path()."/tests/Browser/Backend", $mode = 0777, true, true);
+        }
+
+        if(!\File::exists(base_path()."/tests/Unit/Api")) {
+            \File::makeDirectory(base_path()."/tests/Unit/Api", $mode = 0777, true, true);
+        }
+
+        if(!\File::exists(base_path()."/app/General/ModuleConfig")) {
+            \File::makeDirectory(base_path()."/app/General/ModuleConfig", $mode = 0777, true, true);
+        }
+
+        if(!file_exists(base_path().'/app/General/ModuleConfig.php')){
+            file_put_contents(base_path().'/app/General/ModuleConfig.php', file_get_contents(__DIR__.'/ModuleConfig.php'));            
         }    
+
+        if(!\File::exists(base_path()."/app/Http/Controllers/API")) {
+            \File::makeDirectory(base_path()."/app/Http/Controllers/API", $mode = 0777, true, true);
+        }
+
+        if(!\File::exists(base_path()."/app/Http/Controllers/Backend")) {
+            \File::makeDirectory(base_path()."/app/Http/Controllers/Backend", $mode = 0777, true, true);
+        }
+
+        if(!file_exists(base_path().'/app/Http/Controllers/Backend/CommonController.php')){
+            file_put_contents(base_path().'/app/Http/Controllers/Backend/CommonController.php', file_get_contents(__DIR__.'/CommonController.php'));            
+        } 
+
+        if(!\File::exists(base_path()."/app/Http/Requests")) {
+            \File::makeDirectory(base_path()."/app/Http/Requests", $mode = 0777, true, true);
+        }
 
         // append in route file web.php
         $route_append = "\nRoute::group(['namespace' => 'Backend'], function () {
@@ -80,14 +112,12 @@ class LaravelCrudServiceProvider extends ServiceProvider
             file_put_contents(base_path().'/routes/web.php', $route_append, FILE_APPEND);
         }
 
-        // Create directory if not exist
+        // append in route file api.php
+        $route_append = "\nRoute::get('file/delete', 'Backend\\CommonController@fileDelete');\n"."// [RouteArray]";
+        $content = file_get_contents(base_path().'/routes/api.php');
 
-        if(!\File::exists(base_path()."/app/General/ModuleConfig")) {
-            \File::makeDirectory(base_path()."/app/General/ModuleConfig", $mode = 0777, true, true);
-        }
-
-        if(!file_exists(base_path().'/app/General/ModuleConfig.php')){
-            file_put_contents(base_path().'/app/General/ModuleConfig.php', file_get_contents(__DIR__.'/ModuleConfig.php'));            
+        if(!strpos(file_get_contents(base_path().'/routes/api.php'),"// [RouteArray]")) {
+            file_put_contents(base_path().'/routes/api.php', $route_append, FILE_APPEND);
         }
 
         // Publishing app.js.

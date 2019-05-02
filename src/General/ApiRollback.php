@@ -9,7 +9,7 @@ Class ApiRollback {
 	public $field = [];
 
 	function __construct() {
-        $this->api_route = base_path()."/Apisample/Route.php";
+        $this->api_route = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/Route.php";
 	}
 
 	public function getSampleContent() {
@@ -37,7 +37,7 @@ Class ApiRollback {
         $this->removeContent($this->field['deletefiles']);
 
         if(isset($request->is_public) && $request->is_public){
-            $this->api_route = base_path()."/Apisample/PublicRoute.php";
+            $this->api_route = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/PublicRoute.php";
         }
 
         $this->getSampleContent();

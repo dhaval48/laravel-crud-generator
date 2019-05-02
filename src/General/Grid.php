@@ -18,10 +18,10 @@ Class Grid {
 
 	function __construct() {
 
-        $this->sample_modal = base_path()."/Vuesample/modal.php";
+        $this->sample_modal = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/modal.php";
         
-        $this->parent_relation = base_path()."/Vuesample/parentrelation.php";
-        $this->sample_gridmodel = base_path()."/Vuesample/GridModel.php";
+        $this->parent_relation = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/parentrelation.php";
+        $this->sample_gridmodel = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/GridModel.php";
  	}
 
     public function loadFilePath($request, $project_path_main, $parent_controller_name) {
@@ -65,9 +65,9 @@ Class Grid {
 
         $this->getTableFields($request, $parent_controller_name, $parent_table_name, $old_data);
         if(!empty($this->field['table_fields'])) {
-            $this->sample_gridmigration = base_path()."/Vuesample/UpdateMigration.php";
+            $this->sample_gridmigration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/UpdateMigration.php";
         } else {
-            $this->sample_gridmigration = base_path()."/Vuesample/GridMigration.php";
+            $this->sample_gridmigration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/GridMigration.php";
         }
 
         $this->loadFilePath($request, $project_path_main, $parent_controller_name);
@@ -574,7 +574,7 @@ Class Grid {
     // common route [CommonRoute]
     public function commonRoute($request, $i, $db_name) {
         
-        $route =  base_path()."/Vuesample/common.php";
+        $route =  base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/common.php";
             
         $common = file_get_contents($route);
         

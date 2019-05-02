@@ -182,7 +182,7 @@ Class RollbackGrid {
     // common route [CommonRoute]
     public function commonRoute($request, $i, $db_name) {
         
-        $route =  base_path()."/Vuesample/common.php";
+        $route =  base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/common.php";
             
         $common = file_get_contents($route);
         
