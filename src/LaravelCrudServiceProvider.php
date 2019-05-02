@@ -64,11 +64,11 @@ class LaravelCrudServiceProvider extends ServiceProvider
         ]);
 
         // Publishing Common.php.
-        $this->publishes([
-            if(!is_file(base_path().'routes/Common.php')){
+        if(!is_file(base_path().'routes/Common.php')){
+            $this->publishes([            
                 __DIR__.'/Common.php' => base_path('routes/'),
-            }
-        ]);
+            ]);
+        }    
 
         // append in route file web.php
         $route_append = "\nRoute::group(['namespace' => 'Backend'], function () {
@@ -88,12 +88,12 @@ class LaravelCrudServiceProvider extends ServiceProvider
             \File::makeDirectory(base_path()."/app/General/ModuleConfig", $mode = 0777, true, true);
         }
 
-        $this->publishes([
-            if(!is_file(base_path().'/app/General/ModuleConfig.php')){
+        if(!is_file(base_path().'/app/General/ModuleConfig.php')){
+            $this->publishes([
                 __DIR__.'/ModuleConfig.php' => base_path('/app/General/'),
-            }
-        ]);
-
+            ]);
+        }
+        
         // Publishing app.js.
         $this->publishes([
             __DIR__.'/resources/js/app.js' => base_path('resources/js/app.js'),
