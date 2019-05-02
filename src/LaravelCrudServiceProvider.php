@@ -65,7 +65,7 @@ class LaravelCrudServiceProvider extends ServiceProvider
 
         // Publishing Common.php.
         if(!file_exists(base_path().'routes/Common.php')){
-            file_put_contents(base_path().'/routes/Common.php'), file_get_contents(__DIR__.'/Common.php'));
+            file_put_contents(base_path().'/routes/Common.php', file_get_contents(__DIR__.'/Common.php'));
         }    
 
         // append in route file web.php
@@ -87,7 +87,7 @@ class LaravelCrudServiceProvider extends ServiceProvider
         }
 
         if(!file_exists(base_path().'/app/General/ModuleConfig.php')){
-            file_put_contents(base_path().'/app/General/ModuleConfig.php'), file_get_contents(__DIR__.'/ModuleConfig.php'));            
+            file_put_contents(base_path().'/app/General/ModuleConfig.php', file_get_contents(__DIR__.'/ModuleConfig.php'));            
         }
 
         // Publishing app.js.
