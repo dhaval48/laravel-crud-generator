@@ -91,11 +91,11 @@ class Helpers {
     }
 	    
     public static function parseDBdate($date) {     
-        return Carbon\Carbon::parse($date)->format('Y-m-d');
+        return \Carbon\Carbon::parse($date)->format('Y-m-d');
     }    
 	    
     public static function parseDate($date) {     
-        return Carbon\Carbon::parse($date)->format('m/d/Y');
+        return \Carbon\Carbon::parse($date)->format('m/d/Y');
     }    
     public static function activityRow($request, $count, $model = "") { 
         $msg = [];

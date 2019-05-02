@@ -64,7 +64,7 @@ class LaravelCrudServiceProvider extends ServiceProvider
         ]);
 
         // Create directory and file if not exist
-        if(!file_exists(base_path().'routes/Common.php')){
+        if(!file_exists(base_path().'/routes/Common.php')){
             file_put_contents(base_path().'/routes/Common.php', file_get_contents(__DIR__.'/Common.php'));
         }
 
