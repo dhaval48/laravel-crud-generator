@@ -28,7 +28,7 @@
                     <td>
 
                         <div class="btn-group">
-                            <button  type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle pull-right" data-toggle="dropdown" tabindex="-1" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle pull-right custom-default" data-toggle="dropdown" tabindex="-1" aria-haspopup="true" aria-expanded="false">
                                 Action
                             </button>
 

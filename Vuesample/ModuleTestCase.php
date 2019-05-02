@@ -5,7 +5,7 @@ namespace Tests\Browser\Backend;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use App\Models\User;
+use App\User;
 use App\Models\[UNAME] as Module;
 
 class [UNAME]Test extends DuskTestCase
