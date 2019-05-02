@@ -13,6 +13,9 @@ class LaravelCrudServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        $this->app['router']->middleware('locale', \Ongoingcloud\Laravelcrud\Http\Middleware\SetLocale::class);
+
         $this->loadRoutesFrom(__DIR__.'/routes/Routes.php');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadViewsFrom(__DIR__.'/resources/views', 'laravelcrud');
@@ -58,8 +61,6 @@ class LaravelCrudServiceProvider extends ServiceProvider
         // $this->publishes([
         //     __DIR__.'/resources/views' => base_path('resources/views'),
         // ]);
-
-        $this->app['router']->aliasMiddleware('locale', \Ongoingcloud\Laravelcrud\Http\Middleware\SetLocale::class);
 
         // Publishing Components.
         $this->publishes([
