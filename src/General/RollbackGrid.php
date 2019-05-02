@@ -9,7 +9,7 @@ Class RollbackGrid {
  	}
 
 	public function deleteFiles($request, $production = false, $delete = false) {
-        $project_path_main = env('DEV_PROJECT_PATH');
+        $project_path_main = base_path();
         if($production) {
             $project_path_main = env('PROD_PROJECT_PATH');
         }
