@@ -647,7 +647,7 @@ Class Helper {
                     <div :class='".$first."'>
                         <label for='".$input_name."'> {{this.module.lang.".$db_name."}} </label>
                         
-                        <select class='form-control select2 select2-form' ref='".$db_name."' name='".$db_name."' v-model='".$model."'>
+                        <select class='form-control select-form' ref='".$db_name."' name='".$db_name."' v-model='".$model."'>
                             <option value=''>".$placeholder."</option>
                             <option v-for='(value, key) in ".$db_name."' :value='key'>{{value}}</option>
                         </select>
@@ -668,7 +668,7 @@ Class Helper {
                     <div :class='".$first."'>
                         <label for='".$input_name."'>{{this.module.lang.".$db_name."}}</label>
 
-                        <select class='form-control select2 select2-form' ref='".$db_name."' name='".$db_name."' v-model='".$model."'>
+                        <select class='form-control select-form' ref='".$db_name."' name='".$db_name."' v-model='".$model."'>
                             <option value=''>".$placeholder."</option>
                             <option v-for='(value, key) in ".$db_name."' :value='value'>{{value}}</option>
                         </select>
@@ -963,18 +963,7 @@ Class Helper {
     public function dropdownMountEmpty($db_name, $table_name, $dropdown_mount){
         
         if(!strpos($dropdown_mount, '$(document).ready( () => {')) {
-        return "
-        $(document).ready( () => { 
-            
-            $('.select2').select2({width:'100%'});
-
-            $(document).on('change', '.select2-form', event => {
-                var input_db_name = $(event.target).attr('name');
-                this.form[input_db_name] = event.target.value
-            });
-
-        });
-        ";
+        return "";
         }
     }
 
