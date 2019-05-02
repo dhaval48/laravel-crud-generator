@@ -17,7 +17,8 @@ class CreateAddLocaleUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer("created_by")->after('name')->nullable()
+            $table->increments('id')->change();
+            $table->integer("created_by")->after('name')->nullable();
 			$table->string("locale")->after('created_by')->default('en');
             $table->softDeletes();
         });

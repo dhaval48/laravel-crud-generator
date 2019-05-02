@@ -93,9 +93,9 @@ class LaravelCrudServiceProvider extends ServiceProvider
         // ]);
 
         // Publishing Migrations.
-        $this->publishes([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
-        ]);
+        // $this->publishes([
+        //     __DIR__.'/../database/migrations' => database_path('migrations'),
+        // ]);
 
         // Registering package commands.
         $this->commands([
