@@ -388,7 +388,7 @@ class ApimoduleController extends Controller {
             }
         }
 
-        $route = base_path().'/Apisample/datamigration.php';
+        $route = base_path().'/vendor/ongoingcloud/laravelcrud/Apisample/datamigration.php';
         $content = file_get_contents($route);
 
         $content = preg_replace('/\\['.preg_quote('CLASS_MODULE','/').'\\]/',$class_name,$content); 

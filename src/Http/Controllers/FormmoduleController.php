@@ -487,7 +487,7 @@ class FormmoduleController extends Controller {
             }
         }
 
-        $route = base_path().'/Vuesample/datamigration.php';
+        $route = base_path().'/vendor/ongoingcloud/laravelcrud/Vuesample/datamigration.php';
         $content = file_get_contents($route);
 
         $content = preg_replace('/\\['.preg_quote('CLASS_MODULE','/').'\\]/',$class_name,$content); 
