@@ -63,6 +63,37 @@ class LaravelCrudServiceProvider extends ServiceProvider
             __DIR__.'/resources' => base_path('resources'),
         ]);
 
+        // Publishing Common.php.
+        $this->publishes([
+            if(!is_file(base_path().'routes/Common.php')){
+                __DIR__.'/Common.php' => base_path('routes/'),
+            }
+        ]);
+
+        // append in route file web.php
+        $route_append = "\nRoute::group(['namespace' => 'Backend'], function () {
+    Route::group(['middleware' => ['auth', 'locale:en']], function () {
+        require (__DIR__ . '/Common.php');
+    });
+});\n"."// [RouteArray]";
+        $content = file_get_contents(base_path().'/routes/web.php');
+
+        if(!strpos(file_get_contents(base_path().'/routes/web.php'),"// [RouteArray]")) {
+            file_put_contents(base_path().'/routes/web.php', $route_append, FILE_APPEND);
+        }
+
+        // Create directory if not exist
+
+        if(!\File::exists(base_path()."/app/General/ModuleConfig")) {
+            \File::makeDirectory(base_path()."/app/General/ModuleConfig", $mode = 0777, true, true);
+        }
+
+        $this->publishes([
+            if(!is_file(base_path().'/app/General/ModuleConfig.php')){
+                __DIR__.'/ModuleConfig.php' => base_path('/app/General/'),
+            }
+        ]);
+
         // Publishing app.js.
         $this->publishes([
             __DIR__.'/resources/js/app.js' => base_path('resources/js/app.js'),
