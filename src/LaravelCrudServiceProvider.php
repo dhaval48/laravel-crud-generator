@@ -56,7 +56,7 @@ class LaravelCrudServiceProvider extends ServiceProvider
     {
         // Publishing the views.
         // $this->publishes([
-        //     __DIR__.'/resources/views' => base_path('resources/views/vendor/crud'),
+        //     __DIR__.'/resources/views' => base_path('resources/views'),
         // ]);
 
         $this->app['router']->aliasMiddleware('locale', \Ongoingcloud\Laravelcrud\Http\Middleware\SetLocale::class);
@@ -64,6 +64,26 @@ class LaravelCrudServiceProvider extends ServiceProvider
         // Publishing Components.
         $this->publishes([
             __DIR__.'/resources' => base_path('resources'),
+        ]);
+
+        // Publishing app.js.
+        $this->publishes([
+            __DIR__.'/resources/js/app.js' => base_path('resources/js/app.js'),
+        ]);
+
+        // Publishing bootstrap.js.
+        $this->publishes([
+            __DIR__.'/resources/js/bootstrap.js' => base_path('resources/js/bootstrap.js'),
+        ]);
+
+        // Publishing component.js.
+        $this->publishes([
+            __DIR__.'/resources/js/component.js' => base_path('resources/js/component.js'),
+        ]);
+
+        // Publishing User.php.
+        $this->publishes([
+            __DIR__.'/Models/User.php' => base_path('app/User.php'),
         ]);
 
         // Publishing the translation files.

@@ -7,7 +7,7 @@ use Illuminate\Database\Migrations\Migration;
 use Ongoingcloud\Laravelcrud\Models\Permission;
 use Ongoingcloud\Laravelcrud\Models\Role;
 
-class CreateUsersTable extends Migration
+class CreateAddLocaleUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,16 +16,9 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments("id");
-            $table->string("name");
-            $table->integer("created_by")->nullable();
-			$table->string("locale")->default('en');
-			$table->string("email");
-			$table->string("password");
-            $table->string('remember_token', 100)->nullable()->default(null);
-			$table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer("created_by")->after('name')->nullable()
+			$table->string("locale")->after('created_by')->default('en');
             $table->softDeletes();
         });
 
