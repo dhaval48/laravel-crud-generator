@@ -37,8 +37,8 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <button type="button" class="btn btn-primary btn-flat btn-sm" v-on:click="addFiles()">{{this.module.common.add_files}}</button>
-     <!--  <button type="button" class="btn btn-info btn-sm" v-on:click="submitFiles()">Upload</button> -->
+      <button type="button" class="btn btn-link btn-flat" v-on:click="addFiles()">{{this.module.common.add_files}}</button>
+      <!--  <button type="button" class="btn btn-info btn-sm" v-on:click="submitFiles()">Upload</button> -->
       <input type="file" class="hide d-none" ref="files" multiple v-on:change="handleFilesUpload()"/>
     </div>
   </div>
