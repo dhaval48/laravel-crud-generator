@@ -5,7 +5,7 @@
         <div class="clearfix"></div>
         
         <div class="box-body">
-            <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+            <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th v-for="(value,key) in lists.list_data">{{ key }}</th>

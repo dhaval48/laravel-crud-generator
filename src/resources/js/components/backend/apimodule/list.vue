@@ -4,7 +4,7 @@
         
         <div class="clearfix">&nbsp;</div>
         
-        <table class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
             <thead class="thead-dark">
                 <tr>
                     <th v-for="(value,key) in lists.list_data">{{ key }}</th>
