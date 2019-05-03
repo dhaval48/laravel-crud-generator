@@ -135,7 +135,7 @@ class LaravelCrudServiceProvider extends ServiceProvider
         ]);
 
         // Publishing component.js.
-        if(!file_exists(base_path().'/resources/js/component.js'){
+        if(!file_exists(base_path().'/resources/js/component.js')) {
             $this->publishes([
                 __DIR__.'/resources/js/component.js' => base_path('resources/js/component.js'),
             ]);
