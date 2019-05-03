@@ -118,7 +118,7 @@ Class Rollback {
                 
                 // $migration_path,
 
-                $project_path_main."/app/General/ModuleConfig/".strtolower($controller_name).'.php',
+                // $project_path_main."/app/General/ModuleConfig/".strtolower($controller_name).'.php',
 
                 $project_path_main."/resources/lang/en/".strtolower($request->table_name).'.php',
 
