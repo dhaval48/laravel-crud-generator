@@ -463,7 +463,7 @@ Class Helper {
                         $options_data .= $this->optionDataEmptyDropdown($db_name);
 
                         // [EmptyDropDown]
-                        $empty_drop_array .= $this->emptyDropArray($db_name);
+                        $empty_drop_array .= $this->emptyDropArray($db_name, $project_path_main, $controller_name);
                     }
                 }
                 if($request->input_type[$i] == 'date') {
@@ -944,7 +944,7 @@ Class Helper {
     }
 
     // [EmptyDropDown]
-    public function emptyDropArray($db_name){
+    public function emptyDropArray($db_name, $project_path_main, $controller_name){
         $empty_data = '$data["'.$db_name.'"] = [];';
         if(file_exists($project_path_main."/app/General/ModuleConfig/".strtolower($controller_name).'.php')){
 
