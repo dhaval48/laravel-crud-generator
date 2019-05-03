@@ -48,11 +48,6 @@ export default {
                 this.$refs.file_upload.submitFiles(this.module.dir, response.data.id);
                 
                 // [GRID_RESET]
-
-                $(document).ready( () => { 
-                    $(".select2").select2({width:'100%'});
-                });
-
                 if(this.module.id == 0) {
                     this.$refs.file_upload.files = [];
                     this.$refs.file_upload.name = [];

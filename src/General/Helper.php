@@ -153,6 +153,7 @@ Class Helper {
                         'LIST_DATA_LINES' => $this->field['list_data'],
                         'CFOLDER' => ucfirst($controller_name),
 
+                        'OUTPUT' => "php://output",
                         'GridSave' => "// [GridSave]",
                         'GridEdit' => "// [GridEdit]",
                         'GridActivity' => "// [GridActivity]",
@@ -569,7 +570,12 @@ Class Helper {
     // [Relation]
     public function makeRelation($request, $i, $db_name) {
         $main_module = \DB::table('form_modules')->where('table_name', $request->table[$i])->wherenull('deleted_at')->wherenull('parent_form')->first();
-        $controller_name = $this->makeControllerName($main_module);
+
+        if($main_module) {
+            $controller_name = $this->makeControllerName($main_module);
+        } else {
+            $controller_name = ucfirst($request->table[$i]);
+        }
 
         if(!empty($this->field['controller_relation'])) {
             $this->field['controller_relation'] .= ',';
@@ -939,8 +945,19 @@ Class Helper {
 
     // [EmptyDropDown]
     public function emptyDropArray($db_name){
+        $empty_data = '$data["'.$db_name.'"] = [];';
+        if(file_exists($project_path_main."/app/General/ModuleConfig/".strtolower($controller_name).'.php')){
 
-        return '$data["'.$db_name.'"] = [];'."\n"."\t"."\t"."\t";
+            $contents = file_get_contents($project_path_main."/app/General/ModuleConfig/".strtolower($controller_name).'.php');
+            $lines = explode("\n", $contents);
+            foreach($lines as $word) {
+                if(strrpos($word, '$data["'.$db_name.'"]')) {
+                    $empty_data = $word;
+                }
+            }            
+        }
+
+        return $empty_data."\n"."\t"."\t"."\t";
     }
 
     // [DropdownSearch]

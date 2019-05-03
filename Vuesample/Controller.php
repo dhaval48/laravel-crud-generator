@@ -124,7 +124,7 @@ class [UNAME]Controller extends Controller {
             $writer = new Csv($spreadsheet);
             header("Content-Type: application/vnd.ms-excel");
             header('Content-Disposition: attachment; filename="[UNAME].csv"');
-            return $writer->save("php://output");
+            return $writer->save("[OUTPUT]");
         }
 
         if($from_delete) {

@@ -129,6 +129,7 @@ Class Rollback {
             foreach ($migration_path as $key => $value) {
                 $this->field['deletefiles'][] = $project_path_main.'/database/migrations/'.$value;
             }
+            $this->field['deletefiles'][] = $project_path_main."/app/General/ModuleConfig/".strtolower($controller_name).'.php';
         }
 
         $this->field['folder'] = [
