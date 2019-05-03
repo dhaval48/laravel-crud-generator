@@ -54,13 +54,18 @@ class LaravelCrudServiceProvider extends ServiceProvider
     protected function bootForConsole()
     {
         // Publishing the views.
-        // $this->publishes([
-        //     __DIR__.'/resources/views' => base_path('resources/views'),
-        // ]);
+        $this->publishes([
+            __DIR__.'/resources/views' => base_path('resources/views'),
+        ]);
 
         // Publishing Components.
         $this->publishes([
-            __DIR__.'/resources' => base_path('resources'),
+            __DIR__.'/resources/js/components' => base_path('resources/js/components'),
+        ]);
+
+        // Publishing the translation files.
+        $this->publishes([
+            __DIR__.'/resources/lang' => resource_path('lang'),
         ]);
 
         // Create directory and file if not exist
@@ -145,11 +150,6 @@ class LaravelCrudServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/User.php' => base_path('app/User.php'),
         ]);
-
-        // Publishing the translation files.
-        // $this->publishes([
-        //     __DIR__.'/resources/lang' => resource_path('lang/vendor/crud'),
-        // ]);
 
         // Publishing Migrations.
         // $this->publishes([
