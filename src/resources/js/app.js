@@ -20,7 +20,6 @@ window.Vue = require('vue');
 require('./component');
 
 Vue.component('paginate-links',require('./components/common/paginate_link.vue').default);
-Vue.component('dropdown',require('./components/common/dropdown.vue').default);
 Vue.component('activity',require('./components/common/activity.vue').default);
 
 /**
@@ -38,9 +37,6 @@ Vue.use(VueSweetalert2);
 
 import filter from './components/core/filter';
 Vue.use(filter);
-
-import vSelect from 'vue-select';
-Vue.component('v-select', vSelect)
 
 import Datepicker from 'vuejs-datepicker';
 Vue.component('Datepicker', Datepicker)
