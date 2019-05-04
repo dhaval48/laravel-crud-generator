@@ -13,7 +13,7 @@ $formelements = ["name" => "",
                 
                 'dir'  => 'permissionmodule',
                 'id' => 0,
-                'is_visible' => true,
+                'is_visible' => false,
                 
                 'list_route'  =>  route('permissionmodule.index'),
                 'store_route'  => route('permissionmodule.store'),

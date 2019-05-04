@@ -128,7 +128,7 @@ class ApimoduleController extends Controller {
             $writer = new Csv($spreadsheet);
             header("Content-Type: application/vnd.ms-excel");
             header('Content-Disposition: attachment; filename="Apimodule.csv"');
-            return $writer->save("php:output");
+            return $writer->save("php://output");
         }
 
         if($from_delete) {
@@ -153,9 +153,16 @@ class ApimoduleController extends Controller {
                 'main_module' => 'required',
                 'table_name' => 'required',
             ]
-        );   
+        );
 
         $model = Module::find($request->id);
+        if(Helpers::existTabale($request, $model)) {
+            return Helpers::errorResponse("This table is already exist in your database");
+        }
+
+        if(Helpers::ifExistFile($request, $model)) {
+            return Helpers::errorResponse("This form is already exist in your project");
+        }
 
         $array = [];
 		$rows = count($request->type);
@@ -245,15 +252,19 @@ class ApimoduleController extends Controller {
             if(env('APP_ENV') == 'local'){
                 $this->makeMigration($request, $module_field, $module_table);
             }
-                
+            
+            \Artisan::call('migrate');
+
         } catch (\Exception $e) {
-            dd($e);
+            if(!isset($request->id)) {
+                $rollback = new ApiRollback;
+                
+                $rollback->deleteFiles($request, false, true);
+            }
             \DB::rollback();
             return Helpers::errorResponse();
         }
         \DB::commit();
-
-        \Artisan::call('migrate');
 
         $message = isset($request->id) ? Lang::get('api_modules.edit_message') : Lang::get('api_modules.create_message');
         return Helpers::successResponse($message,$model);

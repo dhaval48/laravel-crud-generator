@@ -128,7 +128,7 @@ class FormmoduleController extends Controller {
             $writer = new Csv($spreadsheet);
             header("Content-Type: application/vnd.ms-excel");
             header('Content-Disposition: attachment; filename="Formmodule.csv"');
-            return $writer->save("php:output");
+            return $writer->save("php://output");
         }
 
         if($from_delete) {
@@ -156,6 +156,13 @@ class FormmoduleController extends Controller {
         );   
 
         $model = Module::find($request->id);
+        if(Helpers::existTabale($request, $model)) {
+            return Helpers::errorResponse("This table is already exist in your database");
+        }
+
+        if(Helpers::ifExistFile($request, $model)) {
+            return Helpers::errorResponse("This form is already exist in your project");
+        }
 
         $array = [];
 		$rows = count($request->type);
@@ -295,14 +302,18 @@ class FormmoduleController extends Controller {
                 $this->makeMigration($request, $module_field, $module_table, $module_input);
             }
         
+            \Artisan::call('migrate');
+
         } catch (\Exception $e) {
-            return $e;
+            if(!isset($request->id)) {
+                $rollback = new Rollback;
+                
+                $rollback->deleteFiles($request, false, true);
+            }
             \DB::rollback();
             return Helpers::errorResponse();
         }
         \DB::commit();
-
-        \Artisan::call('migrate');
 
         $message = isset($request->id) ? Lang::get('form_modules.edit_message') : Lang::get('form_modules.create_message');
         return Helpers::successResponse($message,$model);

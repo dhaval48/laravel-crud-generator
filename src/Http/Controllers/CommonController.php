@@ -139,13 +139,12 @@ class CommonController extends Controller
 
 	}
 
-	public function getTable(Request $request) {
+	public static function getTable(Request $request) {
 		return collect(\DB::select('show tables'))->map(function ($val) {
             foreach ($val as $key => $tbl) {
                 return $tbl;
             }
         });
-		// return \DB::table('form_modules')->latest()->where('table_name','like',"%$request->q%")->wherenull('deleted_at')->wherenull('parent_form')->pluck('table_name');
 	}
 
 	public function getTable_data(Request $request) {

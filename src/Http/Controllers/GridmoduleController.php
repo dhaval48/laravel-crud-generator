@@ -130,7 +130,7 @@ class GridmoduleController extends Controller {
             $writer = new Csv($spreadsheet);
             header("Content-Type: application/vnd.ms-excel");
             header('Content-Disposition: attachment; filename="Formmodule.csv"');
-            return $writer->save("php:output");
+            return $writer->save("php://output");
         }
 
         if($from_delete) {
@@ -158,6 +158,13 @@ class GridmoduleController extends Controller {
         );   
 
         $model = Module::find($request->id);
+        if(Helpers::existTabale($request, $model)) {
+            return Helpers::errorResponse("This table is already exist in your database");
+        }
+
+        if(Helpers::ifExistFile($request, $model)) {
+            return Helpers::errorResponse("This form is already exist in your project");
+        }
 
         $array = [];
 		$rows = count($request->type);
@@ -234,13 +241,13 @@ class GridmoduleController extends Controller {
         $input = $request->all();
 		//[DropdownValue]
         $module = "";
+
+        $parent_module = Module::where('main_module', $model->parent_form)->first();
         
         \DB::beginTransaction();   
         try {
             if(isset($request->id)) {
                 
-                $parent_module = Module::where('main_module', $model->parent_form)->first();
-
                 $module = $this->getExistData($parent_module);
 
                 $rollback = new Rollback;
@@ -272,7 +279,6 @@ class GridmoduleController extends Controller {
                 $rollback_grid = new RollbackGrid;
 
                 $rollback_grid->deleteFiles($module);
-
 
                 $grid = new Grid;
 
@@ -328,14 +334,44 @@ class GridmoduleController extends Controller {
                 $this->makeMigration($request, $module_field, $module_table, $module_input);
             }
 
+            \Artisan::call('migrate');
+
         } catch (\Exception $e) {
-            return $e;
+            if(!isset($request->id)) {
+                $module = $this->getExistData($parent_module);
+
+                $rollback = new Rollback;
+
+                $rollback->deleteFiles($module);
+
+                $helper = new Helper;
+                
+                $helper->makeFiles($module, false, $module);
+
+                $module_field = $this->parentModuleField($parent_module);
+
+                $module_table = "";
+                $module_input = "";
+                foreach ($parent_module->module_tables as $key => $value) {
+                    $module_table .= $this->parentTableField($value);
+                }
+
+                foreach ($parent_module->module_inputs as $key => $value) {
+                    $module_input .= $this->parentInputField($value);
+                }
+
+                if(env('APP_ENV') == 'local'){
+                    $this->makeMigration($parent_module, $module_field, $module_table, $module_input);
+                }
+
+                $rollback_grid = new RollbackGrid;
+
+                $rollback_grid->deleteFiles($request, false, true);
+            }
             \DB::rollback();
             return Helpers::errorResponse();
         }
         \DB::commit();
-
-        \Artisan::call('migrate');
 
         $message = isset($request->id) ? Lang::get('form_modules.edit_message') : Lang::get('form_modules.create_message');
         return Helpers::successResponse($message,$model);

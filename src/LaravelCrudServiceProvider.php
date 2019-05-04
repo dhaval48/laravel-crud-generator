@@ -53,6 +53,9 @@ class LaravelCrudServiceProvider extends ServiceProvider
      */
     protected function bootForConsole()
     {
+        shell_exec('cd .. && composer require doctrine/dbal');
+        shell_exec('cd .. && composer require phpoffice/phpspreadsheet');
+        
         // Publishing the views.
         $this->publishes([
             __DIR__.'/resources/views' => base_path('resources/views'),

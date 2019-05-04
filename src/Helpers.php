@@ -2,6 +2,8 @@
 
 namespace Ongoingcloud\Laravelcrud;
 
+use Ongoingcloud\Laravelcrud\Http\Controllers\CommonController;
+
 class Helpers {
 	public static function errorResponse($message = 'Somethings goes wrong.', $errors = [], $code = 422) {
 	    if($message == 'Somethings goes wrong.') {
@@ -327,4 +329,62 @@ class Helpers {
         }
         return isset($language_codes[$code]) ? $language_codes[$code] : '';
     }
+
+    public static function existTabale($request, $model=false) {
+        $exist_tables = CommonController::getTable($request)->toArray();
+
+        if(!isset($request->id)) {
+            if(in_array($request->table_name, $exist_tables)) {
+                return true;
+            }
+        }
+
+        if($model && $model->table_name != $request->table_name) {
+            if(in_array($request->table_name, $exist_tables)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static function makeControllerName($request) {
+        $controller_name = ucfirst($request->main_module);
+
+        $classArr = explode(' ',$controller_name);
+        if(count($classArr) > 0) {
+            $controller_name = '';
+            foreach($classArr as $class) {
+                $controller_name .= strtolower($class);
+            }
+        }
+        return $controller_name;
+    }
+
+    public static function ifExistFile($request, $model) {
+        $controller_name = Helpers::makeControllerName($request);
+
+        if(!isset($request->id)) {
+            if(file_exists(base_path().'/ongoingcloud/laravelcrud/src/Models/'.ucfirst($controller_name).'.php')) {
+                return true;
+            }
+
+            if(file_exists(base_path().'/app/Models/'.ucfirst($controller_name).'.php')) {
+                return true;
+            }
+        }
+
+        if($model && $model->main_module != $request->main_module) {
+            if(file_exists(base_path().'/ongoingcloud/laravelcrud/src/Models/'.ucfirst($controller_name).'.php')) {
+                return true;
+            }
+
+            if(file_exists(base_path().'/app/Models/'.ucfirst($controller_name).'.php')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

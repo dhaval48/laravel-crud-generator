@@ -125,7 +125,7 @@ class LanguagetransletController extends Controller {
             $writer = new Csv($spreadsheet);
             header("Content-Type: application/vnd.ms-excel");
             header('Content-Disposition: attachment; filename="Languagetranslet.csv"');
-            return $writer->save("php:output");
+            return $writer->save("php://output");
         }
 
         if($from_delete) {
