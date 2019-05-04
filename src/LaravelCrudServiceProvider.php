@@ -13,6 +13,7 @@ class LaravelCrudServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
         $this->loadRoutesFrom(__DIR__.'/routes/Routes.php');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadViewsFrom(__DIR__.'/resources/views', 'laravelcrud');
@@ -30,6 +31,8 @@ class LaravelCrudServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // shell_exec('cd .. && composer require doctrine/dbal');
+        // shell_exec('cd .. && composer require phpoffice/phpspreadsheet');
         // Register the service the package provides.
         $this->app->singleton('laravelcrud', function ($app) {
             return new laravelcrud;
@@ -52,10 +55,7 @@ class LaravelCrudServiceProvider extends ServiceProvider
      * @return void
      */
     protected function bootForConsole()
-    {
-        shell_exec('cd .. && composer require doctrine/dbal');
-        shell_exec('cd .. && composer require phpoffice/phpspreadsheet');
-        
+    {        
         // Publishing the views.
         $this->publishes([
             __DIR__.'/resources/views' => base_path('resources/views'),
