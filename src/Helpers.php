@@ -365,7 +365,7 @@ class Helpers {
         $controller_name = Helpers::makeControllerName($request);
 
         if(!isset($request->id)) {
-            if(file_exists(base_path().'/ongoingcloud/laravelcrud/src/Models/'.ucfirst($controller_name).'.php')) {
+            if(file_exists(base_path().'/vendor/ongoingcloud/laravelcrud/src/Models/'.ucfirst($controller_name).'.php')) {
                 return true;
             }
 
@@ -375,7 +375,7 @@ class Helpers {
         }
 
         if($model && $model->main_module != $request->main_module) {
-            if(file_exists(base_path().'/ongoingcloud/laravelcrud/src/Models/'.ucfirst($controller_name).'.php')) {
+            if(file_exists(base_path().'/vendor/ongoingcloud/laravelcrud/src/Models/'.ucfirst($controller_name).'.php')) {
                 return true;
             }
 
