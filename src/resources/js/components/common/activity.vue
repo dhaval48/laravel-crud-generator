@@ -5,13 +5,13 @@
 	    <hr>
 	    <ul class="timeline" @changed = "init">
 		    <li v-for="(activity,index) in activities">
-	            <i class="fa fa-user bg-aqua"></i>
+	            <!-- <i class="fa fa-user bg-aqua"></i> -->
 
               	<div class="timeline-item">
                 	<span v-html="activity.message"></span><br/>
-					<span class="opacity-50">
-						{{activity.created_at | ago}}
-					</span>
+        					<span class="opacity-50">
+        						{{activity.created_at | ago}}
+        					</span>
               	</div>
             </li>
         </ul>

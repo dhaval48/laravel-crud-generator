@@ -40,11 +40,6 @@ class Helpers {
 	    $out['_token'] = csrf_token();
 	    return $out;
 	}  
-	    
-	public static function setting()
-    {
-        return \App\Models\Setting::first();
-    }
 
 	public static function isUnique($table,$unique,$value,$item_type = '',$item_type_name = '') {
         if($item_type != ''){

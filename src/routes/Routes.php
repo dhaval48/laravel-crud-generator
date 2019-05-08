@@ -75,17 +75,6 @@ Route::group(['namespace' => 'Ongoingcloud\\Laravelcrud\\Http\\Controllers', 'pr
 	});
 });
 
-Route::group(['namespace' => 'Ongoingcloud\\Laravelcrud\\Http\\Controllers'], function () {
-	Route::group(['middleware' => ['web', 'auth', 'locale:en']], function () {
-		Route::get('settings', 'SettingController@edit')->name('setting.index');
-		// Route::get('settings-paginate','SettingController@Paginate')->name('setting.paginate');
-		// Route::get('setting/create', 'SettingController@create')->name('setting.create');
-		Route::post('setting/store', 'SettingController@store')->name('setting.store');
-		// Route::get('setting/edit/{id}', 'SettingController@edit')->name('setting.edit');
-		// Route::post('setting/destroy', 'SettingController@destroy')->name('setting.destroy');
-	});
-});
-
 Route::group(['namespace' => 'Ongoingcloud\\Laravelcrud\\Http\\Controllers', 'prefix' => 'general'], function () {
 	Route::group(['middleware' => ['web', 'auth']], function () {
 		Route::get('languagetranslets', 'LanguagetransletController@index')->name('languagetranslet.index');

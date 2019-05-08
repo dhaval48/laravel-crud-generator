@@ -29,10 +29,6 @@ class ModuleConfig {
         return include 'ModuleConfig/apimodule.php';
     }	
 
-    public static function settings() {
-        return include 'ModuleConfig/setting.php';
-    }
-
     public static function language_translets() {
         return include 'ModuleConfig/languagetranslet.php';
     }

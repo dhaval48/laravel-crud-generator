@@ -12,7 +12,5 @@ Vue.component('grid_modules-view',require('./components/backend/gridmodule/view.
 
 Vue.component('api_modules-view',require('./components/backend/apimodule/view.vue').default);
 
-Vue.component('settings-view',require('./components/backend/setting/view.vue').default);
-
 Vue.component('language_translets-view',require('./components/backend/languagetranslet/view.vue').default);
 // [VueComponent]
