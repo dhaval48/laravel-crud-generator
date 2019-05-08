@@ -2,8 +2,10 @@
     <div class="row padding-lr-0">
 
         <div class="col-sm-6 py-1">
-            <input type="text" id="q" placeholder="Search" v-on:keyup.enter.prevent="filterList" v-model="q" class="form-control">
-            <i class="card-search-icon fa fa-search"></i>
+            <div class='input-group'>
+                <input type="text" id="q" placeholder="Search" v-on:keyup.enter.prevent="filterList" v-model="q" class="form-control">
+                <span class='btn btn-default btn-flat input-group-btn' v-on:click.prevent="filterList"><i class='fa fa-search'></i></span>
+            </div>
         </div>
 
         <div class="col-sm-6 py-1">            
