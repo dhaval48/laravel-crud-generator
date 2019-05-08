@@ -149,7 +149,7 @@ class FormmoduleController extends Controller {
         $this->default(); 
         // dd($request->all());
         $this->validate($request, [
-                'parent_module' => 'required',
+                // 'parent_module' => 'required',
                 'main_module' => 'required',
                 'table_name' => 'required',
             ]

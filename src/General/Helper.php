@@ -67,7 +67,11 @@ Class Helper {
         if(!empty($this->field['table_fields'])) {
             $this->sample_migration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/UpdateMigration.php";
         } else {
-            $this->sample_migration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Migration.php";
+            if(!empty($request->parent_module)) {
+                $this->sample_migration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Migration.php";
+            } else {
+                $this->sample_migration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/GridMigration.php";
+            }
         } 
         $this->getSampleContent();
         
