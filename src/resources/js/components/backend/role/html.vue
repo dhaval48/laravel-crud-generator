@@ -5,7 +5,7 @@
 
             <input type="hidden" name="id" :value="this.module.id" v-if="this.module.id != 0">
             
-    		<div class="row">
+            <div class="row">
                 <div class='col-sm-6'>
                     <div :class='form.errors.has("name")?"form-group has-error":"form-group"'>
                         <label for='name'> {{this.module.lang.name}} </label>
@@ -27,7 +27,7 @@
                         v-text='form.errors.get("description")'></span>
                     </div>
                 </div>
-    		</div>
+            </div>
 
             <div class="row">
                 <div class="col-md-12" v-for="(group, k) in groups">
@@ -86,7 +86,46 @@
                     </div>
                 <div class="clearfix">&nbsp;</div>
                 </div>
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <template v-for="(module_group,key) in this.module.module_extra_list">
+                            
+                                <div class="permission_group_div">
+
+                                    <div class="module">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                
+                                                <p-check class="p-icon p-rotate p-bigger" color="primary"
+                                                :value="module_group.id"
+                                                @click.native="checkGroupExtra(key, $event)" 
+                                                v-model="form.module_group_id">
+                                                    <i slot="extra" class="icon mdi mdi-check"></i>
+                                                    <b>{{module_group.display_name}} Module</b>
+                                                </p-check>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4" v-for="(permission,index) in module_group.permissions">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<p-check class="p-icon p-rotate" color="default"
+                                            :value="permission.id"
+                                            v-model='form.permission_id'>
+                                                <i slot="extra" class="icon mdi mdi-check"></i>
+                                                {{permission.display_name}}
+                                            </p-check>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix">&nbsp;</div>
             </div>
+
 
             <div class="card-actionbar">
                 <div class="card-actionbar-row">
@@ -124,13 +163,13 @@ export default {
     
     props:['formObj','module','user'],
     
-		//[GridComponent]
+        //[GridComponent]
     data(){
         return {
             form:this.formObj,
             groups:this.module.module_list
 
-			//[OptionsData]
+            //[OptionsData]
         }
     },
     methods: {
@@ -192,6 +231,31 @@ export default {
             }
         },
 
+        checkGroupExtra: function(key, event) {
+
+            if(event.target.checked){
+                this.form.module_group_id.push(this.module.module_extra_list[key].id);
+                for(let permission of this.module.module_extra_list[key].permissions){
+                    this.form.permission_id.push(permission.id);
+                }
+            } else {
+                
+                $.each(this.form.module_group_id, (i, value) => {
+                    if(this.form.module_group_id[i] == this.module.module_extra_list[key].id) {
+                        this.form.module_group_id.splice(i, 1);
+                        
+                        for(let permission of this.module.module_extra_list[key].permissions){
+                            $.each(this.form.permission_id, (index, val) => {
+                                if(this.form.permission_id[index] == permission.id) {
+                                    this.form.permission_id.splice(index, 1);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        },
+
         checkPermission: function(k, key, index, event) {
             // if(event.target.checked){
             //     this.form.permission_id.push(this.groups[k].module_groups[key].permission[index].id);
@@ -215,7 +279,7 @@ export default {
     },
     mounted() {
         
-		//[DropdownSearch]
+        //[DropdownSearch]
     }
 }
 </script>

@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Ongoingcloud\Laravelcrud\Exceptions\GeneralException;
 use Ongoingcloud\Laravelcrud\Models\Role as Module;
 use Ongoingcloud\Laravelcrud\Models\Module as Group;
+use Ongoingcloud\Laravelcrud\Models\ModuleGroup;
 use Auth;
 use Illuminate\Http\Request;
 use PDF;
@@ -141,7 +142,8 @@ class RoleController extends Controller {
         $this->default(); 
         
         $this->data['module_list'] = Group::with('module_groups.permissions')->get();
-        $this->data['fillable'] ['_token'] = csrf_token();
+
+        $this->data['module_extra_list'] = ModuleGroup::wherenull('module_id')->with('permissions')->get();
 
         return view($this->form_view, ['data'=>$this->data]);
     }
@@ -204,8 +206,8 @@ class RoleController extends Controller {
         $this->data['fillable']["module_group_id"] = [];
         $this->data['fillable']["permission_id"] = $model->role_permission()->where('role_id', $model->id)->pluck('permission_id');
         $this->data['module_list'] = Group::with('module_groups.permissions')->get();
-        
-        $this->data['title'] = 'Edit Role';    
+
+        $this->data['module_extra_list'] = ModuleGroup::wherenull('module_id')->with('permissions')->get();
 
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
 
