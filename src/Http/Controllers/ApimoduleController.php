@@ -37,9 +37,9 @@ class ApimoduleController extends Controller {
     public function default() {
         
         $this->data = ModuleConfig::api_modules();
-		// $this->data['api_modules_module'] = ModuleConfig::api_modules();
-		$this->data['permission_modules_module'] = ModuleConfig::permission_modules();
-		// [Module_Data]
+        // $this->data['api_modules_module'] = ModuleConfig::api_modules();
+        $this->data['permission_modules_module'] = ModuleConfig::permission_modules();
+        // [Module_Data]
     }
 
     public function index(ListApimoduleRequest $request) {
@@ -149,29 +149,32 @@ class ApimoduleController extends Controller {
         $this->default(); 
         // dd($request->all());
         $this->validate($request, [
-                'parent_module' => 'required',
+                // 'parent_module' => 'required',
                 'main_module' => 'required',
                 'table_name' => 'required',
             ]
         );
 
         $model = Module::find($request->id);
-        if(Helpers::existTabale($request, $model)) {
-            return Helpers::errorResponse("This table is already exist in your database");
-        }
 
-        if(Helpers::ifExistFile($request, $model)) {
-            return Helpers::errorResponse("This form is already exist in your project");
+        if($request->is_model) {
+            if(Helpers::existTabale($request, $model)) {
+                return Helpers::errorResponse("This table is already exist in your database");
+            }
+
+            if(Helpers::ifExistFile($request, $model)) {
+                return Helpers::errorResponse("This form is already exist in your project");
+            }
         }
 
         $array = [];
-		$rows = count($request->type);
-		for ($i = 0; $i < $rows; $i++) {
+        $rows = count($request->type);
+        for ($i = 0; $i < $rows; $i++) {
             if($request->name[$i] == 'id') {
                 return Helpers::errorResponse("id is default field in table. please, remove id from table fields");
             }
-			$array["name"] = $request->name[$i];
-			$array["type"] = $request->type[$i];
+            $array["name"] = $request->name[$i];
+            $array["type"] = $request->type[$i];
             if(isset($request->module_input_id[$i])) {
                 $module_table_data = \DB::table('api_tables')->where('id', $request->module_input_id[$i])->first();
                 
@@ -188,7 +191,7 @@ class ApimoduleController extends Controller {
                     }
                 }
             }
-			if(count(array_filter($array)) != 0) {
+            if(count(array_filter($array)) != 0) {
                 foreach ($array as $key => $value) {
                     if($value == ""){
                         return Helpers::errorResponse(ucfirst($key)." Field is required");
@@ -200,9 +203,9 @@ class ApimoduleController extends Controller {
                 }
             }
         }
-		// [GridValidation]
+        // [GridValidation]
         $input = $request->all();
-		//[DropdownValue]
+        //[DropdownValue]
         $module = "";
         \DB::beginTransaction();   
         try {
@@ -219,9 +222,9 @@ class ApimoduleController extends Controller {
 
                 $model = Module::find($request->id);
                 
-				// [GridActivity]
+                // [GridActivity]
                  $model->api_tables()->where("apimodule_id", $request->id)->delete();
-				// [GridDelete]
+                // [GridDelete]
                 $model->update($input);
             } else {
                 $input["created_by"] = \Auth::user()->id;
@@ -238,16 +241,16 @@ class ApimoduleController extends Controller {
             for($i=0; $i < count(array_filter($request->type)); $i++) {
                 $module_table .= $this->makeTableField($request, $i);
 
-				$model->api_tables()->create([
-							"apimodule_id" => $model->id,
-							'name' => $request->name[$i],
-							'type' => $request->type[$i],
-							'validation' => $request->validation[$i],
-							'default' => $request->default[$i],
-							
-				]);
-			}
-				// [GridSave]
+                $model->api_tables()->create([
+                            "apimodule_id" => $model->id,
+                            'name' => $request->name[$i],
+                            'type' => $request->type[$i],
+                            'validation' => $request->validation[$i],
+                            'default' => $request->default[$i],
+                            
+                ]);
+            }
+                // [GridSave]
 
             if(env('APP_ENV') == 'local'){
                 $this->makeMigration($request, $module_field, $module_table);
@@ -278,28 +281,28 @@ class ApimoduleController extends Controller {
         $formelement = $model->getAttributes();
         $formelement['_token'] = csrf_token();
   
-		// [DropdownSelectedValue]
+        // [DropdownSelectedValue]
 
          if(count($model->api_tables) > 0 ) {
             $this->data["api_tables_row"] = [];
-			$this->data["api_tablesrow_count"] = count($model->api_tables) - 1;
-			foreach ($model->api_tables as $key => $value) {
-				$this->data["api_tables_row"][] = $key;
-				$formelement['name'][] = $value->name;
+            $this->data["api_tablesrow_count"] = count($model->api_tables) - 1;
+            foreach ($model->api_tables as $key => $value) {
+                $this->data["api_tables_row"][] = $key;
+                $formelement['name'][] = $value->name;
                 $formelement["module_input_id"][] = $value->id;
-				$formelement['type'][] = $value->type;
-				$formelement['validation'][] = $value->validation;
-				$formelement['default'][] = $value->default;
-				
-			}
-		} else {
-			$formelement['name'][] = "";
-			$formelement['type'][] = "";
-			$formelement['validation'][] = "";
-			$formelement['default'][] = "";
-			
-		}
-		// [GridEdit]
+                $formelement['type'][] = $value->type;
+                $formelement['validation'][] = $value->validation;
+                $formelement['default'][] = $value->default;
+                
+            }
+        } else {
+            $formelement['name'][] = "";
+            $formelement['type'][] = "";
+            $formelement['validation'][] = "";
+            $formelement['default'][] = "";
+            
+        }
+        // [GridEdit]
         $this->data['fillable'] = $formelement;
 
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
@@ -328,7 +331,7 @@ class ApimoduleController extends Controller {
             $model = Module::findorfail($request->id);
             
             $model->api_tables()->where("apimodule_id", $request->id)->delete();
-				// [GridDelete]
+                // [GridDelete]
             $model->delete();
         } catch (\Exception $e) {
             \DB::rollback();                        
@@ -351,7 +354,7 @@ class ApimoduleController extends Controller {
         $is_model = $request->is_model ? 1 : 0;
         $is_public = $request->is_public ? 1 : 0;
         return  "
-                 'parent_module' => '".$request->parent_module."',
+                 ".$this->getValue('parent_module', $request->parent_module)."
                  'main_module' => '".$request->main_module."',
                  'table_name' => '".$request->table_name."',
                  'is_model' => ".$is_model.",

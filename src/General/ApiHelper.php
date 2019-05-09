@@ -7,35 +7,35 @@ use Ongoingcloud\Laravelcrud\Helpers;
 Class ApiHelper {
 
     public $api_controller;
-	public $api_test_case;
-	public $api_migration;
-	public $api_model;
-	public $api_route;
+    public $api_test_case;
+    public $api_migration;
+    public $api_model;
+    public $api_route;
 
-	public $field = [];
+    public $field = [];
 
-	function __construct() {
+    function __construct() {
         $this->api_controller = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/Controller.php";
-		$this->api_test_case = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/apiTestCase.php";
+        $this->api_test_case = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/apiTestCase.php";
         $this->api_model = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/Model.php";
         $this->api_route = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/Route.php";
-	}
+    }
 
-	public function getSampleContent() {
-		
-		foreach ($this as $key => $value) {
-			if($key != 'field') {
+    public function getSampleContent() {
+        
+        foreach ($this as $key => $value) {
+            if($key != 'field') {
 
-				if(!empty($value)) {
+                if(!empty($value)) {
                     
                     $this->$key = file_get_contents($value);
                 }
-			}
-		}
+            }
+        }
         
-	}
+    }
 
-	public function makeFiles($request, $production = false,  $old_data = "") {
+    public function makeFiles($request, $production = false,  $old_data = "") {
         $project_path_main = base_path();
         if($production) {
             $project_path_main = env('PROD_PROJECT_PATH');
@@ -52,11 +52,11 @@ Class ApiHelper {
             $this->api_migration = base_path()."/vendor/ongoingcloud/laravelcrud/Apisample/Migration.php";
         }
 
-		$this->getSampleContent();
-		
-    	$this->replaceModule($request, $project_path_main, $old_data);
+        $this->getSampleContent();
         
-	}
+        $this->replaceModule($request, $project_path_main, $old_data);
+        
+    }
 
     public function makeClassName($request) {
         $class_name = ucfirst($request->table_name);
@@ -84,13 +84,13 @@ Class ApiHelper {
         return $controller_name;
     }
 
-	//Replace MODULE
-	public function replaceModule($request, $project_path_main, $old_data) {
+    //Replace MODULE
+    public function replaceModule($request, $project_path_main, $old_data) {
         $controller_name = $this->makeControllerName($request);
 
-		$this->tableFieldsLoop($request);
+        $this->tableFieldsLoop($request);
 
-		$table_fields = $this->getTableFields($request, $old_data);
+        $table_fields = $this->getTableFields($request, $old_data);
         if(!empty($this->field['table_fields'])) {
             $table_fields = $this->field['table_fields'];
         }
@@ -100,21 +100,21 @@ Class ApiHelper {
         $random = rand();
         $this->field['migration_file_name'] = $random."_".$request->table_name;
 
-		$replace_word = [
-						'MODULE' => strtolower($controller_name),
-						'UMODULE' => ucfirst($controller_name),
+        $replace_word = [
+                        'MODULE' => strtolower($controller_name),
+                        'UMODULE' => ucfirst($controller_name),
                         'ULABEL' => ucwords($request->main_module),
-						'UNAME' => ucfirst($controller_name),
+                        'UNAME' => ucfirst($controller_name),
                         'VALIDATION' => $this->field['validation'],
-						'TESTCASEDATA' => $this->field['test_case_data'],
+                        'TESTCASEDATA' => $this->field['test_case_data'],
                         'TABLE_NAME' => strtolower($request->table_name),
 
-						'CLASS_MODULE' => $class_name,
-						'TABLE_FIELDS' => $table_fields,
+                        'CLASS_MODULE' => $class_name,
+                        'TABLE_FIELDS' => $table_fields,
                         'CLASS_UPDATE_MODULE' => $random."".$class_name,
 
-						'FILLEBLE_LINES' => $this->field['fillable_lines'],
-						'SEARCHELEMENT_LINES' => $this->field['searchelement'],
+                        'FILLEBLE_LINES' => $this->field['fillable_lines'],
+                        'SEARCHELEMENT_LINES' => $this->field['searchelement'],
 
                         'GridSave' => "// [GridSave]",
                         'GridEdit' => "// [GridEdit]",
@@ -122,20 +122,20 @@ Class ApiHelper {
                         'GridDelete' => "// [GridDelete]",
                         'ModelArray' => "// [ModelArray]",
                         'Relation' => "// [Relation]",
-					];
+                    ];
 
-		foreach ($this as $key => $value) {
-			if($key != 'field') {
+        foreach ($this as $key => $value) {
+            if($key != 'field') {
                 $this->$key = str_replace("//","",$this->$key);
                 $this->$key = str_replace("{{-- ","",$this->$key);
                 $this->$key = str_replace(" --}}","",$this->$key);
 
-				foreach ($replace_word as $module_key => $module_value) {
-					
-					$this->$key = preg_replace('/\\['.preg_quote($module_key,'/').'\\]/',$module_value,$this->$key);				    
+                foreach ($replace_word as $module_key => $module_value) {
+                    
+                    $this->$key = preg_replace('/\\['.preg_quote($module_key,'/').'\\]/',$module_value,$this->$key);                    
                 }
-			}
-		}        
+            }
+        }        
 
         $this->getAllFiles($request, $project_path_main, $controller_name, $old_data);
         
@@ -155,7 +155,7 @@ Class ApiHelper {
                 file_put_contents($key, $value);
             }
         }
-	}
+    }
 
     public function putContentDhaval($request, $project_path_main, $files) {
 
@@ -184,7 +184,7 @@ Class ApiHelper {
             $migration_file = $migration_file.'.php';
             $migration_path = $project_path_main.'/database/migrations/'.$migration_file;
         } else {
-            if($old_data == "") {
+            if($old_data == "" && $request->is_model) {
                 $path = exec("php ".$project_path_main."/artisan make:migration create_".$request->table_name."_table");
                 $migration_file = str_replace('Created Migration: ', '',$path);
                 $migration_file = $migration_file.'.php';
@@ -240,8 +240,8 @@ Class ApiHelper {
 
     }
 
-	// Table Field Array
-	public function tableFieldsLoop($request) {
+    // Table Field Array
+    public function tableFieldsLoop($request) {
 
         $fillable_lines = "";
         $searchelement = "";
@@ -264,12 +264,12 @@ Class ApiHelper {
         $this->field['test_case_data'] = $test_data;
         $this->field['fillable_lines'] = $fillable_lines;
         $this->field['searchelement'] = $searchelement;
-	}
+    }
 
-	//[VALIDATION]
-	public function getValidation($request) {
-		
-		$validation_rule = '';
+    //[VALIDATION]
+    public function getValidation($request) {
+        
+        $validation_rule = '';
         
         foreach ($request->validation as $key => $value) {
             if($value != '') {
@@ -280,7 +280,7 @@ Class ApiHelper {
         
         }
         $this->field['validation'] = $validation_rule;
-	}
+    }
 
     // TABLE_FIELDS
     public function getTableFields($request, $old_data) {

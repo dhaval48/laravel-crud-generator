@@ -12,7 +12,7 @@
 
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-2">{{this.module.lang.parent_module}}</div>
+                                <!-- <div class="col-md-2">{{this.module.lang.parent_module}}</div>
                                 <div class='col-md-10'>
                                     <div :class='form.errors.has("parent_module")?"form-group has-error":"form-group"'>
 
@@ -22,7 +22,7 @@
                                         </select>
                                         
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-2">{{this.module.lang.main_module}}</div>
                                 <div class='col-md-10'>

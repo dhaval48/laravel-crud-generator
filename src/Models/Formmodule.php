@@ -69,7 +69,7 @@ class Formmodule extends Model
         return  [
             Lang::get('grid_modules.parent_form') => 'parent_form',
 			// Lang::get('form_modules.parent_table') => 'parent_table',
-			Lang::get('form_modules.parent_module') => 'parent_module',
+			// Lang::get('form_modules.parent_module') => 'parent_module',
 			Lang::get('form_modules.main_module') => 'main_module',
 			// Lang::get('form_modules.module_label') => 'module_label',
 			Lang::get('form_modules.table_name') => 'table_name',

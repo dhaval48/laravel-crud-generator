@@ -22,7 +22,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-sm-2">{{this.module.lang.parent_module}}</div>
+                                <!-- <div class="col-sm-2">{{this.module.lang.parent_module}}</div>
                                 <div class='col-sm-10'>
                                     <div :class='form.errors.has("parent_module")?"form-group has-error":"form-group"'>
                                         <select class="form-control select-form" ref='parent_module' name="parent_module" v-model="form.parent_module">
@@ -30,7 +30,7 @@
                                             <option v-for="(value, key) in parent_module" :value='key'>{{value}}</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-sm-2">{{this.module.lang.main_module}}</div>
                                 <div class='col-sm-10'>
@@ -334,11 +334,6 @@ export default {
         }
 
         $(document).ready( () => { 
-            
-            // $(document).on('change', '.select-form', event => {
-            //     var input_db_name = $(event.target).attr('name');
-            //     this.form[input_db_name] = event.target.value
-            // });
 
             $(document).on('change', '.select-auto-grid', event => {
                 var input_db_name = $(event.target).attr('name');
@@ -369,13 +364,6 @@ export default {
             if(this.module.id != 0){
                 $('.select-auto-grid').trigger('change');
             }
-
-            // $(document).on('change', '.select-auto', event => {
-            //     var input_db_name = $(event.target).attr('name');
-            //     var position = $(event.target).attr('position');
-
-            //     this.form[input_db_name][position] = event.target.value;
-            // });
         });
 
         if(this.module.parent_module_search) {

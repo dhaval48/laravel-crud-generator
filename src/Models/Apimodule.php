@@ -57,7 +57,7 @@ class Apimodule extends Model
     public function list_data() {
         return  [
             // Lang::get('api_modules.parent_form') => 'parent_form',
-			Lang::get('api_modules.parent_module') => 'parent_module',
+			// Lang::get('api_modules.parent_module') => 'parent_module',
 			Lang::get('api_modules.main_module') => 'main_module',
 			Lang::get('api_modules.is_model') => 'is_model',
 			Lang::get('api_modules.is_public') => 'is_public',
