@@ -4,32 +4,32 @@ namespace Ongoingcloud\Laravelcrud\General;
 
 Class Rollback {
 
-	public $sample_component;
-	public $sample_route;
-	public $sample_side;
+    public $sample_component;
+    public $sample_route;
+    public $sample_side;
 
-	public $field = [];
+    public $field = [];
 
-	function __construct() {
+    function __construct() {
         $this->sample_component = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/component.js";
         $this->sample_route = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Route.php";
         $this->sample_side = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/side.php";
-	}
+    }
 
-	public function getSampleContent() {
-	
-		foreach ($this as $key => $value) {
+    public function getSampleContent() {
+    
+        foreach ($this as $key => $value) {
 
-			if($key != 'field') {
-				if(!empty($value)) {
+            if($key != 'field') {
+                if(!empty($value)) {
 
                     $this->$key = file_get_contents($value);
                 }
-			}
-		} 
-	}
+            }
+        } 
+    }
 
-	public function deleteFiles($request, $production = false, $delete = false) {
+    public function deleteFiles($request, $production = false, $delete = false) {
         $project_path_main = base_path();
         if($production) {
             $project_path_main = env('PROD_PROJECT_PATH');
@@ -44,9 +44,7 @@ Class Rollback {
             }
         }
 
-        if(!empty($request->parent_module)) {
-            $this->sample_route = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Route.php";
-        } else {
+        if(empty($request->parent_module)) { 
             $this->sample_route = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/WithoutPrefixRoute.php";
         }
 
@@ -60,7 +58,7 @@ Class Rollback {
         $this->removeContent($this->field['deletefiles']);
         $this->removeFolder($this->field['folder']);
         // }
-	}
+    }
 
     public function removeContent($files) {
 
@@ -173,28 +171,28 @@ Class Rollback {
         return $controller_name;
     }
 
-	//Replace MODULE
-	public function replaceModule($request, $project_path_main, $controller_name) {
+    //Replace MODULE
+    public function replaceModule($request, $project_path_main, $controller_name) {
         
         $this->inputFieldsLoop($request, $project_path_main, $controller_name);
 
-		$replace_word = [
+        $replace_word = [
                         'TNAME' => strtolower($request->table_name),
                         'LNAME' => strtolower($controller_name),
                         'UMODULE' => ucfirst($controller_name),
                         'MODULE' => strtolower($controller_name),
                         'ULABEL' => ucwords($request->main_module),
                         'LAMODULE' => trim(strtolower(str_replace(' ','-',$request->parent_module))),
-					];
+                    ];
 
-		
-		foreach ($this as $key => $value) {
-			if($key != 'field') {
-				foreach ($replace_word as $module_key => $module_value) {
-					$this->$key = preg_replace('/\\['.preg_quote($module_key,'/').'\\]/',$module_value,$this->$key);
+        
+        foreach ($this as $key => $value) {
+            if($key != 'field') {
+                foreach ($replace_word as $module_key => $module_value) {
+                    $this->$key = preg_replace('/\\['.preg_quote($module_key,'/').'\\]/',$module_value,$this->$key);
                 }
-			}
-		}                
+            }
+        }                
         // replace word and put content in existing file
         $project_replace_word = [
                                 $this->sample_route => "",
@@ -212,10 +210,10 @@ Class Rollback {
                 file_put_contents($key, $value);
             }
         }
-	}   
+    }   
 
-	// Input Field Array
-	public function inputFieldsLoop($request, $project_path_main, $controller_name) {
+    // Input Field Array
+    public function inputFieldsLoop($request, $project_path_main, $controller_name) {
 
         $lang = "";
         $dropdown_common_function = "";
@@ -241,11 +239,11 @@ Class Rollback {
                     }
                 }
             }
-		}
+        }
         
         $this->field['dropdown_common_function'] = $dropdown_common_function;
         $this->field['common_route'] = $common_route;
-	}
+    }
 
     // array content [Moduleconfig]
     private function ModuleConfig($request, $controller_name) {

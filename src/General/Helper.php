@@ -36,7 +36,7 @@ Class Helper {
 
         $this->sample_modal = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/modal.php";
         $this->sample_model = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Model.php";
-        // $this->sample_route = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Route.php";
+        $this->sample_route = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Route.php";
         $this->sample_side = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/side.php";
         $this->sample_view = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/view.php";
         $this->sample_vue = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/view.vue";
@@ -64,15 +64,18 @@ Class Helper {
         }
         
         $table_fields = $this->getTableFields($request, $old_data);
+
+        if(empty($request->parent_module)) {
+            $this->sample_route = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/WithoutPrefixRoute.php";
+        }
+
         if(!empty($this->field['table_fields'])) {
             $this->sample_migration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/UpdateMigration.php";
         } else {
             if(!empty($request->parent_module)) {
                 $this->sample_migration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Migration.php";
-                $this->sample_route = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Route.php";
             } else {
                 $this->sample_migration = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/WithoutModuleMigration.php";
-                $this->sample_route = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/WithoutPrefixRoute.php";
             }
         } 
         $this->getSampleContent();

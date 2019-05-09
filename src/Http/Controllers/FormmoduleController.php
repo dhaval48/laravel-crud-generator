@@ -38,8 +38,8 @@ class FormmoduleController extends Controller {
         
         $this->data = ModuleConfig::form_modules();
          $this->data['form_modules_module'] = ModuleConfig::form_modules();
-		$this->data['permission_modules_module'] = ModuleConfig::permission_modules();
-		// [Module_Data]
+        $this->data['permission_modules_module'] = ModuleConfig::permission_modules();
+        // [Module_Data]
     }
 
     public function index(ListFormmoduleRequest $request) { 
@@ -165,13 +165,13 @@ class FormmoduleController extends Controller {
         }
 
         $array = [];
-		$rows = count($request->type);
-		for ($i = 0; $i < $rows; $i++) {
+        $rows = count($request->type);
+        for ($i = 0; $i < $rows; $i++) {
             if($request->name[$i] == 'id') {
                 return Helpers::errorResponse("id is default field in table. please, remove id from table fields");
             }
-			$array["name"] = $request->name[$i];
-			$array["type"] = $request->type[$i];
+            $array["name"] = $request->name[$i];
+            $array["type"] = $request->type[$i];
             if(isset($request->module_input_id[$i])) {
                 $module_table_data = \DB::table('module_tables')->where('id', $request->module_input_id[$i])->first();
                 
@@ -188,7 +188,7 @@ class FormmoduleController extends Controller {
                     }
                 }
             }
-			if(count(array_filter($array)) != 0) {
+            if(count(array_filter($array)) != 0) {
                 foreach ($array as $key => $value) {
                     if($value == ""){
                         return Helpers::errorResponse(ucfirst($key)." Field is required");
@@ -200,12 +200,12 @@ class FormmoduleController extends Controller {
                 }
             }
         }
-		$array = [];
-		$rows = count($request->input_type);
-		for ($i = 0; $i < $rows; $i++) {
+        $array = [];
+        $rows = count($request->input_type);
+        for ($i = 0; $i < $rows; $i++) {
             if($request->visible[$i]) {
-    			$array["input name"] = $request->input_name[$i];
-    			$array["input type"] = $request->input_type[$i];
+                $array["input name"] = $request->input_name[$i];
+                $array["input type"] = $request->input_type[$i];
                 if($request->table[$i] != "") {
                     $array["value"] = $request->value[$i];
                     $array["label"] = $request->key[$i];
@@ -221,7 +221,7 @@ class FormmoduleController extends Controller {
                     $array["table"] = $request->table[$i];
                 }
                 
-    			if(count(array_filter($array)) != 0) {
+                if(count(array_filter($array)) != 0) {
                     foreach ($array as $key => $value) {
                         if($value == ""){
                             return Helpers::errorResponse(ucfirst($key)." Field is required");
@@ -234,9 +234,9 @@ class FormmoduleController extends Controller {
                 }
             }
         }
-		// [GridValidation]
+        // [GridValidation]
         $input = $request->all();
-		//[DropdownValue]
+        //[DropdownValue]
         $module = "";
         \DB::beginTransaction();   
         try {
@@ -251,10 +251,10 @@ class FormmoduleController extends Controller {
             
                 $helper->makeFiles($request, false, $module);
 
-				// [GridActivity]
+                // [GridActivity]
                 $model->module_tables()->where("formmodule_id", $request->id)->delete();
-				$model->module_inputs()->where("formmodule_id", $request->id)->delete();
-				// [GridDelete]
+                $model->module_inputs()->where("formmodule_id", $request->id)->delete();
+                // [GridDelete]
                 $model->update($input);
             } else {
                 $input["created_by"] = \Auth::user()->id;
@@ -272,31 +272,31 @@ class FormmoduleController extends Controller {
             for($i=0; $i < count(array_filter($request->type)); $i++) {
                 $module_table .= $this->makeTableField($request, $i);
 
-				$model->module_tables()->create([
-							"formmodule_id" => $model->id,
-							'name' => $request->name[$i],
-							'type' => $request->type[$i],
-							'validation' => $request->validation[$i],
-							'default' => $request->default[$i],
-				]);
-			}
-			for($i=0; $i < count(array_filter($request->db_name)); $i++) {
+                $model->module_tables()->create([
+                            "formmodule_id" => $model->id,
+                            'name' => $request->name[$i],
+                            'type' => $request->type[$i],
+                            'validation' => $request->validation[$i],
+                            'default' => $request->default[$i],
+                ]);
+            }
+            for($i=0; $i < count(array_filter($request->db_name)); $i++) {
                 $module_input .= $this->makeInputField($request, $i);
 
-				$model->module_inputs()->create([
-							"formmodule_id" => $model->id,
+                $model->module_inputs()->create([
+                            "formmodule_id" => $model->id,
                             'visible' => $request->visible[$i],
                             'input_name' => $request->input_name[$i],
-							'db_name' => $request->db_name[$i],
-							'input_type' => $request->input_type[$i],
-							'key' => $request->key[$i],
-							'value' => $request->value[$i],
-							'table' => $request->table[$i],
-							
-				]);
-			}
+                            'db_name' => $request->db_name[$i],
+                            'input_type' => $request->input_type[$i],
+                            'key' => $request->key[$i],
+                            'value' => $request->value[$i],
+                            'table' => $request->table[$i],
+                            
+                ]);
+            }
 
-				// [GridSave]
+                // [GridSave]
             
             if(env('APP_ENV') == 'local'){
                 $this->makeMigration($request, $module_field, $module_table, $module_input);
@@ -326,56 +326,56 @@ class FormmoduleController extends Controller {
         $formelement = $model->getAttributes();
         $formelement['_token'] = csrf_token();
 
-		// [DropdownSelectedValue]
+        // [DropdownSelectedValue]
 
          if(count($model->module_tables) > 0 ) {
             $this->data["module_tables_row"] = [];
-			$this->data["module_tablesrow_count"] = count($model->module_tables) - 1;
-			foreach ($model->module_tables as $key => $value) {
-				$this->data["module_tables_row"][] = $key;
-				$formelement['name'][] = $value->name;
+            $this->data["module_tablesrow_count"] = count($model->module_tables) - 1;
+            foreach ($model->module_tables as $key => $value) {
+                $this->data["module_tables_row"][] = $key;
+                $formelement['name'][] = $value->name;
                 $formelement["module_input_id"][] = $value->id;
                 
                 $formelement["db_name"][] = $value->name;
-				
+                
                 $formelement['type'][] = $value->type;
-				$formelement['validation'][] = $value->validation;
-				$formelement['default'][] = $value->default;
-				
-			}
-		} else {
-			$formelement['name'][] = "";
-			$formelement['type'][] = "";
+                $formelement['validation'][] = $value->validation;
+                $formelement['default'][] = $value->default;
+                
+            }
+        } else {
+            $formelement['name'][] = "";
+            $formelement['type'][] = "";
             $formelement["db_name"][] = "";
-			$formelement['validation'][] = "";
-			$formelement['default'][] = "";
-			
-		}
-		if(count($model->module_inputs) > 0 ) {
+            $formelement['validation'][] = "";
+            $formelement['default'][] = "";
+            
+        }
+        if(count($model->module_inputs) > 0 ) {
             $this->data["module_inputs_row"] = [];
-			$this->data["module_inputsrow_count"] = count($model->module_inputs) - 1;
-			foreach ($model->module_inputs as $key => $value) {
-				$this->data["module_inputs_row"][] = $key;
+            $this->data["module_inputsrow_count"] = count($model->module_inputs) - 1;
+            foreach ($model->module_inputs as $key => $value) {
+                $this->data["module_inputs_row"][] = $key;
                 $formelement["visible"][] = $value->visible;
-				$formelement['input_name'][] = $value->input_name;
+                $formelement['input_name'][] = $value->input_name;
 
-				$formelement['input_type'][] = $value->input_type;
-				$formelement['key'][] = $value->key ? $value->key : '';
-				$formelement['value'][] = $value->value ? $value->value : '';
-				$formelement['table'][] = $value->table ? $value->table : '';
-				
-			}
-		} else {
+                $formelement['input_type'][] = $value->input_type;
+                $formelement['key'][] = $value->key ? $value->key : '';
+                $formelement['value'][] = $value->value ? $value->value : '';
+                $formelement['table'][] = $value->table ? $value->table : '';
+                
+            }
+        } else {
             $formelement["visible"][] = true;
-			$formelement['input_name'][] = "";
-			$formelement['input_type'][] = "";
-			$formelement['key'][] = "";
-			$formelement['value'][] = "";
-			$formelement['table'][] = "";
-			
-		}
+            $formelement['input_name'][] = "";
+            $formelement['input_type'][] = "";
+            $formelement['key'][] = "";
+            $formelement['value'][] = "";
+            $formelement['table'][] = "";
+            
+        }
         // dd($formelement['key']);
-		// [GridEdit]
+        // [GridEdit]
         $this->data['fillable'] = $formelement;
 
         $this->data['permissions'] = HandlePermission::getPermissionsVue($this->data['dir']);
@@ -413,8 +413,8 @@ class FormmoduleController extends Controller {
             
 
             $model->module_tables()->where("formmodule_id", $request->id)->delete();
-			$model->module_inputs()->where("formmodule_id", $request->id)->delete();
-				// [GridDelete]
+            $model->module_inputs()->where("formmodule_id", $request->id)->delete();
+                // [GridDelete]
             $model->delete();
         } catch (\Exception $e) {
             \DB::rollback();                        
@@ -436,7 +436,7 @@ class FormmoduleController extends Controller {
     public function makeModuleField($request) {
        
         return  "
-                 'parent_module' => '".$request->parent_module."',
+                 ".$this->getValue('parent_module', $request->parent_module)."
                  'main_module' => '".$request->main_module."',
                  'table_name' => '".$request->table_name."',
                 ";
