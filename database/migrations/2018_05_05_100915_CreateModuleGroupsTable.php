@@ -18,7 +18,7 @@ class CreateModuleGroupsTable extends Migration
             $table->string('name', 255);
             $table->string('display_name', 255)->nullable();
             $table->string('description', 255);
-            $table->integer('module_id');
+            $table->integer('module_id')->nullable();
             $table->tinyinteger('status')->default(0);
             $table->string('icon');
             $table->string('permission');

@@ -44,6 +44,12 @@ Class Rollback {
             }
         }
 
+        if(!empty($request->parent_module)) {
+            $this->sample_route = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/Route.php";
+        } else {
+            $this->sample_route = base_path()."/vendor/ongoingcloud/laravelcrud/Vuesample/WithoutPrefixRoute.php";
+        }
+
         // if(file_exists($project_path_main."/app/Http/Controllers/Backend/".ucfirst($controller_name).'Controller.php')) {
         $this->getAllFiles($request, $project_path_main, $controller_name, $delete);
 

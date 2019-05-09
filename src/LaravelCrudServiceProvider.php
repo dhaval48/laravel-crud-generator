@@ -142,6 +142,11 @@ class LaravelCrudServiceProvider extends ServiceProvider
             __DIR__.'/resources/js/bootstrap.js' => base_path('resources/js/bootstrap.js'),
         ]);
 
+        // Publishing app.scss.
+        $this->publishes([
+            __DIR__.'/resources/sass/app.scss' => base_path('resources/sass/app.scss'),
+        ]);
+
         // Publishing component.js.
         if(!file_exists(base_path().'/resources/js/component.js')) {
             $this->publishes([
