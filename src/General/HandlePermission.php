@@ -48,6 +48,12 @@ class HandlePermission {
 		return $result;
 	}
 
+	public static function extraSideLink() {
+		$result['module_groups'] = DB::table('module_groups')
+			->where('status',1)->wherenull('module_id')->orderBy('order',"ASC")->get();
+		return $result;
+	}
+
 	public static function authorize($permission, $more_permissions = false) {
 		
 		foreach(\Auth::user()->with('roles')->where('id', \Auth::user()->id)->get()[0]->roles as $role) {
