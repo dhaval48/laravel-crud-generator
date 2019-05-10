@@ -90,62 +90,62 @@
                                 </div>
                                 
                                 <div class="col-md-12">
+                                    <div class="table-scroll">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Visibale</th>
+                                                    <th>Input Name</th>
+                                                    <th>Input Type</th>
+                                                    <th>Table</th>
+                                                    <th>Value</th>
+                                                    <th>Label</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(n, k) in rows.length">
+                                                    <td>
+                                                        <p-check class='p-icon p-rotate p-bigger' color='primary'
+                                                            v-model='form.visible[k]'>
+                                                            <i slot='extra' class='icon mdi mdi-check'></i>
+                                                        </p-check>
+                                                    </td>
 
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Visibale</th>
-                                                <th>Input Name</th>
-                                                <th>Input Type</th>
-                                                <th>Table</th>
-                                                <th>Value</th>
-                                                <th>Label</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="(n, k) in rows.length">
-                                                <td>
-                                                    <p-check class='p-icon p-rotate p-bigger' color='primary'
-                                                        v-model='form.visible[k]'>
-                                                        <i slot='extra' class='icon mdi mdi-check'></i>
-                                                    </p-check>
-                                                </td>
+                                                    <td style="min-width:100px">
+                                                        <input type='text' name='input_name' class='form-control' v-model="form.input_name[k]">
+                                                    </td>
 
-                                                <td>
-                                                    <input type='text' name='input_name' class='form-control' v-model="form.input_name[k]">
-                                                </td>
+                                                    <td style="min-width:100px">
+                                                        <select class="form-control select-auto-grid" ref='input_type' name="input_type" :position="k" v-model="form.input_type[k]">
+                                                            <option value="">Select Input Type</option>
+                                                            <option v-for="(value, key) in input_type_array" :value='value'>{{value}}</option>
+                                                        </select>
+                                                    </td>
 
-                                                <td width="150px">
-                                                    <select class="form-control select-auto-grid" ref='input_type' name="input_type" :position="k" v-model="form.input_type[k]">
-                                                        <option value="">Select Input Type</option>
-                                                        <option v-for="(value, key) in input_type_array" :value='value'>{{value}}</option>
-                                                    </select>
-                                                </td>
+                                                    <td style="min-width:100px">
+                                                        <select class="form-control  select-auto-grid db-table" ref='table' name="table" :position="k" disabled="disabled" v-model="form.table[k]">
+                                                            <option value="">Select Table</option>
+                                                            <option v-for="(value, key) in table" :value='value'>{{value}}</option>
+                                                        </select>
+                                                    </td>
 
-                                                <td width="150px">
-                                                    <select class="form-control  select-auto-grid db-table" ref='table' name="table" :position="k" disabled="disabled" v-model="form.table[k]">
-                                                        <option value="">Select Table</option>
-                                                        <option v-for="(value, key) in table" :value='value'>{{value}}</option>
-                                                    </select>
-                                                </td>
+                                                    <td style="min-width:100px">
+                                                        <select class="form-control select-auto db-value" ref='value' name="value" :position="k" disabled="disabled" v-model="form.value[k]">
+                                                            <option value="">Select Value</option>
+                                                            <option v-for="v in value" :value='v'>{{v}}</option>
+                                                        </select>
+                                                    </td>
 
-                                                <td width="150px">
-                                                    <select class="form-control select-auto db-value" ref='value' name="value" :position="k" disabled="disabled" v-model="form.value[k]">
-                                                        <option value="">Select Value</option>
-                                                        <option v-for="v in value" :value='v'>{{v}}</option>
-                                                    </select>
-                                                </td>
-
-                                                <td width="150px">
-                                                    <select class="form-control select-auto db-key" ref='key' name="key" :position="k" disabled="disabled" v-model="form.key[k]">
-                                                        <option value="">Select Label</option>
-                                                        <option v-for="v in key" :value='v'>{{v}}</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    
+                                                    <td style="min-width:100px">
+                                                        <select class="form-control select-auto db-key" ref='key' name="key" :position="k" disabled="disabled" v-model="form.key[k]">
+                                                            <option value="">Select Label</option>
+                                                            <option v-for="v in key" :value='v'>{{v}}</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                     
                             </div>

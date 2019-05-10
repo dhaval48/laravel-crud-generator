@@ -3,52 +3,53 @@
         <list_header :lists='this.module'></list_header>
         
         <div class="clearfix">&nbsp;</div>
-        
-        <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-            <thead class="thead-dark">
-                <tr>
-                    <th v-for="(value,key) in lists.list_data">{{ key }}</th>
-                    <th width="100">Action</th>
-                </tr>
-            </thead>
-            <tbody v-if="lists.lists.data.length > 0">
-                <tr v-for="list in lists.lists.data">
-                    
-                    <td v-for="(value,key) in lists.list_data">
-                        <template v-if="value =='date'">
-                            {{ list[value] | dmy }}
-                        </template>
-                        <template v-else-if = "value.indexOf('.') > 0">
-                            {{ list | relation(value) }}
-                        </template>
-                        <template v-else>
-                            {{list[value] != null ? list[value] : '-'}}                                           
-                        </template>
-                    </td>
-                    <td>
+        <div class="table-scroll">
+            <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <thead class="thead-dark">
+                    <tr>
+                        <th v-for="(value,key) in lists.list_data">{{ key }}</th>
+                        <th width="100">Action</th>
+                    </tr>
+                </thead>
+                <tbody v-if="lists.lists.data.length > 0">
+                    <tr v-for="list in lists.lists.data">
+                        
+                        <td v-for="(value,key) in lists.list_data">
+                            <template v-if="value =='date'">
+                                {{ list[value] | dmy }}
+                            </template>
+                            <template v-else-if = "value.indexOf('.') > 0">
+                                {{ list | relation(value) }}
+                            </template>
+                            <template v-else>
+                                {{list[value] != null ? list[value] : '-'}}                                           
+                            </template>
+                        </td>
+                        <td>
 
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle pull-right custom-default" data-toggle="dropdown" tabindex="-1" aria-haspopup="true" aria-expanded="false">
-                                Action
-                            </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle pull-right custom-default" data-toggle="dropdown" tabindex="-1" aria-haspopup="true" aria-expanded="false">
+                                    Action
+                                </button>
 
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a v-if="lists.permissions['update_'+lists.dir]" class="dropdown-item" :href='module.edit_route+"/"+list.id'><i class="fa fa-edit" style="color: green;" data-toggle="tooltip" data-placement="top" data-original-title="Edit"></i>{{lists.common.edit}}</a>
-                                <a v-if="lists.permissions['delete_'+lists.dir]" class="dropdown-item" href="javascript:void(0);" @click="deleteRecord(list.id)"><i class="fa fa-trash" style="color: red;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"></i>{{lists.common.delete}}</a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a v-if="lists.permissions['update_'+lists.dir]" class="dropdown-item" :href='module.edit_route+"/"+list.id'><i class="fa fa-edit" style="color: green;" data-toggle="tooltip" data-placement="top" data-original-title="Edit"></i>{{lists.common.edit}}</a>
+                                    <a v-if="lists.permissions['delete_'+lists.dir]" class="dropdown-item" href="javascript:void(0);" @click="deleteRecord(list.id)"><i class="fa fa-trash" style="color: red;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"></i>{{lists.common.delete}}</a>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-                
-            </tbody>
-            <tbody v-else>
-                <tr>
-                    <td class="text-center" colspan="20">
-                        {{lists.common.no_data}}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+                <tbody v-else>
+                    <tr>
+                        <td class="text-center" colspan="20">
+                            {{lists.common.no_data}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <paginate-links :lists='this.lists'></paginate-links>
     </div>
 </template>

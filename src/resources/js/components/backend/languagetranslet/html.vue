@@ -29,46 +29,48 @@
                                     
                 <div class="col-sm-12">
 
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th width="50%">Translation</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(n, k) in lang_value_pagination">
+                    <div class="table-scroll">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th width="50%">Translation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(n, k) in lang_value_pagination">
 
-                                <td> {{ n }} </td>
+                                    <td> {{ n }} </td>
 
-                                <td>
-                                    <input type='text' name='translation' class='form-control' v-model="form.translation[n]">
-                                </td>
-                                
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td>
+                                        <input type='text' name='translation' class='form-control' v-model="form.translation[n]">
+                                    </td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
 
-                    <ul class="pagination">
-                        <li class="page-item" v-if='page > 1'>
-                            <a href="javascript:void(0);" aria-label="Previous"
-                            v-on:click="getPageData(this.module.page - 1)" class="page-link">
-                                <span aria-hidden="true">Previous</span>
-                            </a>
-                        </li>
+                        <ul class="pagination">
+                            <li class="page-item" v-if='page > 1'>
+                                <a href="javascript:void(0);" aria-label="Previous"
+                                v-on:click="getPageData(this.module.page - 1)" class="page-link">
+                                    <span aria-hidden="true">Previous</span>
+                                </a>
+                            </li>
 
-                        <li class="page-item" v-for='p in total_pages'
-                          v-bind:class="[ p == page ? 'active' : '']">
-                            <a href="javascript:void(0);" class="page-link" v-on:click="getPageData(p)">{{ p }}</a>
-                        </li>
+                            <li class="page-item" v-for='p in total_pages'
+                              v-bind:class="[ p == page ? 'active' : '']">
+                                <a href="javascript:void(0);" class="page-link" v-on:click="getPageData(p)">{{ p }}</a>
+                            </li>
 
-                        <li class="page-item" v-if='page < total_pages'>
-                            <a href="javascript:void(0);" class="page-link"
-                                v-on:click="getPageData(page + 1)">
-                                <span aria-hidden="true">Next</span>
-                            </a>
-                        </li>
-                    </ul>
+                            <li class="page-item" v-if='page < total_pages'>
+                                <a href="javascript:void(0);" class="page-link"
+                                    v-on:click="getPageData(page + 1)">
+                                    <span aria-hidden="true">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>          
             </div>
             
