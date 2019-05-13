@@ -58,7 +58,7 @@ Class Helper {
     }
 
     public function makeFiles($request, $production = false, $old_data = "") {
-        $project_path_main = base_path();
+        $project_path_main = env('DEV_PROJECT_PATH');
         if($production) {
             $project_path_main = env('PROD_PROJECT_PATH');
         }

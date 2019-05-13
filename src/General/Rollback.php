@@ -30,7 +30,7 @@ Class Rollback {
     }
 
     public function deleteFiles($request, $production = false, $delete = false) {
-        $project_path_main = base_path();
+        $project_path_main = env('DEV_PROJECT_PATH');
         if($production) {
             $project_path_main = env('PROD_PROJECT_PATH');
         }
