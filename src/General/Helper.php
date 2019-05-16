@@ -779,7 +779,7 @@ Class Helper {
                     <div :class='".$first."'>
                         <label for='".$input_name."'> {{this.module.lang.".$db_name."}} </label>
 
-                        <input type='file' name='".$db_name."' class='form-control' v-model='".$v_model."'>
+                        <input type='file' name='".$db_name."' class='form-control'>
                         <span class='help-block text-danger' 
                         v-if='".$error_if."'
                         v-text='".$error_end."'></span>

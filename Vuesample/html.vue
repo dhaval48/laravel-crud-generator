@@ -44,7 +44,7 @@ export default {
     data(){
         return {
             form:this.formObj,
-            is_save:false
+            is_save:false,
             // [OptionsData]
         }
     },

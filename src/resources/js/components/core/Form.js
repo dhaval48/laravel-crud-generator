@@ -66,7 +66,7 @@ class Form {
      * @param {string} url
      */
     post(url) {
-        return this.submit('post', url, this.originalData);
+        return this.submit('post', url, this.data());
     }
 
      /**
