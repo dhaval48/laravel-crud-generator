@@ -101,7 +101,7 @@ $formelements = [
 		$data['disabled'] = ['true'];
 		$data["module_inputsrow_count"] = 0;
 		$data["module_inputs_row"][] = 0;
-		$data["input_type"] = ['input','dropdown','checkbox','textarea','date','radio'];
+		$data["input_type"] = ['input','dropdown','file','checkbox','textarea','date','radio'];
 			
 		// [FormmoduleGrid]
 		return $data;

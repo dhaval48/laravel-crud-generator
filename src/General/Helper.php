@@ -750,6 +750,22 @@ Class Helper {
                 ";
 
                 $this->field['test_case_data'] .= "->type('".$db_name."', 'Demo')"."\n"."\t"."\t"."\t"."\t"."\t";
+            } else if($request->input_type[$i] == "file") {
+                $form_fields .= 
+                "
+                <div class='col-sm-6'>
+                    <div :class='".$first."'>
+                        <label for='".$input_name."'> {{this.module.lang.".$db_name."}} </label>
+
+                        <input type='file' name='".$db_name."' class='form-control' v-model='".$v_model."'>
+                        <span class='help-block text-danger' 
+                        v-if='".$error_if."'
+                        v-text='".$error_end."'></span>
+                    </div>
+                </div>
+                ";
+
+                $this->field['test_case_data'] .= "->type('".$db_name."', 'Demo')"."\n"."\t"."\t"."\t"."\t"."\t";
             } else if($request->input_type[$i] == "textarea") {
                 $form_fields .= 
                 "

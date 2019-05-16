@@ -5,6 +5,40 @@ namespace Ongoingcloud\Laravelcrud;
 use Ongoingcloud\Laravelcrud\Http\Controllers\CommonController;
 
 class Helpers {
+
+    public static function attachFile($request){
+        $input = $request->all();
+        foreach ($input as $key => $value) {
+            if($request->hasFile($key)) {
+                $input[$key] = Helpers::uploadFille($request->$key);
+            }
+        }
+        return $input;
+    }
+
+    public static function uploadFille($file){
+        \DB::beginTransaction();   
+        try {
+            $destinationPath = storage_path() . '/app/public/';
+
+
+            $file_name = date('mdYHis') . uniqid() . "." .$file->getClientOriginalExtension();
+ 
+            $file->move($destinationPath, $file_name);
+
+            return $destinationPath.'/'.$file_name;
+            
+
+        } catch (\Exception $e) {
+            echo $e;
+            \DB::rollback();
+            return Helpers::errorResponse();
+        }
+        \DB::commit();
+
+        return Helpers::successResponse("Successfully File Uploaded");
+    }
+    
 	public static function errorResponse($message = 'Somethings goes wrong.', $errors = [], $code = 422) {
 	    if($message == 'Somethings goes wrong.') {
 	        $message = \Lang::get('label.notification.error_message');
