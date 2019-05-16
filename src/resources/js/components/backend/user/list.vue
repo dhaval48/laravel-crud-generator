@@ -4,8 +4,8 @@
         
         <div class="clearfix">&nbsp;</div>
         <div class="table-scroll">
-            <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                <thead class="thead-dark">
+            <table class="table" cellspacing="0">
+                <thead>
                     <tr>
                         <th v-for="(value,key) in lists.list_data">{{ key }}</th>
                         <th>{{this.module.common.date}}</th>

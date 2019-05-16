@@ -66,7 +66,16 @@ class Form {
      * @param {string} url
      */
     post(url) {
-        return this.submit('post', url);
+        return this.submit('post', url, this.originalData);
+    }
+
+     /**
+     * Send a POST request with file to the given URL.
+     * .
+     * @param {string} url
+     */
+    postWithFile(url,formData) {
+        return this.submit('post', url, formData);
     }
 
 
@@ -106,10 +115,10 @@ class Form {
      * @param {string} requestType
      * @param {string} url
      */
-    submit(requestType, url) {
+    submit(requestType, url,formData) {
         this.butonLoaing(true);
         return new Promise((resolve, reject) => {
-            axios[requestType](url, this.data())
+            axios[requestType](url, formData)
                 .then(response => {               
                     this.butonLoaing(false);     
                     this.onSuccess(response.data);
