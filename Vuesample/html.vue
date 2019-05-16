@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="col-md-12">
-        <form class="form" method="POST" :action='this.module.store_route' @submit.prevent="onSubmit" @keydown="form.errors.clear($event.target.name)">
+        <form class="form" method="POST" :action='this.module.store_route' @submit.prevent="onSubmit" @change="form.errors.clear($event.target.name)">
 
             <input type="hidden" name="id" :value="this.module.id" v-if="this.module.id != 0">
             <div class="row">
