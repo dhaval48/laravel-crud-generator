@@ -43,8 +43,9 @@ export default {
         }
     },
     methods: {
-        onSubmit() {            
-            this.form.post(this.module.store_route).then(response => {
+        onSubmit() { 
+
+            //[POST_METHOD]        
                 this.$refs.file_upload.submitFiles(this.module.dir, response.data.id);
                 
                 // [GRID_RESET]
