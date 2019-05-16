@@ -17,26 +17,13 @@ class Helpers {
     }
 
     public static function uploadFille($file){
-        \DB::beginTransaction();   
-        try {
-            $destinationPath = storage_path() . '/app/public/';
+        $destinationPath = storage_path() . '/app/public/';
 
+        $file_name = date('mdYHis') . uniqid() . "." .$file->getClientOriginalExtension();
 
-            $file_name = date('mdYHis') . uniqid() . "." .$file->getClientOriginalExtension();
- 
-            $file->move($destinationPath, $file_name);
+        $file->move($destinationPath, $file_name);
 
-            return $destinationPath.'/'.$file_name;
-            
-
-        } catch (\Exception $e) {
-            echo $e;
-            \DB::rollback();
-            return Helpers::errorResponse();
-        }
-        \DB::commit();
-
-        return Helpers::successResponse("Successfully File Uploaded");
+        return $destinationPath.'/'.$file_name;
     }
     
 	public static function errorResponse($message = 'Somethings goes wrong.', $errors = [], $code = 422) {
