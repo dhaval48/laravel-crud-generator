@@ -21,7 +21,12 @@
             
             <div class="card-actionbar">
                 <div class="card-actionbar-row">
-                    <button type="submit" class="btn btn-flat btn-primary" :disabled="form.errors.any()">{{this.module.common.save}}</button>
+                    <button v-if="!is_save" type="submit" class="btn btn-flat btn-primary" :disabled="form.errors.any()">{{this.module.common.save}}</button>
+
+                    <button v-else class="btn btn-primary" type="submit" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span>{{this.module.id != 0 ? 'Updating':'Saving'}}...</span>
+                    </button>
                 </div>
             </div>
         </form>
@@ -39,15 +44,19 @@ export default {
     data(){
         return {
             form:this.formObj,
+            is_save:false
             // [OptionsData]
         }
     },
     methods: {
         onSubmit() { 
-
+            this.is_save = true;
+            
             //[POST_METHOD]        
                 this.$refs.file_upload.submitFiles(this.module.dir, response.data.id);
                 
+                this.is_save = false;
+
                 // [GRID_RESET]
                 if(this.module.id == 0) {
                     this.$refs.file_upload.files = [];

@@ -157,7 +157,12 @@
             
             <div class="card-actionbar">
                 <div class="card-actionbar-row">
-                    <button type="submit" class="btn btn-flat btn-primary" :disabled="form.errors.any()">{{this.module.common.save}}</button>
+                    <button v-if="!is_save" type="submit" class="btn btn-flat btn-primary" :disabled="form.errors.any()">{{this.module.common.save}}</button>
+
+                    <button v-else class="btn btn-primary" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span>{{this.module.id != 0 ? 'Updating':'Saving'}}...</span>
+                    </button>
                 </div>
             </div>
         </form>
@@ -184,6 +189,7 @@ export default {
             table:[],
             value:[],
             key:[],
+            is_save:false,
             // [OptionsData]
         }
     },
@@ -272,9 +278,10 @@ export default {
             }
         },
         // [DropdownFunction]
-        onSubmit() {            
+        onSubmit() { 
+            this.is_save = true;
             this.form.post(this.module.store_route).then(response => {
-                 
+                this.is_save = false;
                 if(this.module.id == 0) {
 
                     var grid = this.module.module_tables;
